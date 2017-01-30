@@ -15,8 +15,6 @@ lein clean
 #cordova prepare
 #cordova build
 
-convert -resize 64x64 icon.png icon-small.png
-
 # Manifest file
 #
 #echo "CACHE MANIFEST" > index.appcache
