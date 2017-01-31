@@ -95,7 +95,7 @@
   )
 (defn ui:main []
   [:div.ui.container
-   [:h4 {:style {:background :red}} "Prototype under udvikling, - virker ikke endnu."]
+   [:h1 {:style {:background :red}} "Prototype under udvikling, - virker ikke endnu."]
    [:h1 "Generering af forsider"]
    [ui:images]
    [:p "[Select position on image + sample rendering of title on image]"]
