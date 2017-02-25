@@ -129,6 +129,9 @@
   (let [canvas (body-element "render-canvas" "canvas")
         ctx (.getContext canvas "2d")
         url (data-url svg {:type "image/svg+xml"})
+        dataurl (str "data:image/svg+xml;utf8,"
+                     (.replace svg (js/RegExp. "[\n ]+" "g") " "))
+
         img (js/Image.)
         handle-load
         (fn []
@@ -140,10 +143,11 @@
           (js/console.log (.toDataURL canvas))
           )
         ]
+    (js/console.log dataurl)
     (doto img
       (aset "crossOrigin" "anonymous")
       (aset "onload" handle-load)
-      (aset "src" url)
+      (aset "src" dataurl)
       )
     (js/document.body.appendChild img)
     (.fillRect ctx 0 0 100 100)))
