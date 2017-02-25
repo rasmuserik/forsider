@@ -103,4 +103,52 @@
    [:p "[Search query + list of first search results, with rendered covers]"]
    [ui:upload-to-openplatform]])
 
+(defn body-element [id type]
+  (let [elem (js/document.getElementById id)]
+    (if elem
+      elem
+      (do
+        (let [elem (js/document.createElement type)]
+          (aset elem "id" id)
+          (js/document.body.appendChild elem)
+          elem)))))
+
+(defn data-url [data options]
+  (js/URL.createObjectURL
+   (js/Blob. #js[data] (clj->js options))))
+
+(def svg  "
+  <svg  xmlns=\"http://www.w3.org/2000/svg\" width=\"256\" height=\"256\">
+    <foreignObject width=\"256\" height=\"256\">
+    <div id=\"thumbnail-html\" xmlns=\"http://www.w3.org/1999/xhtml\">
+       <em>Hello</em> <strong>world</strong>
+    </div>
+    </foreignObject>
+  </svg>")
+(defn render-cover [html]
+  (let [canvas (body-element "render-canvas" "canvas")
+        ctx (.getContext canvas "2d")
+        url (data-url svg {:type "image/svg+xml"})
+        img (js/Image.)
+        handle-load
+        (fn []
+          (doto ctx
+            (.clearRect 0 0 3000 3000)
+            (.drawImage img 0 0 )
+            )
+          (js/console.log "handle-load" url)
+          (js/console.log (.toDataURL canvas))
+          )
+        ]
+    (doto img
+      (aset "crossOrigin" "anonymous")
+      (aset "onload" handle-load)
+      (aset "src" url)
+      )
+    (js/document.body.appendChild img)
+    (.fillRect ctx 0 0 100 100)))
+
+(render-cover "")
+
+
 (render [ui:main])
