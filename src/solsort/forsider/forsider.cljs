@@ -25,8 +25,7 @@
    :max-width :150px
    :vertical-align :top
    :margin :10px
-   :box-shadow "2px 2px 5px #888888;"}
-  }
+   :box-shadow "2px 2px 5px #888888;"}}
  "styling")
 
 (defn <add-images [images]
@@ -42,18 +41,15 @@
    [:button.red.tiny.icon.ui.button
     {:style {:position :absolute
              :right 0
-             :top 0
-             }}
+             :top 0}}
     [:i.delete.icon]]
    (str idx)
    (str image)
-   " TODO: Billede her, selectable, etc."
-   ]
-  )
+   " TODO: Billede her, selectable, etc."])
 (defn ui:images []
   (into
    []
-        (concat
+   (concat
     [:div]
     [[:input
       {:type "file" :accept "image/*"
@@ -61,38 +57,30 @@
        :style {:display :none}
        :multiple true
        :on-change
-       #(<add-images (.-files (.-target %1)))
-      }]]
+       #(<add-images (.-files (.-target %1)))}]]
     (map-indexed ui:removable-image (db [:images] []))
     [[:span.medium-cover-image
       {:on-click
        #(.click
          (js/document.getElementById "file-input"))}
       [:i.large.plus.icon
-       {:style {:margin-top :20px}}
-       ]
-      [:br] "tilføj" [:br] "billede" [:br]
-      ]
-     [:hr]
-     ]
-    ))
-  )
+       {:style {:margin-top :20px}}]
+      [:br] "tilføj" [:br] "billede" [:br]]
+     [:hr]])))
 (defn ui:login []
   [:div
    [:h4 "Adgang til den Åbne Platform"]
-    [:div.ui.fluid.labeled.input
-      [:div.ui.label "Client ID"]
-   [input {:db [:settings :client-id]}]]
+   [:div.ui.fluid.labeled.input
+    [:div.ui.label "Client ID"]
+    [input {:db [:settings :client-id]}]]
    [:div.ui.fluid.labeled.input
     [:div.ui.label "Client Secret"]
-    [input {:db [:settings :client-secret]}]]]
-  )
+    [input {:db [:settings :client-secret]}]]])
 (defn ui:upload-to-openplatform []
   [:div
    [:button.primary.ui.button "Upload forsider"]
    [:p "[Upload status]"]
-   [ui:login]]
-  )
+   [ui:login]])
 (defn ui:main []
   [:div.ui.container
    [:h1 {:style {:background :red}} "Prototype under udvikling, - virker ikke endnu."]
@@ -105,54 +93,60 @@
 
 (defn body-element [id type]
   (let [elem (js/document.getElementById id)]
-    (if elem
-      elem
-      (do
-        (let [elem (js/document.createElement type)]
-          (aset elem "id" id)
-          (js/document.body.appendChild elem)
-          elem)))))
+    (log 'elem elem (not (not elem)))
+    (or
+     elem
+     (do
+       (log 'create-elem)
+       (let [elem (js/document.createElement type)]
+         (aset elem "id" id)
+         (js/document.body.appendChild elem)
+         elem)))))
 
 (defn data-url [data options]
   (js/URL.createObjectURL
-   (js/Blob. #js[data] (clj->js options))))
+   (js/Blob. #js [data] (clj->js options))))
 
-(def svg  "
-  <svg  xmlns=\"http://www.w3.org/2000/svg\" width=\"256\" height=\"256\">
-    <foreignObject width=\"256\" height=\"256\">
-    <div id=\"thumbnail-html\" xmlns=\"http://www.w3.org/1999/xhtml\">
-       <em>Hello</em> <strong>world</strong>
-    </div>
-    </foreignObject>
-  </svg>")
+(defn <render-html [ctx html x y w h]
+  (let [c (chan)
+        svg-url
+        (str "data:image/svg+xml;utf8,"
+             "<svg xmlns=\"http://www.w3.org/2000/svg\""
+             " width=\"" w
+             "\" height=\"" h
+             "\"><foreignObject"
+             " width=\"" w
+             "\" height=\"" h
+             "\"><div id=\"thumbnail-html\""
+             " xmlns=\"http://www.w3.org/1999/xhtml\">"
+             html
+             "</div></foreignObject></svg>")
+        img (js/Image.)]
+    (doto img
+      (aset "crossOrigin" "anonymous")
+      (aset "onload"
+            (fn []
+              (.drawImage
+               ctx
+               img x y)
+              (close! c)))
+      (aset "onerror"
+            (fn [e]
+              (log 'error e)
+              (throw e)))
+      (aset "src" svg-url))
+    c))
 (defn render-cover [html]
   (let [canvas (body-element "render-canvas" "canvas")
         ctx (.getContext canvas "2d")
-        url (data-url svg {:type "image/svg+xml"})
-        dataurl (str "data:image/svg+xml;utf8,"
-                     (.replace svg (js/RegExp. "[\n ]+" "g") " "))
+        img (js/Image.)]
+    (go
+      (doto ctx
+        (.clearRect 0 0 3000 3000)
 
-        img (js/Image.)
-        handle-load
-        (fn []
-          (doto ctx
-            (.clearRect 0 0 3000 3000)
-            (.drawImage img 0 0 )
-            )
-          (js/console.log "handle-load" url)
-          (js/console.log (.toDataURL canvas))
-          )
-        ]
-    (js/console.log dataurl)
-    (doto img
-      (aset "crossOrigin" "anonymous")
-      (aset "onload" handle-load)
-      (aset "src" dataurl)
-      )
-    (js/document.body.appendChild img)
+        (.drawImage img 0 0))
+      (<! (<render-html ctx "<h1> he<em>ll</em>o</h1>"  0 0 100 100))
+      (js/console.log (.toDataURL canvas)))
     (.fillRect ctx 0 0 100 100)))
-
 (render-cover "")
-
-
 (render [ui:main])
