@@ -7,3 +7,9 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - Kildekode ligger online på <https://github.com/solsort/forsider/>.
 - Backlog og sprint-status kan ses på <https://github.com/solsort/forsider/milestones/>.
 - Den meget ufærdige udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>.
+
+# Noter / ting at afklare
+
+- Levering af billeder til DBC, hvordan foretrækker de disse?
+- Skal vi bygge electron-app, eller foretrækker vi ren web-app hvis muligt (antagende DBC-CORS, samt non-tainted-canvas).
+
