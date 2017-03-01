@@ -9,7 +9,7 @@
    [solsort.toolbox.ui :refer [input select]]
    [solsort.util
     :refer
-    [<ajax <seq<! js-seq load-style! put!close!
+    [<ajax <seq<! js-seq load-style! put!close! <blob-url
      parse-json-or-nil log page-ready render dom->clj]]
    [reagent.core :as reagent :refer []]
    [clojure.string :as string :refer [replace split blank?]]
@@ -25,27 +25,50 @@
    :max-width :150px
    :vertical-align :top
    :margin :10px
-   :box-shadow "2px 2px 5px #888888;"}}
+   :box-shadow "2px 2px 5px #888888;"}
+  ".medium-cover-image > img"
+  {
+   :height "100%"}
+  }
  "styling")
+
+(declare <file-to-image)
 
 (defn <add-images [images]
   (js/console.log "add-images" images)
-  (loop [i 0
-         acc []]
-    (if (< i images.length)
-      (recur (inc i)
-             (conj acc {:title (.-name (aget images i))}))
-      (db! [:images] (concat (db [:images] []) acc)))))
+  (go
+    (loop [i 0
+           acc []]
+      (if (< i images.length)
+        (recur (inc i)
+               (conj acc (<! (<file-to-image (aget images i)))))
+        (db! [:images] (concat (db [:images] []) acc))))))
+
+(defn <file-to-image [file]
+  (go
+    (log 
+     {:title (.-name file)
+      :data-url (<! (<blob-url file))
+      })))
+
 (defn ui:removable-image [idx image]
   [:span.medium-cover-image
+   [:img {:src (:data-url image)}]
+   [:span {:style
+           {:display :inline-block
+            :position :absolute
+            :bottom 0
+            :left 0
+            }}
+    (str (:title image))]
    [:button.red.tiny.icon.ui.button
     {:style {:position :absolute
              :right 0
              :top 0}}
     [:i.delete.icon]]
    (str idx)
-   (str image)
-   " TODO: Billede her, selectable, etc."])
+  ; " TODO: Billede her, selectable, etc."
+   ])
 (defn ui:images []
   (into
    []
