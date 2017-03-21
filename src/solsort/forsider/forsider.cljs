@@ -58,15 +58,13 @@
            {:display :inline-block
             :position :absolute
             :bottom 0
-            :left 0
-            }}
-    (str (:title image))]
+            :left 0}}]
    [:button.red.tiny.icon.ui.button
-    {:style {:position :absolute
+    {:on-click #(db! [:images] (remove #{image} (db [:images] []) ))
+     :style {:position :absolute
              :right 0
              :top 0}}
     [:i.delete.icon]]
-   (str idx)
   ; " TODO: Billede her, selectable, etc."
    ])
 (defn ui:images []
