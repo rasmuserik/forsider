@@ -25,7 +25,8 @@
    :max-width :150px
    :vertical-align :top
    :margin :10px
-   :box-shadow "2px 2px 5px #888888;"}
+   :box-shadow "2px 2px 5px #888888;"
+   }
   ".medium-cover-image > img"
   {
    :height "100%"}
@@ -42,7 +43,7 @@
       (if (< i images.length)
         (recur (inc i)
                (conj acc (<! (<file-to-image (aget images i)))))
-        (db! [:images] (concat (db [:images] []) acc))))))
+        (db! [:images] (apply vector (concat (db [:images] []) acc)))))))
 
 (defn <file-to-image [file]
   (go
@@ -53,6 +54,11 @@
 
 (defn ui:removable-image [idx image]
   [:span.medium-cover-image
+   {:style
+    (if (= idx (db [:ui :current]))
+      {:outline "2px solid black"}
+    {})
+    :on-click #(db! [:ui :current] idx)}
    [:img {:src (:data-url image)}]
    [:span {:style
            {:display :inline-block
@@ -60,7 +66,7 @@
             :bottom 0
             :left 0}}]
    [:button.red.tiny.icon.ui.button
-    {:on-click #(db! [:images] (remove #{image} (db [:images] []) ))
+    {:on-click #(db! [:images] (apply vector (remove #{image} (db [:images] []) )))
      :style {:position :absolute
              :right 0
              :top 0}}
@@ -71,7 +77,12 @@
   (into
    []
    (concat
-    [:div]
+    [:div
+     {:style
+      {:height "140px"
+       :overflow-x "auto"
+       :overflow-y "hidden"
+       :white-space :nowrap}}]
     [[:input
       {:type "file" :accept "image/*"
        :id "file-input"
@@ -102,11 +113,18 @@
    [:button.primary.ui.button "Upload forsider"]
    [:p "[Upload status]"]
    [ui:login]])
+(defn ui:current-image []
+  [:div.current-image
+   [:img
+    {:src (db [:images (db [:ui :current] 0) :data-url])
+     :height 400}]])
+
 (defn ui:main []
   [:div.ui.container
    [:h1 {:style {:background :red}} "Prototype under udvikling, - virker ikke endnu."]
    [:h1 "Generering af forsider"]
    [ui:images]
+   [ui:current-image]
    [:p "[Select position on image + sample rendering of title on image]"]
    [:p "[Settings for rendering title/author/... on cover]"]
    [:p "[Search query + list of first search results, with rendered covers]"]
