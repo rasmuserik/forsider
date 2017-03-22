@@ -1,0 +1,25 @@
+{
+  "name": "minimal-nodewebkit-react",
+  "homepage": ".",
+  "version": "0.1.0",
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "material-ui": "^0.17.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-tap-event-plugin": "^2.0.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^0.12.0",
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "nw": "nw build/",
+    "nw-dev": "nw src/",
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "echo TODO-electron-testrunner",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  }
+}

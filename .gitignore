@@ -3,3 +3,5 @@
 /resources/public/out/
 /target/
 .nrepl-port
+node_modules/ build
+node_modules/
