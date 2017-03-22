@@ -8,10 +8,12 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import GoogleFonts from './google-fonts.json';
 
 let space = {margin: 10};
 
-let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica'];
+let fonts = GoogleFonts;
+fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica'];
 let imgStyle = {
   display: 'inline-block',
   width: 70,
@@ -72,7 +74,7 @@ export default class Main extends React.Component {
           floatingLabelText="Font"
           filter={AutoComplete.fuzzyFilter}
           dataSource={fonts}
-          maxSearchResults={5}
+          maxSearchResults={20}
         />
       </Paper>
     </div>;
