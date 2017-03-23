@@ -2,6 +2,8 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
+import Toggle from 'material-ui/Toggle';
+import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import Immutable from 'immutable'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -47,6 +49,7 @@ export default class Main extends React.Component {
       <Paper style={imgStyle}></Paper>
 
       <Paper style={{padding:10}}>
+        Billeder skal mindst være 500px på den smalleste led, og have et aspect-ratio mellem 5:4 og 2:1. <br/><br/>
         {/*<Slider 
           value={this.state.ypos}
           onChange={(_,val) => this.setState({ypos: val})}
@@ -70,6 +73,8 @@ export default class Main extends React.Component {
           value={this.state.ypos}
           onChange={(_,val) => this.setState({ypos: val})}
           style={Object.assign({width: 100}, space)}/>
+        <span style={space}>Farve</span>
+        <span style={space}>Gennemsigtighed</span>
         <AutoComplete
           floatingLabelText="Font"
           filter={AutoComplete.fuzzyFilter}
@@ -77,6 +82,26 @@ export default class Main extends React.Component {
           maxSearchResults={20}
         />
       </Paper>
+      <Paper style={{margin:10}}>
+        <TextField 
+          floatingLabelText="Download sti"
+          style={space}
+        />
+        <FlatButton label="Gem til disk" primary={true} />
+        <br/>
+        <FlatButton label="Upload opdatering af forsider" primary={true} />
+        <Toggle
+          style={Object.assign({
+            display: 'inline-block',
+            width: 200}, space)}
+          labelPosition="right"
+          label="Overskriv"
+          thumbSwitchedStyle={{backgroundColor: '#f00'}}
+          trackSwitchedStyle={{backgroundColor: '#faa'}}
+          labelStyle={{color: '#000'}}
+        />
+        <br/>
+      </Paper>
     </div>;
   }
-}
+  }
