@@ -6,4 +6,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-ReactDOM.render(<MuiThemeProvider><Main/></MuiThemeProvider>, document.getElementById('root'));
+import loadScript from './load-script.js';
+
+(async () => {
+  await loadScript('https://openplatform.dbc.dk/v1/dbc_openplatform.min.js');
+  ReactDOM.render(
+    <MuiThemeProvider>
+      <Main/>
+    </MuiThemeProvider>, 
+    document.getElementById('root'));
+})();
