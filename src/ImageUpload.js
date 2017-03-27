@@ -63,6 +63,7 @@ export default class ImageUpload extends React.Component {
           position: 'relative',
         }}>
         <img src={o.url} 
+          alt=""
           style={{
             position: 'absolute',
             maxWidth: 70,

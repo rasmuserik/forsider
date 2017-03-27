@@ -1,7 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -97,6 +96,7 @@ export default class SearchCQL extends React.Component {
           }}>
           <img 
             src={o.coverUrlThumbnail}
+            alt=""
             style={{ 
               height: 40,
               width: 30,

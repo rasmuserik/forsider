@@ -1,16 +1,9 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
-import Immutable from 'immutable'
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import CircularProgress from 'material-ui/CircularProgress';
 
 import SearchCQL from './SearchCQL.js';
 import ImageUpload from './ImageUpload.js';
