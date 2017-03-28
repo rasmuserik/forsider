@@ -33,11 +33,11 @@ export default class Main extends ReCom { // ##
 
       <Paper style={{padding:10}}>
         Billeder skal mindst være 500px på den smalleste led, og have et aspect-ratio mellem 5:4 og 2:1. <br/><br/>
-        {<Slider 
+        {/*<Slider 
           value={this.get('ypos')}
           onChange={(_,val) => this.set('ypos', val)}
           style={{display: 'inline-block', height:200}} 
-          axis="y" />}
+          axis="y" />*/}
         <Paper
           style={{
             height: 200, 
