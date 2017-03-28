@@ -20,19 +20,19 @@ export default class ImageUpload extends ReCom {
   constructor(props, context) {
     super(props, store);
     this.inputId = randomId();
-    this.state = {images: []}
   }
   async addImages(imgs) {
+    let result = [];
     for(var i = 0; i < imgs.length; ++i) {
       let img = imgs[i];
       let url =  await file2url(img);
-      this.setState(o => o.images.push({
+      result.push({
         id: randomId(),
         name: img.name,
         url
-      }));
+      });
     }
-    console.log('addImages', imgs);
+    this.set('images', this.get('images', []).concat(result));
   }
   render() {
     return <div>
@@ -53,7 +53,7 @@ export default class ImageUpload extends ReCom {
         <ContentAdd />
       </FloatingActionButton>
 
-      {this.state.images.map(o => <Paper 
+      {this.get('images', []).map(o => <Paper 
         key={o.id}
         style={{
           display: 'inline-block',

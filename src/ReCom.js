@@ -19,7 +19,7 @@ export default class ReCom extends React.Component {
     }
 
     if(Immutable.isImmutable(result)) {
-      result = result.getJS();
+      result = result.toJS();
     }
 
     if(result === undefined) {
