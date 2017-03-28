@@ -2,6 +2,8 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import ReCom from './ReCom.js';
+import {store} from './store';
 
 
 function randomId() {
@@ -14,9 +16,9 @@ let file2url = (f) => new Promise((resolve) => {
   reader.readAsDataURL(f);
 });
 
-export default class ImageUpload extends React.Component { 
+export default class ImageUpload extends ReCom { 
   constructor(props, context) {
-    super(props);
+    super(props, store);
     this.inputId = randomId();
     this.state = {images: []}
   }
