@@ -19,15 +19,14 @@ let space = {margin: 10};
 let fonts = GoogleFonts;
 fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica'];
 
-export default class Main extends ReCom { // ##
+export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
   }
 
   render() {
-    console.log(store.getState().toJS());
+    console.log('Store:', store.getState().toJS());
     return <div>
-      {this.get('count', 1)}
       <SearchCQL onSelect={o=>console.log(o)} />
       <ImageUpload />
 

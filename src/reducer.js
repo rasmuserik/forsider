@@ -33,11 +33,11 @@ function setIn(o, path, val) {
   path = path.slice(1);
 
   if(typeof key === 'string' ) {
-    if(! o instanceof Immutable.Map) {
+    if(!(o instanceof Immutable.Map)) {
       o = new Immutable.Map();
     }
   } else if(typeof key === 'number') {
-    if(! o instanceof Immutable.List) {
+    if(!(o instanceof Immutable.List)) {
       o = new Immutable.List();
     }
   } else {
