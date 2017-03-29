@@ -1,4 +1,7 @@
-{ 
-  "name": "nodewebkit-dev" ,
-  "main": "http://localhost:3000/" 
+{
+  "name": "nodewebkit-dev",
+  "main": "http://localhost:3000/",
+  "dependencies": {
+    "react-canvas": "^1.3.0"
+  }
 }

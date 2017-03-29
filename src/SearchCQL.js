@@ -42,8 +42,8 @@ export default class SearchCQL extends ReCom {
   }
 
   render() {
-    return <Paper style={{
-      padding: '0px 0px 10px 30px'
+    return <div style={{
+      //padding: '0px 0px 10px 30px'
     }}>
     <TextField 
       onKeyDown={e => e.key === 'Enter' && this.search()}
@@ -54,7 +54,7 @@ export default class SearchCQL extends ReCom {
         this.set('search.error', undefined);
         this.set('search.query', val);
       }}
-      floatingLabelText="CQL Søgning"/>
+      floatingLabelText="CQL Søgestreng"/>
 
     <IconButton onClick={() => this.search()}>
     {this.get('search.searching')
@@ -101,7 +101,7 @@ export default class SearchCQL extends ReCom {
         </div>
       )}
     </div>
-  </Paper>
+  </div>
   }
 }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import styles from './index.css';
+import 'typeface-roboto';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

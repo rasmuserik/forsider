@@ -3,12 +3,15 @@
   "homepage": ".",
   "version": "0.1.0",
   "dependencies": {
+    "deep-equal": "^1.0.1",
     "immutable": "^4.0.0-rc.2",
     "material-ui": "^0.17.1",
     "react": "^15.4.2",
+    "react-color": "^2.11.4",
     "react-dom": "^15.4.2",
     "react-tap-event-plugin": "^2.0.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "typeface-roboto": "0.0.22"
   },
   "devDependencies": {
     "gh-pages": "^0.12.0",

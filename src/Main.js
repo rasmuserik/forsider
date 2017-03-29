@@ -5,9 +5,11 @@ import Slider from 'material-ui/Slider';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
+import { ChromePicker } from 'react-color';
 
 import SearchCQL from './SearchCQL.js';
 import ImageUpload from './ImageUpload.js';
+import Preview from './Preview.js';
 
 import GoogleFonts from './google-fonts.json';
 
@@ -27,44 +29,62 @@ export default class Main extends ReCom {
   render() {
     console.log('Store:', store.getState().toJS());
     return <div>
-      <SearchCQL onSelect={o=>console.log(o)} />
-      <ImageUpload />
-
       <Paper style={{padding:10}}>
-        Billeder skal mindst være 500px på den smalleste led, og have et aspect-ratio mellem 5:4 og 2:1. <br/><br/>
-        {/*<Slider 
-          value={this.get('ypos')}
-          onChange={(_,val) => this.set('ypos', val)}
-          style={{display: 'inline-block', height:200}} 
-          axis="y" />*/}
-        <Paper
-          style={{
-            height: 200, 
-            width: 140, 
-            display: 'inline-block', 
-            verticalAlign: 'bottom'
-          }}>
-        </Paper>
-        <br/>
+      <SearchCQL onSelect={o=>console.log(o)} />
+
+      <ImageUpload /><br/>
+
+
+        Farve på tekstfelt<br/>
+        <input type="color" /><br/>
         <TextField 
-          floatingLabelText="Y-position"
+          floatingLabelText="Afstand fra toppen"
           type="number" 
-          max={1}
+          max={100}
           min={0}
-          step={0.01}
+          step={1}
           value={this.get('ypos', 0)}
           onChange={(_,val) => this.set('ypos', val)}
-          style={Object.assign({width: 100}, space)}/>
-        <span style={space}>Farve</span>
-        <span style={space}>Gennemsigtighed</span>
+          style={Object.assign({width: 150}, space)}/><br/>
+
+
+        Opacitet på tekstfelt<br/>
+        {<Slider 
+          value={this.get('opacity')}
+          min={0}
+          max={255}
+          onChange={(_,val) => this.set('opacity', val)}
+          style={{display: 'inline-block', width:200, height: 20}} 
+          axis="x" />}
+
+        <br/>
         <AutoComplete
           floatingLabelText="Font"
           filter={AutoComplete.fuzzyFilter}
           dataSource={fonts}
           maxSearchResults={20}
-        />
+        /><br/>
+
+      <button>Gennemse</button>
+      <button>Upload</button>
       </Paper>
+
       <Paper style={{margin:10}}>
+        {JSON.stringify(this.get('color'))}
+        <ChromePicker
+          color={this.get('color', {r:50,b:100,g:50,a:0.6})}
+          onChangeComplete={(c) => this.set('color', c.rgb)}
+        />
+        <Preview 
+          style={{height: 200, width: 150}}
+          background={this.get(['images', 0, 'url'])}
+          html={`<style>h1 { 
+          position: absolute;
+          margin: 0;
+          padding: 0;
+          top: ${this.get('ypos')}%;
+            font-family: Ubuntu, sans-serif; 
+          }</style><h1>hello world</h1>`}/>
         <TextField 
           floatingLabelText="Download sti"
           style={space}

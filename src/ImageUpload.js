@@ -4,17 +4,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ReCom from './ReCom.js';
 import {store} from './store';
-
-
-function randomId() {
-  return Math.random().toString(36).slice(2,12);
-}
-
-let file2url = (f) => new Promise((resolve) => {
-  let reader = new FileReader();
-  reader.addEventListener('load', () => resolve(reader.result));
-  reader.readAsDataURL(f);
-});
+import {randomId, file2url} from './util';
 
 export default class ImageUpload extends ReCom { 
   constructor(props, context) {
@@ -35,7 +25,7 @@ export default class ImageUpload extends ReCom {
     this.set('images', this.get('images', []).concat(result));
   }
   render() {
-    return <div>
+    return <div style={{display: 'inline-block'}}>
       <input 
         type="file"
         accept="image/*"
@@ -44,14 +34,26 @@ export default class ImageUpload extends ReCom {
         onChange={o => this.addImages(o.target.files)}
         style={{display: 'none'}} />
 
-      <FloatingActionButton 
-        onClick={()=>{
-          let elem = document.getElementById(this.inputId);
-          elem.click();
-        }}
-        mini={true}>
-        <ContentAdd />
-      </FloatingActionButton>
+      <div style={{
+        marginTop: 10,
+        display: 'inline-block',
+        float: 'right',
+      width: 160}}>
+      Tilføj billede.
+        <FloatingActionButton 
+          style={{marginLeft: 10}}
+          onClick={()=>{
+            let elem = document.getElementById(this.inputId);
+            elem.click();
+          }}
+          mini={true}>
+          <ContentAdd />
+        </FloatingActionButton>
+          <br/>
+          <p>
+            Ratio skal være mellem 4:3 og 3:2. Opløsningen skal være minimum ...
+          </p>
+      </div>
 
       {this.get('images', []).map(o => <Paper 
         key={o.id}
@@ -73,6 +75,7 @@ export default class ImageUpload extends ReCom {
           }}/>
         {o.name}
       </Paper>)}
+
     </div>;
   }
 }

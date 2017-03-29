@@ -1,6 +1,7 @@
 import React from 'react';
 import {SET_IN, makePath} from './reducer.js';
 import Immutable from 'immutable';
+import deepEqual from 'deep-equal';
 
 export default class ReCom extends React.Component {
 
@@ -42,7 +43,10 @@ export default class ReCom extends React.Component {
     this.accessed = undefined;
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(props) {
+    if(!deepEqual(props, this.props)) {
+      return true;
+    }
     for(let [path, val] of this.dependencies) {
       if(!Immutable.is(val, this.store.getState().getIn(path))) {
         return true;
