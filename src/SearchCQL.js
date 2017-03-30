@@ -42,14 +42,17 @@ export default class SearchCQL extends ReCom {
       this.set(['results', 0], results);
       let thumbs = 
         await window.dbcOpenPlatform.search({
-          q: this.get('query', ''), limit: 20,
+          q: this.get('query', ''), limit: 10,
           fields: ['pid', 'coverUrlThumbnail']
         });
       for(let i = 0; i < thumbs.length; ++i) {
         results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
       }
       this.set(['results', 0], results);
-    } catch(e) { this.set('ui.searchError', str(e)) }
+    } catch(e) { 
+      console.log(e);
+      this.set('ui.searchError', str(e)) 
+    }
     this.set('ui.searching', false);
   }
 
@@ -74,13 +77,15 @@ export default class SearchCQL extends ReCom {
       : <ActionSearch/> }
     </IconButton>
 
+    <br/>
+
     {this.get('ui.searchError') && 
         <div style={{
           display: 'inline-block',
           textAlign: 'left'
         }}>
         <h3>Error</h3>
-        <pre>{this.get('ui.searchError')}</pre>
+        <pre>{String(this.get('ui.searchError'))}</pre>
       </div>
     }
 
