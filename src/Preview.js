@@ -19,13 +19,13 @@ export default class Preview extends ReCom {
   }
 
   async renderToCanvas() {
-    if (!this.props.background || 
-      !this.props.html) {
-      console.log('Preview missing background or html prop');
-      return;
-    }
+    let imgSrc = this.props.background || `data:image/svg+xml;utf8,
+       <svg xmlns="http://www.w3.org/2000/svg" 
+       width="400" height="300"></svg>`;
 
-    let img = await loadImage(this.props.background);
+    let html = this.props.html || '';
+
+    let img = await loadImage(imgSrc);
     let canvas = document.getElementById(this.id);
     let context = canvas.getContext('2d');
     let [w, h] = [img.width, img.height];
@@ -37,7 +37,7 @@ export default class Preview extends ReCom {
             height="${h}" transform="scale(${w/320})">
          <foreignObject width="320" height="${320*h/w}">
             <div id="thumbnail-html" xmlns="http://www.w3.org/1999/xhtml">
-            ${this.props.html}
+            ${html}
             </div>
          </foreignObject>
        </svg>`);
