@@ -33,10 +33,20 @@ export default class SearchCQL extends ReCom {
           "a36227da-e477-491e-b4a2-ccd9df365cf9", 
           "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
       }
-      this.set('search.results',
+      let results = 
         await window.dbcOpenPlatform.search({
           q: this.get('search.query', ''), limit: 20,
-          fields: ['pid', 'title', 'creator', 'coverUrlThumbnail']}));
+        });
+      this.set('search.results', results);
+      let thumbs = 
+        await window.dbcOpenPlatform.search({
+          q: this.get('search.query', ''), limit: 20,
+          fields: ['pid', 'coverUrlThumbnail']
+        });
+      for(let i = 0; i < thumbs.length; ++i) {
+        results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
+      }
+      this.set('search.results', results);
     } catch(e) { this.set('search.error', str(e)) }
     this.set('search.searching', false);
   }

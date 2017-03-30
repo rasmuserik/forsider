@@ -30,7 +30,7 @@ export default class Main extends ReCom {
   }
 
   render() {
-    let bg = this.get('background');
+    let bg = this.get('background', {r:50,g:50,b:100,a:0.2});
     console.log('Store:', store.getState().toJS());
     return <div>
       <Paper style={{padding:10}}>
