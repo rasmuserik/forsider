@@ -43,8 +43,11 @@ export default class ReCom extends React.Component {
     this.accessed = undefined;
   }
 
-  shouldComponentUpdate(props) {
+  shouldComponentUpdate(props, state) {
     if(!deepEqual(props, this.props)) {
+      return true;
+    }
+    if(!deepEqual(state, this.state)) {
       return true;
     }
     for(let [path, val] of this.dependencies) {

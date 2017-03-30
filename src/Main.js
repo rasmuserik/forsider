@@ -1,15 +1,18 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import { ChromePicker } from 'react-color';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchCQL from './SearchCQL.js';
 import ImageUpload from './ImageUpload.js';
+import ImageUploadOld from './ImageUploadOld.js';
 import Preview from './Preview.js';
+import Color from './Color.js';
 
 import GoogleFonts from './google-fonts.json';
 
@@ -27,6 +30,7 @@ export default class Main extends ReCom {
   }
 
   render() {
+    let bg = this.get('background');
     console.log('Store:', store.getState().toJS());
     return <div>
       <Paper style={{padding:10}}>
@@ -70,40 +74,53 @@ export default class Main extends ReCom {
       </Paper>
 
       <Paper style={{margin:10}}>
-        {JSON.stringify(this.get('color'))}
-        <ChromePicker
-          color={this.get('color', {r:50,b:100,g:50,a:0.6})}
-          onChangeComplete={(c) => this.set('color', c.rgb)}
-        />
-        <Preview 
-          style={{height: 200, width: 150}}
-          background={this.get(['images', 0, 'url'])}
-          html={`<style>h1 { 
+      <RaisedButton 
+        backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
+        label="Baggrund"
+        onTouchTap={() => this.set('ui.backgroundDialog', true)} />
+      <Color 
+        open={this.get('ui.backgroundDialog')}
+        path='background' 
+        onRequestClose={() => this.set('ui.backgroundDialog', false)}
+      />
+      <br/>
+
+      <Preview 
+        style={{height: 200}}
+        background={this.get(['images', 0, 'url'])}
+        html={`<style>#title { 
           position: absolute;
+          font-weight: bold;
+          font-size: 24px;
+          text-align: center;
+          width: 100%;
+          white-space: nowrap;
+          background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
+          overflow: hidden;
           margin: 0;
           padding: 0;
           top: ${this.get('ypos')}%;
             font-family: Ubuntu, sans-serif; 
-          }</style><h1>hello world</h1>`}/>
-        <TextField 
-          floatingLabelText="Download sti"
-          style={space}
+          }</style><div id="title">hello world this is a long title...</div>`}/>
+      <TextField 
+        floatingLabelText="Download sti"
+        style={space}
+      />
+      <FlatButton label="Gem til disk" primary={true} />
+      <br/>
+      <FlatButton label="Upload opdatering af forsider" primary={true} />
+      <Toggle
+        style={Object.assign({
+          display: 'inline-block',
+          width: 200}, space)}
+          labelPosition="right"
+          label="Overskriv"
+          thumbSwitchedStyle={{backgroundColor: '#f00'}}
+          trackSwitchedStyle={{backgroundColor: '#faa'}}
+          labelStyle={{color: '#000'}}
         />
-        <FlatButton label="Gem til disk" primary={true} />
         <br/>
-        <FlatButton label="Upload opdatering af forsider" primary={true} />
-        <Toggle
-          style={Object.assign({
-            display: 'inline-block',
-            width: 200}, space)}
-            labelPosition="right"
-            label="Overskriv"
-            thumbSwitchedStyle={{backgroundColor: '#f00'}}
-            trackSwitchedStyle={{backgroundColor: '#faa'}}
-            labelStyle={{color: '#000'}}
-          />
-          <br/>
-        </Paper>
+      </Paper>
       </div>;
   }
 }
