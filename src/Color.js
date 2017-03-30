@@ -1,7 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import { ChromePicker } from 'react-color';
 import ReCom from './ReCom'
 import {store} from './store'

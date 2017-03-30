@@ -5,7 +5,6 @@ import Slider from 'material-ui/Slider';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
-import { ChromePicker } from 'react-color';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchCQL from './SearchCQL.js';
@@ -18,8 +17,6 @@ import GoogleFonts from './google-fonts.json';
 
 import {store} from './store.js';
 import ReCom from './ReCom.js';
-
-import {loadGoogleFont} from './util';
 
 let space = {margin: 10};
 
@@ -38,7 +35,7 @@ export default class Main extends ReCom {
       <Paper style={{padding:10}}>
         <SearchCQL onSelect={o=>console.log(o)} />
 
-        <ImageUpload /><br/>
+        <ImageUploadOld /><br/>
 
 
         Farve på tekstfelt<br/>
@@ -78,6 +75,7 @@ export default class Main extends ReCom {
       </Paper>
 
       <Paper style={{margin:10}}>
+        <ImageUpload /><br/>
         <RaisedButton 
           backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
           label="Baggrund"

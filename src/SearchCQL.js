@@ -1,9 +1,10 @@
 import React from 'react';
+
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import CircularProgress from 'material-ui/CircularProgress';
+
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 
@@ -24,8 +25,8 @@ export default class SearchCQL extends ReCom {
 
   async search() {
     let dbc = window.dbcOpenPlatform;
-    this.set('search.searching', true);
-    this.set('search.error', undefined);
+    this.set('ui.searching', true);
+    this.set('ui.searchError', undefined);
     try {
       if(!dbc.connected()) {
         await dbc.connect(
@@ -33,22 +34,23 @@ export default class SearchCQL extends ReCom {
           "a36227da-e477-491e-b4a2-ccd9df365cf9", 
           "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
       }
+      this.set(['results', 0], 'loading');
       let results = 
         await window.dbcOpenPlatform.search({
-          q: this.get('search.query', ''), limit: 20,
+          q: this.get('query', ''), limit: 10,
         });
-      this.set('search.results', results);
+      this.set(['results', 0], results);
       let thumbs = 
         await window.dbcOpenPlatform.search({
-          q: this.get('search.query', ''), limit: 20,
+          q: this.get('query', ''), limit: 20,
           fields: ['pid', 'coverUrlThumbnail']
         });
       for(let i = 0; i < thumbs.length; ++i) {
         results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
       }
-      this.set('search.results', results);
-    } catch(e) { this.set('search.error', str(e)) }
-    this.set('search.searching', false);
+      this.set(['results', 0], results);
+    } catch(e) { this.set('ui.searchError', str(e)) }
+    this.set('ui.searching', false);
   }
 
   render() {
@@ -58,32 +60,34 @@ export default class SearchCQL extends ReCom {
     <TextField 
       onKeyDown={e => e.key === 'Enter' && this.search()}
       style={{width: '80%'}}
-      value={this.get('search.query', '')}
+      value={this.get('query', '')}
       onChange={(_, val)=>{
-        this.set('search.results', []);
-        this.set('search.error', undefined);
-        this.set('search.query', val);
+        this.set('results', []);
+        this.set('ui.searchError', undefined);
+        this.set('query', val);
       }}
       floatingLabelText="CQL Søgestreng"/>
 
     <IconButton onClick={() => this.search()}>
-    {this.get('search.searching')
+    {this.get('ui.searching')
       ? <CircularProgress size={32} />
       : <ActionSearch/> }
     </IconButton>
 
-    {this.get('search.error') && 
+    {this.get('ui.searchError') && 
         <div style={{
           display: 'inline-block',
           textAlign: 'left'
         }}>
         <h3>Error</h3>
-        <pre>{this.get('search.error')}</pre>
+        <pre>{this.get('ui.searchError')}</pre>
       </div>
     }
 
     <div>
-      {this.get('search.results', []).map(o => 
+      {
+        Array.isArray(this.get(['results', 0])) &&
+        this.get(['results', 0]).map(o => 
         <div 
           onClick={()=>this.onSelect(o)}
           key={o.pid}

@@ -15,11 +15,11 @@ export let loadImage = (src) => new Promise((resolve, reject) => {
   img.onerror = reject;
 });
 
+  /*
 function nosymb(str) {
   return str.replace(/[^a-zA-Z_0-9]/g, '').toLowerCase();
 }
 
-  /*
 export function loadGoogleFont(font) {
   let id = 'GOOGLEFONT' + nosymb(font);
   if(document.getElementById(id)) {

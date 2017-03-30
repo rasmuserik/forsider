@@ -1,5 +1,4 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 import {randomId, loadImage} from './util';
