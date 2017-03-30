@@ -14,3 +14,23 @@ export let loadImage = (src) => new Promise((resolve, reject) => {
   img.onload = () => resolve(img);
   img.onerror = reject;
 });
+
+function nosymb(str) {
+  return str.replace(/[^a-zA-Z_0-9]/g, '').toLowerCase();
+}
+
+  /*
+export function loadGoogleFont(font) {
+  let id = 'GOOGLEFONT' + nosymb(font);
+  if(document.getElementById(id)) {
+    return;
+  }
+  let elem = document.createElement('link');
+  Object.assign(elem, {
+    rel: 'stylesheet',
+    type: 'text/css',
+    href: 'https://fonts.googleapis.com/css?family=' + font,
+  });
+  document.head.appendChild(elem);
+}
+*/

@@ -19,10 +19,12 @@ import GoogleFonts from './google-fonts.json';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 
+import {loadGoogleFont} from './util';
+
 let space = {margin: 10};
 
 let fonts = GoogleFonts;
-fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica'];
+fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
 export default class Main extends ReCom {
   constructor(props, context) {
@@ -34,9 +36,9 @@ export default class Main extends ReCom {
     console.log('Store:', store.getState().toJS());
     return <div>
       <Paper style={{padding:10}}>
-      <SearchCQL onSelect={o=>console.log(o)} />
+        <SearchCQL onSelect={o=>console.log(o)} />
 
-      <ImageUpload /><br/>
+        <ImageUpload /><br/>
 
 
         Farve på tekstfelt<br/>
@@ -53,42 +55,44 @@ export default class Main extends ReCom {
 
 
         Opacitet på tekstfelt<br/>
-        {<Slider 
-          value={this.get('opacity')}
-          min={0}
-          max={255}
-          onChange={(_,val) => this.set('opacity', val)}
-          style={{display: 'inline-block', width:200, height: 20}} 
-          axis="x" />}
+      {<Slider 
+        value={this.get('opacity')}
+        min={0}
+        max={255}
+        onChange={(_,val) => this.set('opacity', val)}
+        style={{display: 'inline-block', width:200, height: 20}} 
+        axis="x" />}
 
-        <br/>
-        <AutoComplete
-          floatingLabelText="Font"
-          filter={AutoComplete.fuzzyFilter}
-          dataSource={fonts}
-          maxSearchResults={20}
-        /><br/>
+      <br/>
+      <AutoComplete
+        searchText={this.get('font')}
+        onUpdateInput={(val) => this.set('font', val)}
+        floatingLabelText="Font"
+        filter={AutoComplete.fuzzyFilter}
+        dataSource={fonts}
+        maxSearchResults={20}
+      /><br/>
 
       <button>Gennemse</button>
       <button>Upload</button>
       </Paper>
 
       <Paper style={{margin:10}}>
-      <RaisedButton 
-        backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
-        label="Baggrund"
-        onTouchTap={() => this.set('ui.backgroundDialog', true)} />
-      <Color 
-        open={this.get('ui.backgroundDialog')}
-        path='background' 
-        onRequestClose={() => this.set('ui.backgroundDialog', false)}
-      />
-      <br/>
+        <RaisedButton 
+          backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
+          label="Baggrund"
+          onTouchTap={() => this.set('ui.backgroundDialog', true)} />
+        <Color 
+          open={this.get('ui.backgroundDialog', false)}
+          path='background' 
+          onRequestClose={() => this.set('ui.backgroundDialog', false)}
+        />
+        <br/>
 
-      <Preview 
-        style={{height: 200}}
-        background={this.get(['images', 0, 'url'])}
-        html={`<style>#title { 
+        <Preview 
+          style={{height: 200}}
+          background={this.get(['images', 0, 'url'])}
+          html={`<style>#title { 
           position: absolute;
           font-weight: bold;
           font-size: 24px;
@@ -100,7 +104,7 @@ export default class Main extends ReCom {
           margin: 0;
           padding: 0;
           top: ${this.get('ypos')}%;
-            font-family: Ubuntu, sans-serif; 
+          font-family: ${this.get('font')}, Roboto, sans-serif; 
           }</style><div id="title">hello world this is a long title...</div>`}/>
       <TextField 
         floatingLabelText="Download sti"
