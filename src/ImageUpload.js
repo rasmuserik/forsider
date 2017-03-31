@@ -25,7 +25,22 @@ export default class ImageUpload extends ReCom {
     this.set('images', this.get('images', []).concat(result));
   }
   render() {
-    return <div style={{display: 'inline-block'}}>
+    return <div style={{
+        display: 'inline-block',
+        position: 'relative',
+      width: '100%',
+      height: 135,
+      }}>
+      <div style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        display: 'inline-block',
+        height: 135,
+        whiteSpace: 'nowrap',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}>
       <input 
         type="file"
         accept="image/*"
@@ -34,29 +49,10 @@ export default class ImageUpload extends ReCom {
         onChange={o => this.addImages(o.target.files)}
         style={{display: 'none'}} />
 
-      <div style={{
-        marginTop: 10,
-        display: 'inline-block',
-        float: 'right',
-      width: 160}}>
-      Tilføj billede.
-        <FloatingActionButton 
-          style={{marginLeft: 10}}
-          onClick={()=>{
-            let elem = document.getElementById(this.inputId);
-            elem.click();
-          }}
-          mini={true}>
-          <ContentAdd />
-        </FloatingActionButton>
-          <br/>
-          <p>
-            Ratio skal være mellem 4:3 og 3:2. Opløsningen skal være minimum ...
-          </p>
-      </div>
 
       {this.get('images', []).map(o => <Paper 
         key={o.id}
+        onClick={() => this.set('ui.currentImage', o.id)}
         style={{
           display: 'inline-block',
           width: 70,
@@ -76,6 +72,19 @@ export default class ImageUpload extends ReCom {
         {o.name}
       </Paper>)}
 
-    </div>;
+      <FloatingActionButton 
+        style={{
+          margin: 10,
+        }}
+        onClick={()=>{
+          let elem = document.getElementById(this.inputId);
+          elem.click();
+        }}
+        mini={true}>
+        <ContentAdd />
+      </FloatingActionButton>
+
+    </div>
+  </div>;
   }
 }

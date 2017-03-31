@@ -13,7 +13,12 @@ export default class ReCom extends React.Component {
 
   get(path, defaultValue) {
     path = makePath(path);
-    let result = this.store.getState().getIn(path)
+    let result;
+    try {
+      result = this.store.getState().getIn(path);
+    } catch(e) {
+      result = undefined;
+    }
 
     if(this.accessed instanceof Map) {
       this.accessed.set(path, result);
@@ -51,8 +56,12 @@ export default class ReCom extends React.Component {
       return true;
     }
     for(let [path, val] of this.dependencies) {
+      try {
       if(!Immutable.is(val, this.store.getState().getIn(path))) {
         return true;
+      }
+      } catch(e) {
+        // do nothing
       }
     }
     return false;

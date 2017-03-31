@@ -7,20 +7,11 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import {store} from './store.js';
 import ReCom from './ReCom.js';
-
-function str(o) { 
-  try {
-    return JSON.stringify(o, null, 2);
-  } catch(e) {
-    return String(o);
-  }
-}
+import {str} from './util';
 
 export default class SearchCQL extends ReCom {
-
   constructor(props, context) {
     super(props, store);
-    this.onSelect = props.onSelect || (()=>{});
   }
 
   async search() {
@@ -76,51 +67,6 @@ export default class SearchCQL extends ReCom {
       ? <CircularProgress size={32} />
       : <ActionSearch/> }
     </IconButton>
-
-    <br/>
-
-    {this.get('ui.searchError') && 
-        <div style={{
-          display: 'inline-block',
-          textAlign: 'left'
-        }}>
-        <h3>Error</h3>
-        <pre>{String(this.get('ui.searchError'))}</pre>
-      </div>
-    }
-
-    <div>
-      {
-        Array.isArray(this.get(['results', 0])) &&
-        this.get(['results', 0]).map(o => 
-        <div 
-          onClick={()=>this.onSelect(o)}
-          key={o.pid}
-          style={{
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
-            textAlign: 'left',
-            height: 42,
-            margin: 1,
-            width: 240,
-            overflow: 'hidden'
-          }}>
-          <img 
-            src={o.coverUrlThumbnail}
-            alt=""
-            style={{ 
-              height: 40,
-              width: 30,
-              border: '1px solid black',
-              float: 'left',
-              marginRight: 4
-            }}/>
-          <div>{o.title}</div>
-          <div style={{fontStyle: 'italic'}}>{o.creator}</div>
-        </div>
-      )}
-    </div>
   </div>
   }
 }
-

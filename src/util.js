@@ -1,3 +1,11 @@
+export function str(o) { 
+  try {
+    return JSON.stringify(o, null, 2);
+  } catch(e) {
+    return String(o);
+  }
+}
+
 export function randomId() {
   return Math.random().toString(36).slice(2,12);
 }
@@ -14,6 +22,12 @@ export let loadImage = (src) => new Promise((resolve, reject) => {
   img.onload = () => resolve(img);
   img.onerror = reject;
 });
+
+export let escapeXml = str =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;');
+
 
   /*
 function nosymb(str) {

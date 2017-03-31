@@ -3,13 +3,11 @@ import {store} from './store.js';
 import ReCom from './ReCom.js';
 import {randomId, loadImage} from './util';
 
-
 export default class Preview extends ReCom {
 
   constructor(props, context) {
     super(props, store);
     this.id = randomId();
-    this.onSelect = props.onSelect || (()=>{});
   }
 
   render() {
@@ -20,7 +18,7 @@ export default class Preview extends ReCom {
   async renderToCanvas() {
     let imgSrc = this.props.background || `data:image/svg+xml;utf8,
        <svg xmlns="http://www.w3.org/2000/svg" 
-       width="400" height="300"></svg>`;
+       width="300" height="400"></svg>`;
 
     let html = this.props.html || '';
 
