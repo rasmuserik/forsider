@@ -1,5 +1,5 @@
 {
-  "name": "minimal-nodewebkit-react",
+  "name": "forsider",
   "homepage": ".",
   "version": "0.1.0",
   "dependencies": {
@@ -24,6 +24,6 @@
     "build": "react-scripts build",
     "test": "echo TODO-electron-testrunner",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build ; ./build-nw.sh"
   }
 }
