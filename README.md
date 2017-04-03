@@ -4,7 +4,7 @@
 
 Værktøj til generering af forsider til biblioteksmaterialer, samt upload af disse.
 
-- Issue-tracking via <http://platform.dandigbib.org/issues/2242>
+- Issue-tracking via <http://platform.dandigbib.org/projects/generiske-forsider>
 - Kildekode ligger online på <https://github.com/solsort/forsider/>.
 - En meget ufærdige demo-udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>. Upload og gem virker ikke der, men kun i den releasede applikation (eller hvis den startes med [NW.js](https://nwjs.io)).
 
