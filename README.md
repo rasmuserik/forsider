@@ -14,7 +14,6 @@ Indtil vi får fuld adgang til redmine er her midlertidig taskliste:
 
 - omform rendering fra inline canvas, til async funktion der returnerer billede
 - døde link til nuværende forsider i nodewebkit (billed url er `//moreinfo...` og protokol er `file://..`
-- forfatter i visningen
 - bekræft om ny wireframe er ok, og slet i så fald gammel
 - rendering af preview i søgeresultater
 - visning af søgeresultater udover de første ti

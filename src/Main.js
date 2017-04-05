@@ -36,6 +36,7 @@ export default class Main extends ReCom {
     let result = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
     let defaultTitle = this.get('settings.defaultTitle', '');
     let title = (result.title||[])[0] || defaultTitle;
+    let creator = (result.creator||[])[0] || '';
     let fontScale= this.get('settings.fontScale', 50);
     let currentImage = this.get('ui.currentImage');
     let image = this.get('images', []).filter(o => o.id === currentImage)[0];
@@ -46,11 +47,15 @@ export default class Main extends ReCom {
     if(title.length > maxLength) {
       title = title.slice(0, maxLength) + '...';
     }
+    if(creator.length > maxLength) {
+      creator = creator.slice(0, maxLength) + '...';
+    }
+    let length = Math.max(creator.length, title.length);
     //let creator = (result.title||['']).join(' & ');
-    let html = `<style>#title { 
+    let html = `<style>#main{ 
           position: absolute;
           font-weight: bold;
-          font-size: ${Math.min(64, 10 * fontScale / title.length)}px;
+          font-size: ${Math.min(64, 10 * fontScale / length)}px;
           text-align: center;
           width: 100%;
           white-space: nowrap;
@@ -60,7 +65,12 @@ export default class Main extends ReCom {
           padding: 0;
           top: ${this.get('settings.yPos', 20)}%;
           font-family: ${this.get('font')}, sans-serif; 
-          }</style><div id="title">${escapeXml(title)}</div>`
+          }</style>
+          <div id="main">
+            ${escapeXml(title)}
+            <br/>
+            ${escapeXml(creator)}
+          </div>`
     console.log('Store:', store.getState().toJS());
     return <div>
       <Paper style={{margin: 10, padding: '0 10px 0 10px'}}>
@@ -82,103 +92,103 @@ export default class Main extends ReCom {
           flex: '1 1 auto',
           margin: 10, 
           padding:10}}>
-        <ImageUpload /><br/>
-        <RaisedButton 
-          backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
-          label="Baggrundsfarve"
-          onTouchTap={() => this.set('ui.backgroundDialog', true)} />
-        <Color 
-          open={this.get('ui.backgroundDialog', false)}
-          path='background' 
-          onRequestClose={() => this.set('ui.backgroundDialog', false)}
-        />
+          <ImageUpload /><br/>
+          <RaisedButton 
+            backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
+            label="Baggrundsfarve"
+            onTouchTap={() => this.set('ui.backgroundDialog', true)} />
+          <Color 
+            open={this.get('ui.backgroundDialog', false)}
+            path='background' 
+            onRequestClose={() => this.set('ui.backgroundDialog', false)}
+          />
 
 
 
-      <div>
-        <label htmlFor="fontScale" 
-          style={{
-            display: 'inline-block',
-            marginTop: '20px',
-            fontSize: 12,
-            color: 'rgba(0,0,0,0.3)',
-          }}>
-          Font skala
-        </label>
-        <Slider
-          id="fontScale"
-          type="number" 
-          style={{
-            marginTop: -10,
-            height:10,
-            marginBottom: 10,
-          }}
-          max={100}
-          min={1}
-          step={1}
-          value={this.get('settings.fontScale', 50)}
-          onChange={(_,val) => this.set('settings.fontScale', val)}
-        />
-      </div>
+        <div>
+          <label htmlFor="fontScale" 
+            style={{
+              display: 'inline-block',
+              marginTop: '20px',
+              fontSize: 12,
+              color: 'rgba(0,0,0,0.3)',
+            }}>
+            Font skala
+          </label>
+          <Slider
+            id="fontScale"
+            type="number" 
+            style={{
+              marginTop: -10,
+              height:10,
+              marginBottom: 10,
+            }}
+            max={100}
+            min={1}
+            step={1}
+            value={this.get('settings.fontScale', 50)}
+            onChange={(_,val) => this.set('settings.fontScale', val)}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="yPos" 
-          style={{
-            display: 'inline-block',
-            marginTop: '20px',
-            fontSize: 12,
-            color: 'rgba(0,0,0,0.3)',
-          }}>
-          Afstand fra toppen
-        </label>
-        <Slider
-          id="yPos"
-          type="number" 
-          style={{
-            marginTop: -10,
-            height:10,
-            marginBottom: 10,
-          }}
-          max={100}
-          min={0}
-          step={1}
-          value={this.get('settings.yPos', 20)}
-          onChange={(_,val) => this.set('settings.yPos', val)}
-        />
-      </div>
-      <div>
-        <TextField 
-          floatingLabelText="Maksimal tekstlængde"
-          type="number" 
-          max={300}
-          min={0}
-          step={1}
-          value={this.get('settings.maxLen', 30)}
-          onChange={(_,val) => this.set('settings.maxLen', val)}
-        />
-      </div>
-      <div>
-        <TextField 
-          floatingLabelText="Default titel"
-          type="text" 
-          value={this.get('settings.defaultTitle', '')}
-          onChange={(_,val) => this.set('settings.defaultTitle', val)}
-        />
-      </div>
+        <div>
+          <label htmlFor="yPos" 
+            style={{
+              display: 'inline-block',
+              marginTop: '20px',
+              fontSize: 12,
+              color: 'rgba(0,0,0,0.3)',
+            }}>
+            Afstand fra toppen
+          </label>
+          <Slider
+            id="yPos"
+            type="number" 
+            style={{
+              marginTop: -10,
+              height:10,
+              marginBottom: 10,
+            }}
+            max={100}
+            min={0}
+            step={1}
+            value={this.get('settings.yPos', 20)}
+            onChange={(_,val) => this.set('settings.yPos', val)}
+          />
+        </div>
+        <div>
+          <TextField 
+            floatingLabelText="Maksimal tekstlængde"
+            type="number" 
+            max={300}
+            min={0}
+            step={1}
+            value={this.get('settings.maxLen', 30)}
+            onChange={(_,val) => this.set('settings.maxLen', val)}
+          />
+        </div>
+        <div>
+          <TextField 
+            floatingLabelText="Default titel"
+            type="text" 
+            value={this.get('settings.defaultTitle', '')}
+            onChange={(_,val) => this.set('settings.defaultTitle', val)}
+          />
+        </div>
 
-      <div>
-        <AutoComplete
-          searchText={this.get('font')}
-          onUpdateInput={(val) => this.set('font', val)}
-          floatingLabelText="Font"
-          filter={AutoComplete.fuzzyFilter}
-          dataSource={fonts}
-          maxSearchResults={20}
-        />
-      </div>
+        <div>
+          <AutoComplete
+            searchText={this.get('font')}
+            onUpdateInput={(val) => this.set('font', val)}
+            floatingLabelText="Font"
+            filter={AutoComplete.fuzzyFilter}
+            dataSource={fonts}
+            maxSearchResults={20}
+          />
+        </div>
       </Paper>
     </div>
-      <Paper style={{margin: 10, padding:10}}>
+    <Paper style={{margin: 10, padding:10}}>
 
       <TextField floatingLabelText="Download sti" />
       <FlatButton label="Gem til disk" primary={true} />
