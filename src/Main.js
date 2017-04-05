@@ -18,7 +18,7 @@ import GoogleFonts from './google-fonts.json';
 
 import {store} from './store.js';
 import ReCom from './ReCom.js';
-import {escapeXml} from './util'
+import {escapeXml} from 'solsort-util'
 
 let space = {margin: 10};
 

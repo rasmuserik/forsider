@@ -4,7 +4,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ReCom from './ReCom.js';
 import {store} from './store';
-import {randomId, file2url} from './util';
+import {randomId, file2url} from 'solsort-util';
 
 export default class ImageUpload extends ReCom { 
   constructor(props, context) {

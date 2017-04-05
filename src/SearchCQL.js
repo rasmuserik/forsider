@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import {store} from './store.js';
 import ReCom from './ReCom.js';
-import {str} from './util';
+import {str} from 'solsort-util';
 
 export default class SearchCQL extends ReCom {
   constructor(props, context) {

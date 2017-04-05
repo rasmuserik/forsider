@@ -1,7 +1,7 @@
 import React from 'react';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
-import {randomId, loadImage} from './util';
+import {randomId, loadImage} from 'solsort-util';
 
 export default class Preview extends ReCom {
 
