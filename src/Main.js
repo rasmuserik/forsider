@@ -17,8 +17,10 @@ import Wireframe from './Wireframe';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 import {escapeXml} from 'solsort-util'
+import util from 'solsort-util'
 
 let space = {margin: 10};
+console.log('util', util);
 
 let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
