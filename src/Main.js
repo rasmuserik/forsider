@@ -14,16 +14,13 @@ import Preview from './Preview.js';
 import Color from './Color.js';
 import Wireframe from './Wireframe';
 
-import GoogleFonts from './google-fonts.json';
-
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 import {escapeXml} from 'solsort-util'
 
 let space = {margin: 10};
 
-let fonts = GoogleFonts;
-fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
+let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
 export default class Main extends ReCom {
   constructor(props, context) {
