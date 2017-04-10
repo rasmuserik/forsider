@@ -9,7 +9,6 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - En meget ufærdige demo-udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>. Kun lavet så den virker i allernyeste udgave af Chrome, - da den i praksis køres some en NW.js applikation. Upload og gem er ikke mulig i webbrowser, men kun i den releasede applikation (eller hvis den startes med [NW.js](https://nwjs.io)).
 
 # Changelog
-
 ## Sprint 1
 
 - Første ufærdige udgave af app
@@ -39,6 +38,25 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
   - Github-repositorie, README, package.json med bygge-setup etc.
   - Ikon
   - Applikationsvalg: React-app, Material Design
+
+# Application state
+
+Overblik over applikationstilstanden
+
+- `images[]`
+- `ui`
+    - `backgroundDialog`
+    - `currentResult`
+    - `searchError`
+    - `searching`
+- `results[][10]`
+- `font`
+- `background`
+- `settings`
+    - `fontScale`
+    - `yPos`
+    - `maxLen`
+    - `defaultTitle`
 
 # Noter
 
