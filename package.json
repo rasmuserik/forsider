@@ -1,7 +1,23 @@
 {
   "name": "forsider",
-  "homepage": ".",
   "version": "0.1.0",
+  "main": "index.html",
+  "ldoc": "forsider.js",
+  "icon": "icon.png",
+  "window": {
+    "width": 1024,
+    "height": 700
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solsort/forsider.git"
+  },
+  "author": "RasmusErik Voel Jensen <npmjs@solsort.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/solsort/forsider/issues"
+  },
+  "homepage": "https://forsider.solsort.com/",
   "dependencies": {
     "deep-equal": "^1.0.1",
     "immutable": "^4.0.0-rc.2",
@@ -11,20 +27,24 @@
     "react-dom": "^15.4.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
-    "solsort-util": "0.0.5",
-    "typeface-roboto": "0.0.22"
-  },
-  "devDependencies": {
-    "gh-pages": "^0.12.0",
-    "react-scripts": "0.9.5"
+    "solsort-util": "0.0.5"
   },
   "scripts": {
     "nw": "nw build/",
     "nw-dev": "nw src/",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
     "test": "echo TODO-electron-testrunner",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build ; ./build-nw.sh"
+    "build": "webpack",
+    "dist": "npm run build && npm run test && increment-patch-version",
+    "dev": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-latest": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
   }
 }

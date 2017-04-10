@@ -3,7 +3,7 @@ if [ ! -f nwjs-sdk-v0.21.4-win-ia32.zip ]; then
 fi
 rm -rf nwjs-sdk-v0.21.4-win-ia32
 unzip nwjs-sdk-v0.21.4-win-ia32.zip
-cp -a build/* nwjs-sdk-v0.21.4-win-ia32
+cp -a *.js* *.html *.png nwjs-sdk-v0.21.4-win-ia32
 mv nwjs-sdk-v0.21.4-win-ia32 generiske-forsider
 mv generiske-forsider/nw.exe generiske-forsider/generiske-forsider.exe
 zip -r generiske-forsider-win32.zip generiske-forsider

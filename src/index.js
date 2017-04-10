@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import './index.css';
-import 'typeface-roboto';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -16,7 +14,7 @@ async function render() {
     <MuiThemeProvider>
       <Main/>
     </MuiThemeProvider>, 
-    document.getElementById('root'));
+    document.getElementById('main'));
 };
 
 render();
