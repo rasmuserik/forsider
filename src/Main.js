@@ -11,7 +11,6 @@ import SearchCQL from './SearchCQL.js';
 import Results from './Results.js';
 import ImageUpload from './ImageUpload.js';
 import Color from './Color.js';
-import Wireframe from './Wireframe';
 
 import {store} from './store.js';
 import {html2png} from './html2canvas.js';
@@ -230,8 +229,6 @@ export default class Main extends ReCom {
         <br/>
       </Paper>
       <h1 style={{background:'#f00'}}>Denne app er under udvikling, virker ikke.</h1>
-
-      {true && <div style={{marginTop:300}}><Wireframe/></div>}
     </div>;
   }
 }
