@@ -10,11 +10,11 @@ import AutoComplete from 'material-ui/AutoComplete';
 import SearchCQL from './SearchCQL.js';
 import Results from './Results.js';
 import ImageUpload from './ImageUpload.js';
-import Preview from './Preview.js';
 import Color from './Color.js';
 import Wireframe from './Wireframe';
 
 import {store} from './store.js';
+import {html2png} from './html2canvas.js';
 import ReCom from './ReCom.js';
 import {escapeXml} from 'solsort-util'
 import util from 'solsort-util'
@@ -52,26 +52,51 @@ export default class Main extends ReCom {
     }
     let length = Math.max(creator.length, title.length);
     //let creator = (result.title||['']).join(' & ');
-    let html = `<style>#main{ 
-          position: absolute;
-          font-weight: bold;
-          font-size: ${Math.min(64, 10 * fontScale / length)}px;
-          text-align: center;
-          width: 100%;
-          white-space: nowrap;
-          background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
-          overflow: hidden;
-          margin: 0;
-          padding: 0;
-          top: ${this.get('settings.yPos', 20)}%;
-          font-family: ${this.get('font')}, sans-serif; 
-          }</style>
-          <div id="main">
-            ${escapeXml(title)}
-            <br/>
-            ${escapeXml(creator)}
+    let html = `
+          <style>
+            img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+            #main { 
+              width: 100%;
+              height: 100%;
+            }
+            #title {
+              position: absolute;
+              font-weight: bold;
+              font-size: ${Math.min(64, 10 * fontScale / length)}px;
+              text-align: center;
+              width: 100%;
+              white-space: nowrap;
+              background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
+              overflow: hidden;
+              margin: 0;
+              padding: 0;
+              top: ${this.get('settings.yPos', 20)}%;
+              font-family: ${this.get('font')}, sans-serif; 
+            }
+          </style>
+          <div id="main"> 
+            <img src="${image.url}" />
+            <div id="title">
+              ${escapeXml(title)}
+              <br/>
+              ${escapeXml(creator)}
+            </div>
           </div>`
     console.log('Store:', store.getState().toJS());
+    html2png(html, {width: 334, height: 540})
+      .then(s =>  {
+        if(html !== this.get('ui.previewHtml')) {
+          this.set('ui.previewUrl', s);
+          this.set('ui.previewHtml', html);
+        }
+      });
+
     return <div>
       <Paper style={{margin: 10, padding: '0 10px 0 10px'}}>
         <SearchCQL />
@@ -81,10 +106,8 @@ export default class Main extends ReCom {
       <div style={{ display: 'flex'}}>
         <div style={{flex: '0 0 334px'}}>
           <Paper style={{ display: 'inline-block', margin: 10, width: 334}} >
-            <Preview 
-              style={{width: 334}}
-              background={image.url}
-              html={html}/>
+
+            <img src={this.get('ui.previewUrl')} />
           </Paper>
         </div>
 
