@@ -18,7 +18,7 @@ export default class Preview extends ReCom {
   async renderToCanvas() {
     let imgSrc = this.props.background || `data:image/svg+xml;utf8,
        <svg xmlns="http://www.w3.org/2000/svg" 
-       width="300" height="400"></svg>`;
+       width="334" height="480"></svg>`;
 
     let html = this.props.html || '';
 

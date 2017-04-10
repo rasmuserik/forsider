@@ -79,10 +79,10 @@ export default class Main extends ReCom {
       </Paper>
 
       <div style={{ display: 'flex'}}>
-        <div style={{flex: '0 0 300px'}}>
-          <Paper style={{ display: 'inline-block', margin: 10, width: 300, }} >
+        <div style={{flex: '0 0 334px'}}>
+          <Paper style={{ display: 'inline-block', margin: 10, width: 334}} >
             <Preview 
-              style={{width: 300}}
+              style={{width: 334}}
               background={image.url}
               html={html}/>
           </Paper>
