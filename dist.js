@@ -28828,7 +28828,7 @@ var SearchCQL = function (_ReCom) {
                 _context.next = 7;
                 return dbc.connect(
                 // TODO: use actual client-id, and local library branch
-                "a36227da-e477-491e-b4a2-ccd9df365cf9", "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
+                "a36227da-e477-491e-b4a2-ccd9df365cf9", "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM", "@715100", "@715100");
 
               case 7:
                 this.set(['results', 0], 'loading');
