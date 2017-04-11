@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/remove';
 import ReCom from './ReCom.js';
 import {store} from './store';
 import {randomId, file2url} from 'solsort-util';
@@ -62,12 +63,23 @@ export default class ImageUpload extends ReCom {
           overflow: 'hidden',
           position: 'relative',
         }}>
+        <FloatingActionButton
+          style={{
+            position: 'absolute', 
+            right: 0,
+            backgroundColor: '#900'
+          }}
+          mini={true}
+          onClick={() => this.TODO()}
+        >
+        <ContentRemove />
+      </FloatingActionButton>
         <img src={o.url} 
           alt=""
           style={{
             position: 'absolute',
-            maxWidth: 70,
-            maxHeight: 100,
+            width: 70,
+            height: 100,
           }}/>
         {o.name}
       </Paper>)}
@@ -80,7 +92,7 @@ export default class ImageUpload extends ReCom {
           let elem = document.getElementById(this.inputId);
           elem.click();
         }}
-        mini={true}>
+      >
         <ContentAdd />
       </FloatingActionButton>
 
