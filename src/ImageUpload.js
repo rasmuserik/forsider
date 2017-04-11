@@ -72,9 +72,9 @@ export default class ImageUpload extends ReCom {
         <FloatingActionButton
           style={{
             position: 'absolute', 
-            right: 0,
-            backgroundColor: '#900'
+            right: 0
           }}
+          secondary={true}
           mini={true}
           onClick={() => this.dispatch({
             type: 'REMOVE_IMAGE',
