@@ -12,14 +12,12 @@ export function makePath(path) {
   return path;
 }
 
+export let dispatchTable = {
+  SET_IN: (state, action) => setIn(state, action.path, action.value)
+}
+
 export function reduce(state = new Immutable.Map(), action) {
-  switch (action.type) {
-    case SET_IN:
-      state = setIn(state, action.path, action.value)
-      return state;
-    default:
-      return state
-  }
+  return (dispatchTable[action.type] || (state => state))(state, action);
 }
 
 function setIn(o, path, val) {

@@ -11,6 +11,9 @@ export default class ReCom extends React.Component {
     this.dependencies = new Map();
   }
 
+  dispatch(o) {
+    this.store.dispatch(o);
+  }
   get(path, defaultValue) {
     path = makePath(path);
     let result;
@@ -36,7 +39,7 @@ export default class ReCom extends React.Component {
   }
 
   set(path, value) {
-    this.store.dispatch({type: SET_IN, path, value});
+    this.dispatch({type: SET_IN, path, value});
   }
 
   componentWillUpdate() {

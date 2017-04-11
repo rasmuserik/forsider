@@ -5,9 +5,13 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import ReCom from './ReCom.js';
 import {store} from './store';
+import {dispatchTable} from './reducer';
 import {randomId, file2url} from 'solsort-util';
 
 let height = 120;
+
+dispatchTable.REMOVE_IMAGE = (state, action) =>
+  state.set('images', state.get('images').filter(o => o.get('id') !== action.id));
 
 export default class ImageUpload extends ReCom { 
   constructor(props, context) {
@@ -72,7 +76,10 @@ export default class ImageUpload extends ReCom {
             backgroundColor: '#900'
           }}
           mini={true}
-          onClick={() => this.TODO()}
+          onClick={() => this.dispatch({
+            type: 'REMOVE_IMAGE',
+            id: o.id
+          })}
         >
         <ContentRemove />
       </FloatingActionButton>
