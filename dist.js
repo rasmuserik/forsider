@@ -28134,6 +28134,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var height = 120;
+
 var ImageUpload = function (_ReCom) {
   _inherits(ImageUpload, _ReCom);
 
@@ -28210,7 +28212,7 @@ var ImageUpload = function (_ReCom) {
             display: 'inline-block',
             position: 'relative',
             width: '100%',
-            height: 135
+            height: height + 35
           } },
         _react2.default.createElement(
           'div',
@@ -28219,7 +28221,7 @@ var ImageUpload = function (_ReCom) {
               left: 0,
               right: 0,
               display: 'inline-block',
-              height: 135,
+              height: height + 35,
               whiteSpace: 'nowrap',
               overflowX: 'auto',
               overflowY: 'hidden'
@@ -28243,8 +28245,8 @@ var ImageUpload = function (_ReCom) {
                 },
                 style: {
                   display: 'inline-block',
-                  width: 70,
-                  height: 100,
+                  width: .7 * height,
+                  height: height,
                   verticalAlign: 'middle',
                   margin: 10,
                   overflow: 'hidden',
@@ -28269,8 +28271,8 @@ var ImageUpload = function (_ReCom) {
                 alt: '',
                 style: {
                   position: 'absolute',
-                  width: 70,
-                  height: 100
+                  width: '100%',
+                  height: '100%'
                 } }),
               o.name
             );

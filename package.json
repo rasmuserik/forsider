@@ -36,7 +36,7 @@
     "predeploy": "npm run build",
     "build": "webpack",
     "dist": "npm run build && npm run test && increment-patch-version",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --hot --inline"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

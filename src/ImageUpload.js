@@ -7,6 +7,8 @@ import ReCom from './ReCom.js';
 import {store} from './store';
 import {randomId, file2url} from 'solsort-util';
 
+let height = 120;
+
 export default class ImageUpload extends ReCom { 
   constructor(props, context) {
     super(props, store);
@@ -30,14 +32,14 @@ export default class ImageUpload extends ReCom {
         display: 'inline-block',
         position: 'relative',
       width: '100%',
-      height: 135,
+      height: height + 35,
       }}>
       <div style={{
         position: 'absolute',
         left: 0,
         right: 0,
         display: 'inline-block',
-        height: 135,
+        height: height + 35,
         whiteSpace: 'nowrap',
         overflowX: 'auto',
         overflowY: 'hidden',
@@ -56,8 +58,8 @@ export default class ImageUpload extends ReCom {
         onClick={() => this.set('ui.currentImage', o.id)}
         style={{
           display: 'inline-block',
-          width: 70,
-          height: 100,
+          width: .7 * height,
+          height: height,
           verticalAlign: 'middle',
           margin: 10,
           overflow: 'hidden',
@@ -78,8 +80,8 @@ export default class ImageUpload extends ReCom {
           alt=""
           style={{
             position: 'absolute',
-            width: 70,
-            height: 100,
+            width: '100%',
+            height: '100%',
           }}/>
         {o.name}
       </Paper>)}
