@@ -23,7 +23,9 @@ export default class SearchCQL extends ReCom {
         await dbc.connect(
           // TODO: use actual client-id, and local library branch
           "a36227da-e477-491e-b4a2-ccd9df365cf9", 
-          "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
+          "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM",
+          "@715100", "@715100"
+        );
       }
       this.set(['results', 0], 'loading');
       let results = 
