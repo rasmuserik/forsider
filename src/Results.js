@@ -25,8 +25,8 @@ export default class Results extends ReCom {
     return o && <div 
       onMouseEnter={() => this.set('ui.currentResult', n)}
       style={resultStyle}>
-      <div><strong>{o.title[0]} &nbsp;</strong></div>
-      <div><em>{(o.creator || []).join(' & ')} &nbsp;</em></div>
+      <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
+      <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
       <br/>
       <img src={'https:' + o.coverUrlThumbnail} alt=""
            style={{ 

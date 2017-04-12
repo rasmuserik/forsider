@@ -24,7 +24,7 @@ export default class SearchCQL extends ReCom {
           // TODO: use actual client-id, and local library branch
           "a36227da-e477-491e-b4a2-ccd9df365cf9", 
           "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM",
-          "@715100", "@715100"
+          //          "@715100", "@715100"
         );
       }
       this.set(['results', 0], 'loading');
@@ -32,6 +32,13 @@ export default class SearchCQL extends ReCom {
         await window.dbcOpenPlatform.search({
           q: this.get('query', ''), limit: 10,
         });
+      if(Array.isArray(results)) {
+        results = results.map(o => Object.assign(o, {
+          TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
+          CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
+        }));
+      }
+      console.log('results', results);
       this.set(['results', 0], results);
       let thumbs = 
         await window.dbcOpenPlatform.search({

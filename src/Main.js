@@ -34,8 +34,12 @@ export default class Main extends ReCom {
     let currentResult = this.get('ui.currentResult', 0);
     let result = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
     let defaultTitle = this.get('settings.defaultTitle', '');
-    let title = (result.title||[])[0] || defaultTitle;
-    let creator = (result.creator||[])[0] || '';
+    let title = result.TITLE[0] || defaultTitle;
+    let creator = result.CREATOR.join(' & ') || '';
+    let maxAuthors = 2;
+    if(result.CREATOR.length > maxAuthors) {
+      creator = '';
+    }
     let fontScale= this.get('settings.fontScale', 50);
     let currentImage = this.get('ui.currentImage');
     let image = this.get('images', []).filter(o => o.id === currentImage)[0];
