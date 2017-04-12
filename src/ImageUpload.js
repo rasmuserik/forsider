@@ -7,7 +7,11 @@ import ReCom from './ReCom.js';
 import {store} from './store';
 import {dispatchTable} from './reducer';
 import {randomId, file2url} from 'solsort-util';
+import sha from 'js-sha256';
 
+function hash(str) {
+  return btoa(String.fromCharCode.apply(String, sha.sha256.create().update(str).array())).slice(0,20)
+}
 let height = 120;
 
 dispatchTable.REMOVE_IMAGE = (state, action) =>
@@ -24,9 +28,9 @@ export default class ImageUpload extends ReCom {
       let img = imgs[i];
       let url =  await file2url(img);
       result.push({
-        id: randomId(),
+        id: hash(url),
         name: img.name,
-        url
+        url: url,
       });
     }
     this.set('images', this.get('images', []).concat(result));
