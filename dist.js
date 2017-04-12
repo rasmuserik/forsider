@@ -28423,11 +28423,14 @@ var Main = function (_ReCom) {
       var currentResult = this.get('ui.currentResult', 0);
       var result = this.get(['results', currentResult / 10 | 0, currentResult % 10], {});
       var defaultTitle = this.get('settings.defaultTitle', '');
-      var title = result.TITLE[0] || defaultTitle;
-      var creator = result.CREATOR.join(' & ') || '';
+
+      var title = (result.TITLE || [defaultTitle])[0];
+      var creator = result.CREATOR || [];
       var maxAuthors = 2;
-      if (result.CREATOR.length > maxAuthors) {
+      if (creator.length > maxAuthors) {
         creator = '';
+      } else {
+        creator = creator.join(' & ');
       }
       var fontScale = this.get('settings.fontScale', 50);
       var currentImage = this.get('ui.currentImage');
