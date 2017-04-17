@@ -40707,7 +40707,7 @@ var ImageUpload = function (_ReCom) {
               {
                 key: o.id,
                 onClick: function onClick() {
-                  return _this2.set('ui.currentImage', o.id);
+                  return _this2.set('currentImage', o.id);
                 },
                 style: {
                   display: 'inline-block',
@@ -40851,7 +40851,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var space = { margin: 10 };
-console.log('util', _solsortUtil2.default);
 
 var fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
@@ -40869,13 +40868,15 @@ var Main = function (_ReCom) {
     value: function render() {
       var _this2 = this;
 
-      var bg = this.get('background', { r: 50, g: 50, b: 100, a: 0.2 });
-      var maxLength = this.get('settings.maxLen', 30);
+      var optionPath = function optionPath(name) {
+        return ['options', _this2.get('currentImage', ''), name];
+      };
+      var bg = this.get(optionPath('background'), { r: 50, g: 50, b: 100, a: 0.2 });
+      var maxLength = this.get(optionPath('maxLen'), 30);
       var currentResult = this.get('ui.currentResult', 0);
       var result = this.get(['results', currentResult / 10 | 0, currentResult % 10], {});
-      var defaultTitle = this.get('settings.defaultTitle', '');
 
-      var title = (result.TITLE || [defaultTitle])[0];
+      var title = (result.TITLE || [''])[0];
       var creator = result.CREATOR || [];
       var maxAuthors = 2;
       if (creator.length > maxAuthors) {
@@ -40883,8 +40884,8 @@ var Main = function (_ReCom) {
       } else {
         creator = creator.join(' & ');
       }
-      var fontScale = this.get('settings.fontScale', 50);
-      var currentImage = this.get('ui.currentImage');
+      var fontScale = this.get(optionPath('fontScale'), 50);
+      var currentImage = this.get('currentImage');
       var image = this.get('images', []).filter(function (o) {
         return o.id === currentImage;
       })[0];
@@ -40900,7 +40901,7 @@ var Main = function (_ReCom) {
       }
       var length = Math.max(creator.length, title.length);
       //let creator = (result.title||['']).join(' & ');
-      var html = '\n          <style>\n            img {\n              position: absolute;\n              top: 0;\n              left: 0;\n              width: 100%;\n              height: 100%;\n            }\n            #main { \n              width: 100%;\n              height: 100%;\n            }\n            #title {\n              position: absolute;\n              font-weight: bold;\n              font-size: ' + Math.min(64, 10 * fontScale / length) + 'px;\n              text-align: center;\n              width: 100%;\n              white-space: nowrap;\n              background: rgba(' + bg.r + ',' + bg.g + ',' + bg.b + ',' + bg.a + ');\n              overflow: hidden;\n              margin: 0;\n              padding: 0;\n              top: ' + this.get('settings.yPos', 20) + '%;\n              font-family: ' + this.get('font') + ', sans-serif; \n            }\n          </style>\n          <div id="main"> \n            <img src="' + image.url + '" />\n            <div id="title">\n              ' + (0, _solsortUtil.escapeXml)(title) + '\n              <br/>\n              ' + (0, _solsortUtil.escapeXml)(creator) + '\n            </div>\n          </div>';
+      var html = '\n          <style>\n            img {\n              position: absolute;\n              top: 0;\n              left: 0;\n              width: 100%;\n              height: 100%;\n            }\n            #main { \n              width: 100%;\n              height: 100%;\n            }\n            #title {\n              position: absolute;\n              font-weight: bold;\n              font-size: ' + Math.min(64, 10 * fontScale / length) + 'px;\n              text-align: center;\n              width: 100%;\n              white-space: nowrap;\n              background: rgba(' + bg.r + ',' + bg.g + ',' + bg.b + ',' + bg.a + ');\n              overflow: hidden;\n              margin: 0;\n              padding: 0;\n              top: ' + this.get(optionPath('yPos'), 20) + '%;\n              font-family: ' + this.get(optionPath('font')) + ', sans-serif; \n            }\n          </style>\n          <div id="main"> \n            <img src="' + image.url + '" />\n            <div id="title">\n              ' + (0, _solsortUtil.escapeXml)(title) + '\n              <br/>\n              ' + (0, _solsortUtil.escapeXml)(creator) + '\n            </div>\n          </div>';
       console.log('Store:', _store.store.getState().toJS());
       (0, _html2canvas.html2png)(html, { width: 334, height: 540 }).then(function (s) {
         if (html !== _this2.get('ui.previewHtml')) {
@@ -40946,7 +40947,7 @@ var Main = function (_ReCom) {
               } }),
             _react2.default.createElement(_Color2.default, {
               open: this.get('ui.backgroundDialog', false),
-              path: 'background',
+              path: optionPath('background'),
               onRequestClose: function onRequestClose() {
                 return _this2.set('ui.backgroundDialog', false);
               }
@@ -40976,9 +40977,9 @@ var Main = function (_ReCom) {
                 max: 100,
                 min: 1,
                 step: 1,
-                value: this.get('settings.fontScale', 50),
+                value: this.get(optionPath('fontScale'), 50),
                 onChange: function onChange(_, val) {
-                  return _this2.set('settings.fontScale', val);
+                  return _this2.set(optionPath('fontScale'), val);
                 }
               })
             ),
@@ -41007,9 +41008,9 @@ var Main = function (_ReCom) {
                 max: 100,
                 min: 0,
                 step: 1,
-                value: this.get('settings.yPos', 20),
+                value: this.get(optionPath('yPos'), 20),
                 onChange: function onChange(_, val) {
-                  return _this2.set('settings.yPos', val);
+                  return _this2.set(optionPath('yPos'), val);
                 }
               })
             ),
@@ -41022,21 +41023,9 @@ var Main = function (_ReCom) {
                 max: 300,
                 min: 0,
                 step: 1,
-                value: this.get('settings.maxLen', 30),
+                value: this.get(optionPath('maxLen'), 30),
                 onChange: function onChange(_, val) {
-                  return _this2.set('settings.maxLen', val);
-                }
-              })
-            ),
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(_TextField2.default, {
-                floatingLabelText: 'Default titel',
-                type: 'text',
-                value: this.get('settings.defaultTitle', ''),
-                onChange: function onChange(_, val) {
-                  return _this2.set('settings.defaultTitle', val);
+                  return _this2.set(optionPath('maxLen'), val);
                 }
               })
             ),
@@ -41044,9 +41033,9 @@ var Main = function (_ReCom) {
               'div',
               null,
               _react2.default.createElement(_AutoComplete2.default, {
-                searchText: this.get('font'),
+                searchText: this.get(optionPath('font')),
                 onUpdateInput: function onUpdateInput(val) {
-                  return _this2.set('font', val);
+                  return _this2.set(optionPath('font'), val);
                 },
                 floatingLabelText: 'Font',
                 filter: _AutoComplete2.default.fuzzyFilter,
