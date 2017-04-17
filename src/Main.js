@@ -19,7 +19,6 @@ import {escapeXml} from 'solsort-util'
 import util from 'solsort-util'
 
 let space = {margin: 10};
-console.log('util', util);
 
 let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
@@ -29,13 +28,13 @@ export default class Main extends ReCom {
   }
 
   render() {
-    let bg = this.get('background', {r:50,g:50,b:100,a:0.2});
-    let maxLength = this.get('settings.maxLen', 30);
+    let optionPath = name => ['options', this.get('currentImage', ''), name];
+    let bg = this.get(optionPath('background'), {r:50,g:50,b:100,a:0.2});
+    let maxLength = this.get(optionPath('maxLen'), 30);
     let currentResult = this.get('ui.currentResult', 0);
     let result = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
-    let defaultTitle = this.get('settings.defaultTitle', '');
 
-    let title = (result.TITLE || [defaultTitle])[0];
+    let title = (result.TITLE || [''])[0];
     let creator = result.CREATOR || [];
     let maxAuthors = 2;
     if(creator.length > maxAuthors) {
@@ -43,8 +42,8 @@ export default class Main extends ReCom {
     } else {
       creator = creator.join(' & ');
     }
-    let fontScale= this.get('settings.fontScale', 50);
-    let currentImage = this.get('ui.currentImage');
+    let fontScale= this.get(optionPath('fontScale'), 50);
+    let currentImage = this.get('currentImage');
     let image = this.get('images', []).filter(o => o.id === currentImage)[0];
     image = image || this.get('images', [])[0];
     image = image || {url:''};
@@ -82,8 +81,8 @@ export default class Main extends ReCom {
               overflow: hidden;
               margin: 0;
               padding: 0;
-              top: ${this.get('settings.yPos', 20)}%;
-              font-family: ${this.get('font')}, sans-serif; 
+              top: ${this.get(optionPath('yPos'), 20)}%;
+              font-family: ${this.get(optionPath('font'))}, sans-serif; 
             }
           </style>
           <div id="main"> 
@@ -128,7 +127,7 @@ export default class Main extends ReCom {
             onTouchTap={() => this.set('ui.backgroundDialog', true)} />
           <Color 
             open={this.get('ui.backgroundDialog', false)}
-            path='background' 
+            path={optionPath('background')}
             onRequestClose={() => this.set('ui.backgroundDialog', false)}
           />
 
@@ -155,8 +154,8 @@ export default class Main extends ReCom {
             max={100}
             min={1}
             step={1}
-            value={this.get('settings.fontScale', 50)}
-            onChange={(_,val) => this.set('settings.fontScale', val)}
+            value={this.get(optionPath('fontScale'), 50)}
+            onChange={(_,val) => this.set(optionPath('fontScale'), val)}
           />
         </div>
 
@@ -181,8 +180,8 @@ export default class Main extends ReCom {
             max={100}
             min={0}
             step={1}
-            value={this.get('settings.yPos', 20)}
-            onChange={(_,val) => this.set('settings.yPos', val)}
+            value={this.get(optionPath('yPos'), 20)}
+            onChange={(_,val) => this.set(optionPath('yPos'), val)}
           />
         </div>
         <div>
@@ -192,23 +191,15 @@ export default class Main extends ReCom {
             max={300}
             min={0}
             step={1}
-            value={this.get('settings.maxLen', 30)}
-            onChange={(_,val) => this.set('settings.maxLen', val)}
-          />
-        </div>
-        <div>
-          <TextField 
-            floatingLabelText="Default titel"
-            type="text" 
-            value={this.get('settings.defaultTitle', '')}
-            onChange={(_,val) => this.set('settings.defaultTitle', val)}
+            value={this.get(optionPath('maxLen'), 30)}
+            onChange={(_,val) => this.set(optionPath('maxLen'), val)}
           />
         </div>
 
         <div>
           <AutoComplete
-            searchText={this.get('font')}
-            onUpdateInput={(val) => this.set('font', val)}
+            searchText={this.get(optionPath('font'))}
+            onUpdateInput={(val) => this.set(optionPath('font'), val)}
             floatingLabelText="Font"
             filter={AutoComplete.fuzzyFilter}
             dataSource={fonts}

@@ -44,19 +44,25 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 Overblik over applikationstilstanden
 
 - `images[]`
+    - `id` - id for image (120bit cryptograph hash of data url, - thus collision free with very high probability)
+    - `name` - original file name
+    - `url` - data url containing the image
+- `results[][10]` search results, paged in sets of 10.
+- `options[image-id]`
+    - `background` - `{r,g,b,a}`
+    - `font`
+    - `fontScale`
+    - `maxLen`
+    - `yPos` 0-100
+- `currentImage`
+- `query` search query which yields results
 - `ui`
-    - `backgroundDialog`
+    - `backgroundDialog` true/false
     - `currentResult`
+    - `previewHtml`
+    - `previewUrl`
     - `searchError`
     - `searching`
-- `results[][10]`
-- `font`
-- `background`
-- `settings`
-    - `fontScale`
-    - `yPos`
-    - `maxLen`
-    - `defaultTitle`
 
 # Noter
 
