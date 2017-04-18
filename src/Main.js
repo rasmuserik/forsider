@@ -17,10 +17,13 @@ import {html2png} from './html2canvas.js';
 import ReCom from './ReCom.js';
 import {escapeXml} from 'solsort-util'
 import util from 'solsort-util'
+import {installedFonts} from 'installed-fonts';
 
 let space = {margin: 10};
 
-let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
+let fonts = [];
+installedFonts()
+  .then(o => fonts = o);
 
 function truncateWords(str, maxLen) {
   let words = str.split(/\s+/g);
