@@ -53,6 +53,7 @@ export default class Main extends ReCom {
     } else {
       creator = creator.join(' & ');
     }
+    creator = creator.replace(/\s+[(][^)]*[)]/g, '');
     let fontScale= this.get(optionPath('fontScale'), 50);
     let currentImage = this.get('currentImage');
     let image = this.get('images', []).filter(o => o.id === currentImage)[0];
