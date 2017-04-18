@@ -36,6 +36,7 @@
     "test": "echo TODO-electron-testrunner",
     "predeploy": "npm run build",
     "build": "webpack",
+    "release": "webpack; ./build-nw.sh",
     "dist": "npm run build && npm run test && increment-patch-version",
     "dev": "webpack-dev-server --hot --inline"
   },

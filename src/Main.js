@@ -22,6 +22,17 @@ let space = {margin: 10};
 
 let fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
+function truncateWords(str, maxLen) {
+  let words = str.split(/\s+/g);
+  let result = words[0];
+  let i = 1;
+  while((result + ' ' + words[i]).length < maxLen) {
+    result += ' ' + words[i];
+    ++i;
+  }
+  return result;
+}
+
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
@@ -48,15 +59,14 @@ export default class Main extends ReCom {
     image = image || this.get('images', [])[0];
     image = image || {url:''};
 
-    console.log('currentImage', currentImage, image);
     if(title.length > maxLength) {
-      title = title.slice(0, maxLength) + '...';
+      title = truncateWords(title, maxLength) + '...';
     }
     if(creator.length > maxLength) {
-      creator = creator.slice(0, maxLength) + '...';
+      creator = truncateWords(creator, maxLength) + '...';
     }
     let length = Math.max(creator.length, title.length);
-    //let creator = (result.title||['']).join(' & ');
+
     let html = `
           <style>
             img {

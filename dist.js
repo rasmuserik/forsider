@@ -40854,6 +40854,17 @@ var space = { margin: 10 };
 
 var fonts = ['Sans-Serif', 'Serif', 'Roboto', 'Times New Roman', 'Helvetica', 'Ubuntu', 'Cursive', 'Monospace'];
 
+function truncateWords(str, maxLen) {
+  var words = str.split(/\s+/g);
+  var result = words[0];
+  var i = 1;
+  while ((result + ' ' + words[i]).length < maxLen) {
+    result += ' ' + words[i];
+    ++i;
+  }
+  return result;
+}
+
 var Main = function (_ReCom) {
   _inherits(Main, _ReCom);
 
@@ -40892,15 +40903,14 @@ var Main = function (_ReCom) {
       image = image || this.get('images', [])[0];
       image = image || { url: '' };
 
-      console.log('currentImage', currentImage, image);
       if (title.length > maxLength) {
-        title = title.slice(0, maxLength) + '...';
+        title = truncateWords(title, maxLength) + '...';
       }
       if (creator.length > maxLength) {
-        creator = creator.slice(0, maxLength) + '...';
+        creator = truncateWords(creator, maxLength) + '...';
       }
       var length = Math.max(creator.length, title.length);
-      //let creator = (result.title||['']).join(' & ');
+
       var html = '\n          <style>\n            img {\n              position: absolute;\n              top: 0;\n              left: 0;\n              width: 100%;\n              height: 100%;\n            }\n            #main { \n              width: 100%;\n              height: 100%;\n            }\n            #title {\n              position: absolute;\n              font-weight: bold;\n              font-size: ' + Math.min(64, 10 * fontScale / length) + 'px;\n              text-align: center;\n              width: 100%;\n              white-space: nowrap;\n              background: rgba(' + bg.r + ',' + bg.g + ',' + bg.b + ',' + bg.a + ');\n              overflow: hidden;\n              margin: 0;\n              padding: 0;\n              top: ' + this.get(optionPath('yPos'), 20) + '%;\n              font-family: ' + this.get(optionPath('font')) + ', sans-serif; \n            }\n          </style>\n          <div id="main"> \n            <img src="' + image.url + '" />\n            <div id="title">\n              ' + (0, _solsortUtil.escapeXml)(title) + '\n              <br/>\n              ' + (0, _solsortUtil.escapeXml)(creator) + '\n            </div>\n          </div>';
       console.log('Store:', _store.store.getState().toJS());
       (0, _html2canvas.html2png)(html, { width: 334, height: 540 }).then(function (s) {
