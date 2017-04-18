@@ -40895,6 +40895,7 @@ var Main = function (_ReCom) {
       } else {
         creator = creator.join(' & ');
       }
+      creator = creator.replace(/\s+[(][^)]*[)]/g, '');
       var fontScale = this.get(optionPath('fontScale'), 50);
       var currentImage = this.get('currentImage');
       var image = this.get('images', []).filter(function (o) {
