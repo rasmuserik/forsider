@@ -5,6 +5,7 @@ import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
+import { ChromePicker } from 'react-color';
 
 import ReCom from './ReCom.js';
 import {store} from './store.js';
@@ -15,28 +16,30 @@ import Color from './Color.js';
 
 let fonts = [];
 installedFonts().then(o => fonts = o);
-
 export default class CoverOptions extends ReCom {
   constructor(props, context) {
     super(props, store);
   }
 
   render() {
-    let currentImage = this.get('currentImage', this.get(['images', 0, 'id']));
+    let currentImage = this.get('currentImage') ||
+      this.get(['images', 0, 'id']) ||
+      '';
     let optionPath = name => ['options', currentImage, name];
     let bg = this.get(optionPath('background'), {r:50,g:50,b:100,a:0.2});
 
     return <div>
           <ImageUpload /><br/>
-          <RaisedButton 
-            backgroundColor={`rgba(${bg.r},${bg.g},${bg.b},${bg.a})`}
-            label="Baggrundsfarve"
-            onTouchTap={() => this.set('ui.backgroundDialog', true)} />
-          <Color 
-            open={this.get('ui.backgroundDialog', false)}
-            path={optionPath('background')}
-            onRequestClose={() => this.set('ui.backgroundDialog', false)}
-          />
+
+          <div style={{display: 'inline-block', textAlign:'center'}}>
+            Baggrundsfarve <br/>
+            <Color path={optionPath('background')} />
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+          <div style={{display: 'inline-block', textAlign:'center'}}>
+            Tekstfarve<br/>
+            <Color path={optionPath('textColor')} />
+          </div>
 
         <div>
           <label htmlFor="fontScale" 

@@ -17,6 +17,7 @@ export default function coverHtml(img, meta, cfg) {
   let maxAuthors = 2;
 
   let bg = cfg.background || {r:50,g:50,b:100,a:0.2};
+  let fg = cfg.textColor || {r:0,g:0,b:0,a:1};
   let maxLength = cfg.maxLen || 30;
   let fontScale = cfg.fontScale || 50;
   let yPos = cfg.yPos || 20;
@@ -56,6 +57,7 @@ export default function coverHtml(img, meta, cfg) {
         position: absolute;
         font-weight: bold;
         font-size: ${Math.min(64, 10 * fontScale / length)}px;
+        color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
         white-space: nowrap;

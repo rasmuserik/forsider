@@ -38,7 +38,6 @@ export default class SearchCQL extends ReCom {
           CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
         }));
       }
-      console.log('results', results);
       this.set(['results', 0], results);
       let thumbs = 
         await window.dbcOpenPlatform.search({

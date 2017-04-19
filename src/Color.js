@@ -4,6 +4,12 @@ import { ChromePicker } from 'react-color';
 import ReCom from './ReCom'
 import {store} from './store'
 
+let colorStyle = {
+  display: 'inline-block',
+  overflow: 'hidden',
+  height: 240,
+  width: 225
+}
 export default class Color extends ReCom {
   constructor(props) {
     super(props, store);
@@ -12,17 +18,13 @@ export default class Color extends ReCom {
   render() {
     let c = this.get(this.props.path, this.props.initialColor);
     return (
-      <div>
-        <Dialog
-          {...this.props}
-          style={{ width:300, }}
-          bodyStyle={{ padding:0, }}
-        >
+      <div style={colorStyle}>
         <ChromePicker
           color={c}
-          onChangeComplete={(c) => this.set(this.props.path, c.rgb)}
+          onChangeComplete={(c) => {
+            this.set(this.props.path, c.rgb)
+          }}
         />
-        </Dialog>
       </div>
     );
   }
