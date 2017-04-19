@@ -5,11 +5,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import loadScript from './load-script.js';
+import {scriptPromise} from 'script-promise';
 
 async function render() {
   const Main = require('./Main').default;
-  await loadScript('https://openplatform.dbc.dk/v1/dbc_openplatform.min.js');
+  await scriptPromise('https://openplatform.dbc.dk/v1/dbc_openplatform.min.js');
   ReactDOM.render(
     <MuiThemeProvider>
       <Main/>

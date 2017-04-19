@@ -30,6 +30,7 @@
     "react-dom": "^15.4.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
+    "script-promise": "^0.0.13",
     "solsort-util": "0.0.5"
   },
   "scripts": {
