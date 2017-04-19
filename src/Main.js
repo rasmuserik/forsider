@@ -13,7 +13,7 @@ import ImageUpload from './ImageUpload.js';
 import Color from './Color.js';
 
 import {store} from './store.js';
-import {html2png} from './html2canvas.js';
+import {html2png} from 'html-to-canvas';
 import ReCom from './ReCom.js';
 import {escapeXml} from 'solsort-util'
 import util from 'solsort-util'
@@ -36,78 +36,91 @@ function truncateWords(str, maxLen) {
   return result;
 }
 
+function coverHtml(img, meta, cfg) {
+  img = img || {url:''};
+
+  let maxAuthors = 2;
+
+  let bg = cfg.background || {r:50,g:50,b:100,a:0.2};
+  let maxLength = cfg.maxLen || 30;
+  let fontScale = cfg.fontScale || 50;
+  let yPos = cfg.yPos || 20;
+
+  let creator = meta.CREATOR || [];
+  if(creator.length > maxAuthors) {
+    creator = '';
+  } else {
+    creator = creator.join(' & ');
+  }
+  creator = creator.replace(/\s+[(][^)]*[)]/g, '');
+  if(creator.length > maxLength) {
+    creator = truncateWords(creator, maxLength) + '...';
+  }
+
+  let title = (meta.TITLE || [''])[0];
+  if(title.length > maxLength) {
+    title = truncateWords(title, maxLength) + '...';
+  }
+
+  let length = Math.max(creator.length, title.length);
+
+  let html = `
+    <style>
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #main { 
+        width: 100%;
+        height: 100%;
+      }
+      #title {
+        position: absolute;
+        font-weight: bold;
+        font-size: ${Math.min(64, 10 * fontScale / length)}px;
+        text-align: center;
+        width: 100%;
+        white-space: nowrap;
+        background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        top: ${cfg.yPos || 20}%;
+        font-family: ${cfg.font}, sans-serif; 
+      }
+    </style>
+    <div id="main"> 
+      <img src="${img.url}" />
+      <div id="title">
+        ${escapeXml(title)}
+        <br/>
+        ${escapeXml(creator)}
+      </div>
+    </div>`
+  return html;
+}
+
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
   }
 
   render() {
-    let optionPath = name => ['options', this.get('currentImage', ''), name];
-    let bg = this.get(optionPath('background'), {r:50,g:50,b:100,a:0.2});
-    let maxLength = this.get(optionPath('maxLen'), 30);
-    let currentResult = this.get('ui.currentResult', 0);
-    let result = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
-
-    let title = (result.TITLE || [''])[0];
-    let creator = result.CREATOR || [];
-    let maxAuthors = 2;
-    if(creator.length > maxAuthors) {
-      creator = '';
-    } else {
-      creator = creator.join(' & ');
-    }
-    creator = creator.replace(/\s+[(][^)]*[)]/g, '');
-    let fontScale= this.get(optionPath('fontScale'), 50);
-    let currentImage = this.get('currentImage');
-    let image = this.get('images', []).filter(o => o.id === currentImage)[0];
-    image = image || this.get('images', [])[0];
-    image = image || {url:''};
-
-    if(title.length > maxLength) {
-      title = truncateWords(title, maxLength) + '...';
-    }
-    if(creator.length > maxLength) {
-      creator = truncateWords(creator, maxLength) + '...';
-    }
-    let length = Math.max(creator.length, title.length);
-
-    let html = `
-          <style>
-            img {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-            }
-            #main { 
-              width: 100%;
-              height: 100%;
-            }
-            #title {
-              position: absolute;
-              font-weight: bold;
-              font-size: ${Math.min(64, 10 * fontScale / length)}px;
-              text-align: center;
-              width: 100%;
-              white-space: nowrap;
-              background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
-              overflow: hidden;
-              margin: 0;
-              padding: 0;
-              top: ${this.get(optionPath('yPos'), 20)}%;
-              font-family: ${this.get(optionPath('font'))}, sans-serif; 
-            }
-          </style>
-          <div id="main"> 
-            <img src="${image.url}" />
-            <div id="title">
-              ${escapeXml(title)}
-              <br/>
-              ${escapeXml(creator)}
-            </div>
-          </div>`
     console.log('Store:', store.getState().toJS());
+
+    let currentImage = this.get('currentImage', this.get(['images', 0, 'id']));
+    let image = this.get('images', []).filter(o => o.id === currentImage)[0];
+    let cfg = this.get(['options', currentImage], {});
+    let currentResult = this.get('ui.currentResult', 0);
+    let meta = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
+
+    let optionPath = name => ['options', currentImage, name];
+    let bg = this.get(optionPath('background'), {r:50,g:50,b:100,a:0.2});
+
+    let html = coverHtml(image, meta, cfg);
     html2png(html, {width: 334, height: 540})
       .then(s =>  {
         if(html !== this.get('ui.previewHtml')) {
