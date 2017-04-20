@@ -66,7 +66,9 @@ export default class Results extends ReCom {
       display: 'inline-block',
       overflowY: 'hidden',
       overflowX: 'auto',
-    }}>
+    }}
+    onScroll={(e) => console.log('scroll', e.target.scrollLeft)}
+  >
       { Array.isArray(this.get(['results', 0])) &&
           [...Array(10).keys()].map(i => this.result(i))
       }
