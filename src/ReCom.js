@@ -1,7 +1,7 @@
 import React from 'react';
 import {SET_IN, makePath} from './reducer.js';
 import Immutable from 'immutable';
-import deepEqual from 'deep-equal';
+import _ from 'lodash';
 
 export default class ReCom extends React.Component {
 
@@ -52,10 +52,10 @@ export default class ReCom extends React.Component {
   }
 
   shouldComponentUpdate(props, state) {
-    if(!deepEqual(props, this.props)) {
+    if(!_.isEqual(props, this.props)) {
       return true;
     }
-    if(!deepEqual(state, this.state)) {
+    if(!_.isEqual(state, this.state)) {
       return true;
     }
     for(let [path, val] of this.dependencies) {
