@@ -3,7 +3,72 @@ import React from 'react';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 import _ from 'lodash';
-import InfiniteHorisontalList from './InfiniteHorisontalList';
+
+function throttle(fn, time) { // ##
+  let lastCall = 0;
+  time = time || 500;
+  let args, tis;
+  let scheduled = false;
+  function run() {
+    scheduled = false;
+    lastCall = Date.now();
+    fn.apply(tis,args);
+  }
+  return function() {
+    args = _.slice(arguments);
+    tis = this;
+    if(!scheduled) {
+      scheduled = true;
+      setTimeout(run, Math.max(0, time + lastCall - Date.now()));
+    }
+  }
+}
+
+class InfiniteHorisontalList extends ReCom { // ##
+
+  constructor(props, context) {
+    super(props, store);
+    this.prevStart = 0;
+    this.offset = 0;
+    this.throttleSet = throttle((k, v) => this.set(k, v));
+  }
+
+  render() {
+    let path = this.props.path;
+    let elemWidth = this.props.elemWidth;
+    let entryStyle = { display: 'inline-block', width: elemWidth };
+    let divProps = Object.assign({}, this.props);
+    delete divProps.path;
+    delete divProps.elemWidth;
+    delete divProps.generator;
+    let elemCount = (window.innerWidth / elemWidth);
+    let start = Math.max(this.get(path, 0) - 2 * elemCount | 0, 0);
+    if(start !== this.prevStart) {
+      let delta = start - this.prevStart;
+      this.elem.scrollLeft -= delta * elemWidth;
+      this.offset += delta;
+    }
+    this.prevStart = start;
+
+    return <div {...divProps}
+      style={{
+        whiteSpace: 'nowrap',
+        width: '100%',
+        display: 'inline-block',
+        overflowY: 'hidden',
+        overflowX: 'auto',
+      }}
+      onScroll={(e) => {
+        this.elem = e.target;
+        this.throttleSet(path, this.offset + e.target.scrollLeft / this.props.elemWidth);
+      }}
+    >
+      {_.range(start, start + 5 * elemCount).map(i => 
+        <div style={entryStyle}>{this.props.generator(i)}</div>)}
+    </div>
+  }
+
+}
 
 let resultStyle = { // ##
   display: 'inline-block',
@@ -16,6 +81,7 @@ let resultStyle = { // ##
   whiteSpace: 'nowrap',
   overflow:'hidden',
 };
+
 class Result extends ReCom { // ##
   constructor(props, context) {
     super(props, store);

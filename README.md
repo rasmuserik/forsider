@@ -58,6 +58,7 @@ Overblik over applikationstilstanden
 - `query` search query which yields results
 - `ui`
     - `backgroundDialog` true/false
+    - `resultScroll` - scroll position in result, useful to know if we should fetch more result.
     - `currentResult`
     - `previewHtml`
     - `previewUrl`
