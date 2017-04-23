@@ -22,7 +22,7 @@ class Result extends ReCom { // ##
 
   render () {
     let n = this.props.n;
-    let o = this.get(['results', n / 10 |0, n % 10]);
+    let o = this.get(['search', 'results', n]);
     if(!o) {
       return <div key={n} style={resultStyle} />
     } else {
@@ -32,7 +32,7 @@ class Result extends ReCom { // ##
       <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
       <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
       <br/>
-      <img src={'https:' + o.coverUrlThumbnail} alt=""
+      <img src={o.coverUrlThumbnail && 'https:' + o.coverUrlThumbnail} alt=""
            style={{ 
               height: 50,
               width: 35,

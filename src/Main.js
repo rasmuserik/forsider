@@ -26,7 +26,7 @@ export default class Main extends ReCom {
     let image = this.get('images', []).filter(o => o.id === currentImage)[0];
     let cfg = this.get(['options', currentImage], {});
     let currentResult = this.get('ui.currentResult', 0);
-    let meta = this.get(['results', currentResult / 10 |0,  currentResult % 10], {});
+    let meta = this.get(['search', 'results', currentResult], {});
 
     let optionPath = name => ['options', currentImage, name];
     let bg = this.get(optionPath('background'), {r:50,g:50,b:100,a:0.2});

@@ -47,7 +47,7 @@ Overblik over applikationstilstanden
     - `id` - id for image (120bit cryptograph hash of data url, - thus collision free with very high probability)
     - `name` - original file name
     - `url` - data url containing the image
-- `results[][10]` search results, paged in sets of 10.
+- `search.results` current search results
 - `options[image-id]`
     - `background` - `{r,g,b,a}`
     - `font`

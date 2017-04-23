@@ -15,7 +15,7 @@ let resultsPerPage = 10;
 
 async function search(query, page) { // ###
   
-  if(store.getState().getIn(['results', page])) {
+  if(store.getState().getIn(['search', page], undefined) === page) {
     console.log('search already requested');
     return;
   }
@@ -34,7 +34,6 @@ async function search(query, page) { // ###
         //          "@715100", "@715100"
       );
     }
-    set(['results', page], 'loading');
     let results = 
       await window.dbcOpenPlatform.search({
         q: query, limit: resultsPerPage, offset: page * resultsPerPage,
@@ -45,7 +44,7 @@ async function search(query, page) { // ###
         CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
       }));
     }
-    set(['results', page], results);
+    set(['search', 'results'], results);
     let thumbs = 
       await window.dbcOpenPlatform.search({
         q: query, limit: resultsPerPage, offset: page * resultsPerPage,
@@ -54,7 +53,7 @@ async function search(query, page) { // ###
     for(let i = 0; i < thumbs.length; ++i) {
       results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
     }
-    set(['results', page], results);
+    set(['search', 'results'], results);
   } catch(e) { 
     console.log(e);
     set('ui.searchError', str(e)) 
@@ -67,25 +66,37 @@ export default class SearchCQL extends ReCom { // ##
   }
 
   async search() { // ###
-    let dbc = window.dbcOpenPlatform;
     this.set('ui.searching', true);
     this.set('ui.searchError', undefined);
-    await search(this.get('query', ''), 0);
+    await search(this.get('query', ''), this.get('ui.resultPage', 0));
     this.set('ui.searching', false);
   }
 
   render() { // ###
+    let setPage  = async (n) => {
+      n = Math.max(0, n | 0);
+      this.set('search.results', []);
+      this.set('ui.resultPage', n);
+      this.set('ui.searching', true);
+      this.set('ui.searchError', undefined);
+      await search(this.get('query', ''), n);
+      this.set('ui.searching', false);
+    }
+
+
     return <div style={{
       //padding: '0px 0px 10px 30px'
     }}>
+
     <TextField 
       onKeyDown={e => e.key === 'Enter' && this.search()}
       style={{width: '80%'}}
       value={this.get('query', '')}
       onChange={(_, val)=>{
-        this.set('results', []);
+        this.set('search.results', []);
         this.set('ui.searchError', undefined);
         this.set('query', val);
+        this.set('ui.resultPage', 0);
       }}
       floatingLabelText="CQL Søgestreng"/>
 
@@ -99,22 +110,17 @@ export default class SearchCQL extends ReCom { // ##
         type="number"
         value={this.get('ui.resultPage', 0) + 1}
         style={{width:60}}
-        onChange={(_, val) =>{
-          console.log('page', val);
-          this.set('ui.resultPage', Math.max(0,(val|0) - 1));
-        }}
+        onChange={(_, val) => setPage(Math.max(0,(val|0) - 1)) }
       />
 
     <IconButton
-      onClick={() => this.set('ui.resultPage',
-        Math.max(0,
+      onClick={() => setPage(Math.max(0,
           this.get('ui.resultPage', 0) - 1))}
         >
           <ActionPrev/>
         </IconButton>
         <IconButton
-          onClick={() => this.set('ui.resultPage',
-            this.get('ui.resultPage', 0) + 1)} 
+          onClick={() => setPage(this.get('ui.resultPage', 0) + 1)} 
           >
             <ActionNext />
           </IconButton>
