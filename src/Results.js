@@ -3,7 +3,6 @@ import React from 'react';
 import {store} from './store.js';
 import ReCom from './ReCom.js';
 import _ from 'lodash';
-import InfiniteHorisontalList from './InfiniteHorisontalList';
 
 let resultStyle = { // ##
   display: 'inline-block',
@@ -73,11 +72,7 @@ export default class Results extends ReCom { // ##
       <pre>{String(this.get('ui.searchError'))}</pre>
     </div>
     }
-    <InfiniteHorisontalList
-      path={'ui.resultScroll'}
-      elemWidth={140}
-      generator={(i) => <div><small>{i+1}.</small><br/><Result n={i}/></div>}
-    />
+    {_.range(10).map(i => <Result n={i}/>)}
   </div>
   }
 }
