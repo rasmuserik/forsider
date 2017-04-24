@@ -12,7 +12,7 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 
 - Upload til forsideservice
     - Gennemløb af resultater + upload-mock
-    - **Blokeret** mangler adgang til moreinfoupdate.
+    - **Blokeret** Mangler adgang til moreinfoupdate.
 - Komplet UI
     - Autogenerer forsider i preview
     - Autovælg forsidebillede baseret på søgeresultat
@@ -24,6 +24,7 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
     - **Blokeret** Søgning på manifest-niveau, samt antal hits. Er vist ikke understøttet i den åbne platform, - så kan ikke udvikle dette uden adgang til opensearch/moreinfo.
     - **Blokeret** Søgning timer ud for sene søgeresultater, i.e. side 100.
     - Mål font-størrelse of skalér derefter
+- Separate felter for titel/forfatter
 - Gem/synkroniser info om uploadede billeder
     - Vil nok bruge PouchDB/CouchDB i stedet for filer, da det er en bedre måde at synkroniserer på.
 - Dokumentation
