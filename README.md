@@ -1,6 +1,6 @@
 <img src=https://forsider.solsort.com/icon.png width=96 height=96 align=right>
 
-# Generering af forsider
+# Generiske forsider
 
 Værktøj til generering af forsider til biblioteksmaterialer, samt upload af disse.
 
