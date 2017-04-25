@@ -24,9 +24,9 @@ class Result extends ReCom { // ##
     let n = this.props.n;
     let o = this.get(['search', 'results', n]);
     if(!o) {
-      return <div key={n} style={resultStyle} />
+      return <div style={resultStyle} />
     } else {
-    return o && <div key={n}
+    return o && <div
       onMouseEnter={() => this.set('ui.currentResult', n)}
       style={resultStyle}>
       <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
@@ -79,10 +79,7 @@ export default class Results extends ReCom { // ##
       <pre>{String(this.get('ui.searchError'))}</pre>
     </div>
     }
-      <div style={{
-      }}>
-    {_.range(10).map(i => <Result n={i}/>)}
-    </div>
+    {_.range(10).map(i => <Result key={i} n={i}/>)}
   </div>
   }
 }

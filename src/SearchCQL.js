@@ -112,6 +112,7 @@ export class SearchCQL extends ReCom { // #
       Side <TextField
         type="number"
         value={this.get('search.page', 0) + 1}
+        key="Side"
         style={{width:60}}
         onChange={(_, val) => setPage(Math.max(0,(val|0) - 1)) }
       />
