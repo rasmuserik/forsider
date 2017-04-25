@@ -11,7 +11,7 @@ let resultStyle = {
   verticalAlign: 'top',
   marginRight: 20,
   lineHeight: '10px',
-  height: 140,
+  height: 160,
   fontSize: 10,
   whiteSpace: 'nowrap',
   overflow: 'hidden'
@@ -46,16 +46,24 @@ class Result extends ReCom {
               float: 'left'
             }}
           />
+          <div style={{textAlign: 'right'}}>
           <img
             src=""
             alt="Ny forside (TODO)"
             style={{
               height: 100,
               width: 70,
-              border: '1px solid black',
-              float: 'right'
+              border: '1px solid black'
             }}
           />
+        </div><br/>
+          {
+            o.STATUS.uploaded
+              ? 'Forside uploadet'
+              : o.coverUrlThumbnail 
+              ? ''
+            : 'Ingen forside'
+          }
         </div>
       );
     }

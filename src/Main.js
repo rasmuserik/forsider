@@ -69,9 +69,28 @@ export default class Main extends ReCom {
                 )}
                 labelPosition="right"
                 toggled={this.get('upload.singlePage', true)}
-                onToggle={(_, val) =>
-                  this.set('upload.singlePage', val)}
-                label="Upload kun én side"
+                onToggle={(_, val) => {
+                  this.set('upload.singlePage', val);
+                  this.set('upload.uploading', false);
+                }}
+                label="Upload kun for én side søgeresultater"
+                labelStyle={{color: '#000'}}
+              />
+              <Toggle
+                style={Object.assign(
+                  {
+                    display: 'inline-block',
+                    width: 200
+                  },
+                  {margin: 10}
+                )}
+                toggled={this.get('upload.overwriteOwn', false)}
+                onToggle={(_, val) => {
+                  this.set('upload.overwriteOwn', val);
+                  this.set('upload.uploading', false);
+                }}
+                labelPosition="right"
+                label="Overskriv egne forsider"
                 labelStyle={{color: '#000'}}
               />
               <Toggle
@@ -83,9 +102,15 @@ export default class Main extends ReCom {
                   {margin: 10}
                 )}
                 toggled={this.get('upload.overwrite', false)}
-                onToggle={(_, val) => this.set('upload.overwrite', val)}
+                onToggle={(_, val) => {
+                  this.set('upload.overwrite', val);
+                  this.set('upload.uploading', false);
+                  if(val) {
+                    this.set('upload.overwriteOwn', true)
+                  }
+                }}
                 labelPosition="right"
-                label="Overskriv"
+                label="Overskriv forsider"
                 thumbSwitchedStyle={{backgroundColor: '#f00'}}
                 trackSwitchedStyle={{backgroundColor: '#faa'}}
                 labelStyle={{color: '#000'}}

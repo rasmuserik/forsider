@@ -86,23 +86,29 @@ Overblik over applikationstilstanden
     - `id` - id for image (120bit cryptograph hash of data url, - thus collision free with very high probability)
     - `name` - original file name
     - `url` - data url containing the image
-- `search.results` current search results
+- `search` 
+    - `results`
+    - `query`
+    - `searching`
+    - `error`
+    - `page`
 - `options[image-id]`
     - `background` - `{r,g,b,a}`
     - `font`
     - `fontScale`
     - `maxLen`
     - `yPos` 0-100
+- `upload`
+    - `overwrite`
+    - `overwriteOwn`
+    - `singlePage`
+    - `uploading`
 - `currentImage`
 - `query` search query which yields results
 - `ui`
-    - `backgroundDialog` true/false
-    - `resultScroll` - scroll position in result, useful to know if we should fetch more result.
     - `currentResult`
     - `previewHtml`
     - `previewUrl`
-    - `searchError`
-    - `searching`
 
 # Noter
 

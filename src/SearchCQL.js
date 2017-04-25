@@ -16,7 +16,6 @@ import {str} from 'solsort-util';
 let resultsPerPage = 10;
 
 export async function search(query, page) {
-  // #
   function set(path, value) {
     store.dispatch({type: 'SET_IN', path, value});
   }
@@ -32,8 +31,8 @@ export async function search(query, page) {
   set('search.results', []);
   set('search.page', page);
   set('search.query', query);
-  set('ui.searching', true);
-  set('ui.searchError', undefined);
+  set('search.searching', true);
+  set('search.error', undefined);
 
   let dbc = window.dbcOpenPlatform;
   try {
@@ -54,11 +53,13 @@ export async function search(query, page) {
       results = results.map(o =>
         Object.assign(o, {
           TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
-          CREATOR: o.dcCreator || o.creatorAut || o.creator || []
+          CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
+          // TODO currently random status, should be loaded from pouchdb
+          STATUS: {uploaded: Math.random() > 0.7}
         })
       );
     }
-    set(['search', 'results'], results);
+
     let thumbs = await window.dbcOpenPlatform.search({
       q: query,
       limit: resultsPerPage,
@@ -71,28 +72,21 @@ export async function search(query, page) {
     set(['search', 'results'], results);
   } catch (e) {
     console.log(e);
-    set('ui.searchError', str(e));
+    set('search.error', str(e));
   }
-  set('ui.searching', false);
+  set('search.searching', false);
 }
 
 export class SearchCQL extends ReCom {
-  // #
   constructor(props, context) {
-    // ##
     super(props, store);
   }
 
   async search() {
-    // ##
-    this.set('ui.searching', true);
-    this.set('ui.searchError', undefined);
     await search(this.get('query', ''), this.get('search.page', 0));
-    this.set('ui.searching', false);
   }
 
   render() {
-    // ##
     let setPage = async n => {
       await search(this.get('query', ''), n);
     };
@@ -109,7 +103,7 @@ export class SearchCQL extends ReCom {
           value={this.get('query', '')}
           onChange={(_, val) => {
             this.set('search.results', []);
-            this.set('ui.searchError', undefined);
+            this.set('search.error', undefined);
             this.set('query', val);
             this.set('search.page', 0);
           }}
@@ -117,7 +111,7 @@ export class SearchCQL extends ReCom {
         />
 
         <IconButton onClick={() => this.search()}>
-          {this.get('ui.searching')
+          {this.get('search.searching')
             ? <CircularProgress size={32} />
             : <ActionSearch />}
         </IconButton> <br />
