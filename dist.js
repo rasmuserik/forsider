@@ -56307,8 +56307,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 (0, _reactTapEventPlugin2.default)();
 
-;
-
 render();
 module.hot && module.hot.accept('./Main', render);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
@@ -57997,7 +57995,12 @@ var CoverOptions = function (_ReCom) {
       var optionPath = function optionPath(name) {
         return ['options', currentImage, name];
       };
-      var bg = this.get(optionPath('background'), { r: 50, g: 50, b: 100, a: 0.2 });
+      var bg = this.get(optionPath('background'), {
+        r: 50,
+        g: 50,
+        b: 100,
+        a: 0.2
+      });
 
       return _react2.default.createElement(
         'div',
@@ -58024,7 +58027,8 @@ var CoverOptions = function (_ReCom) {
           null,
           _react2.default.createElement(
             'label',
-            { htmlFor: 'fontScale',
+            {
+              htmlFor: 'fontScale',
               style: {
                 display: 'inline-block',
                 marginTop: '20px',
@@ -58055,7 +58059,8 @@ var CoverOptions = function (_ReCom) {
           null,
           _react2.default.createElement(
             'label',
-            { htmlFor: 'yPos',
+            {
+              htmlFor: 'yPos',
               style: {
                 display: 'inline-block',
                 marginTop: '20px',
@@ -58259,7 +58264,8 @@ var ImageUpload = function (_ReCom) {
 
       return _react2.default.createElement(
         'div',
-        { style: {
+        {
+          style: {
             display: 'inline-block',
             position: 'relative',
             width: '100%',
@@ -58267,7 +58273,8 @@ var ImageUpload = function (_ReCom) {
           } },
         _react2.default.createElement(
           'div',
-          { style: {
+          {
+            style: {
               position: 'absolute',
               left: 0,
               right: 0,
@@ -58285,7 +58292,8 @@ var ImageUpload = function (_ReCom) {
             onChange: function onChange(o) {
               return _this2.addImages(o.target.files);
             },
-            style: { display: 'none' } }),
+            style: { display: 'none' }
+          }),
           this.get('images', []).map(function (o) {
             return _react2.default.createElement(
               _Paper2.default,
@@ -58296,7 +58304,7 @@ var ImageUpload = function (_ReCom) {
                 },
                 style: {
                   display: 'inline-block',
-                  width: .7 * height,
+                  width: 0.7 * height,
                   height: height,
                   verticalAlign: 'middle',
                   margin: 10,
@@ -58317,17 +58325,18 @@ var ImageUpload = function (_ReCom) {
                       type: 'REMOVE_IMAGE',
                       id: o.id
                     });
-                  }
-                },
+                  } },
                 _react2.default.createElement(_remove2.default, null)
               ),
-              _react2.default.createElement('img', { src: o.url,
+              _react2.default.createElement('img', {
+                src: o.url,
                 alt: '',
                 style: {
                   position: 'absolute',
                   width: '100%',
                   height: '100%'
-                } }),
+                }
+              }),
               o.name
             );
           }),
@@ -58340,8 +58349,7 @@ var ImageUpload = function (_ReCom) {
               onClick: function onClick() {
                 var elem = document.getElementById(_this2.inputId);
                 elem.click();
-              }
-            },
+              } },
             _react2.default.createElement(_add2.default, null)
           )
         )
@@ -58448,7 +58456,12 @@ var Main = function (_ReCom) {
       var optionPath = function optionPath(name) {
         return ['options', currentImage, name];
       };
-      var bg = this.get(optionPath('background'), { r: 50, g: 50, b: 100, a: 0.2 });
+      var bg = this.get(optionPath('background'), {
+        r: 50,
+        g: 50,
+        b: 100,
+        a: 0.2
+      });
 
       var html = (0, _coverHtml2.default)(image, meta, cfg);
       (0, _htmlToCanvas.html2png)(html, { width: 334, height: 540 }).then(function (s) {
@@ -58479,36 +58492,59 @@ var Main = function (_ReCom) {
               _react2.default.createElement(_Toggle2.default, {
                 style: Object.assign({
                   display: 'inline-block',
-                  width: 200 }, { margin: 10 }),
+                  width: 200
+                }, { margin: 10 }),
                 labelPosition: 'right',
                 toggled: this.get('upload.singlePage', true),
                 onToggle: function onToggle(_, val) {
-                  return _this2.set('upload.singlePage', val);
+                  _this2.set('upload.singlePage', val);
+                  _this2.set('upload.uploading', false);
                 },
-                label: 'Upload kun \xE9n side',
+                label: 'Upload kun for \xE9n side s\xF8geresultater',
                 labelStyle: { color: '#000' }
               }),
               _react2.default.createElement(_Toggle2.default, {
                 style: Object.assign({
                   display: 'inline-block',
-                  width: 200 }, { margin: 10 }),
-                toggled: this.get('upload.overwrite', false),
+                  width: 200
+                }, { margin: 10 }),
+                toggled: this.get('upload.overwriteOwn', false),
                 onToggle: function onToggle(_, val) {
-                  return _this2.set('upload.overwrite', val);
+                  _this2.set('upload.overwriteOwn', val);
+                  _this2.set('upload.uploading', false);
                 },
                 labelPosition: 'right',
-                label: 'Overskriv',
+                label: 'Overskriv egne forsider',
+                labelStyle: { color: '#000' }
+              }),
+              _react2.default.createElement(_Toggle2.default, {
+                style: Object.assign({
+                  display: 'inline-block',
+                  width: 200
+                }, { margin: 10 }),
+                toggled: this.get('upload.overwrite', false),
+                onToggle: function onToggle(_, val) {
+                  _this2.set('upload.overwrite', val);
+                  _this2.set('upload.uploading', false);
+                  if (val) {
+                    _this2.set('upload.overwriteOwn', true);
+                  }
+                },
+                labelPosition: 'right',
+                label: 'Overskriv forsider',
                 thumbSwitchedStyle: { backgroundColor: '#f00' },
                 trackSwitchedStyle: { backgroundColor: '#faa' },
                 labelStyle: { color: '#000' }
               }),
-              this.get('upload.uploading', false) ? _react2.default.createElement(_RaisedButton2.default, { label: 'Stop upload',
+              this.get('upload.uploading', false) ? _react2.default.createElement(_RaisedButton2.default, {
+                label: 'Stop upload',
                 fullWidth: true,
                 secondary: true,
                 onClick: function onClick() {
                   return _this2.set('upload.uploading', false);
                 }
-              }) : _react2.default.createElement(_RaisedButton2.default, { label: 'Upload opdatering af forsider',
+              }) : _react2.default.createElement(_RaisedButton2.default, {
+                label: 'Upload opdatering af forsider',
                 fullWidth: true,
                 primary: true,
                 onClick: function onClick() {
@@ -58518,16 +58554,23 @@ var Main = function (_ReCom) {
             ),
             _react2.default.createElement(
               _Paper2.default,
-              { style: { display: 'inline-block', margin: 10, width: 334 } },
+              {
+                style: {
+                  display: 'inline-block',
+                  margin: 10,
+                  width: 334
+                } },
               _react2.default.createElement('img', { src: this.get('ui.previewUrl') })
             )
           ),
           _react2.default.createElement(
             _Paper2.default,
-            { style: {
+            {
+              style: {
                 flex: '1 1 auto',
                 margin: 10,
-                padding: 10 } },
+                padding: 10
+              } },
             _react2.default.createElement(_CoverOptions2.default, null)
           )
         ),
@@ -58580,13 +58623,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var resultStyle = { // ##
+var resultStyle = {
+  // ##
   display: 'inline-block',
   width: 120,
   verticalAlign: 'top',
   marginRight: 20,
   lineHeight: '10px',
-  height: 140,
+  height: 160,
   fontSize: 10,
   whiteSpace: 'nowrap',
   overflow: 'hidden'
@@ -58610,11 +58654,11 @@ var Result = function (_ReCom) {
       var n = this.props.n;
       var o = this.get(['search', 'results', n]);
       if (!o) {
-        return _react2.default.createElement('div', { key: n, style: resultStyle });
+        return _react2.default.createElement('div', { style: resultStyle });
       } else {
         return o && _react2.default.createElement(
           'div',
-          { key: n,
+          {
             onMouseEnter: function onMouseEnter() {
               return _this2.set('ui.currentResult', n);
             },
@@ -58640,20 +58684,31 @@ var Result = function (_ReCom) {
             )
           ),
           _react2.default.createElement('br', null),
-          _react2.default.createElement('img', { src: o.coverUrlThumbnail && 'https:' + o.coverUrlThumbnail, alt: '',
+          _react2.default.createElement('img', {
+            src: o.coverUrlThumbnail && 'https:' + o.coverUrlThumbnail,
+            alt: '',
             style: {
               height: 50,
               width: 35,
               border: '1px solid black',
               float: 'left'
-            } }),
-          _react2.default.createElement('img', { src: '', alt: 'Ny forside (TODO)',
-            style: {
-              height: 100,
-              width: 70,
-              border: '1px solid black',
-              float: 'right'
-            } })
+            }
+          }),
+          _react2.default.createElement(
+            'div',
+            { style: { textAlign: 'right' } },
+            _react2.default.createElement('img', {
+              src: '',
+              alt: 'Ny forside (TODO)',
+              style: {
+                height: 100,
+                width: 70,
+                border: '1px solid black'
+              }
+            })
+          ),
+          _react2.default.createElement('br', null),
+          o.STATUS.uploaded ? 'Forside uploadet' : o.coverUrlThumbnail ? '' : 'Ingen forside'
         );
       }
     }
@@ -58678,7 +58733,8 @@ var Results = function (_ReCom2) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { style: {
+        {
+          style: {
             display: 'inline-block',
             textAlign: 'left',
             whiteSpace: 'nowrap',
@@ -58687,7 +58743,8 @@ var Results = function (_ReCom2) {
           } },
         this.get('ui.searchError') && _react2.default.createElement(
           'div',
-          { style: {
+          {
+            style: {
               display: 'inline-block',
               outline: '1px solid red',
               textAlign: 'left',
@@ -58705,13 +58762,9 @@ var Results = function (_ReCom2) {
             String(this.get('ui.searchError'))
           )
         ),
-        _react2.default.createElement(
-          'div',
-          { style: {} },
-          _lodash2.default.range(10).map(function (i) {
-            return _react2.default.createElement(Result, { n: i });
-          })
-        )
+        _lodash2.default.range(10).map(function (i) {
+          return _react2.default.createElement(Result, { key: i, n: i });
+        })
       );
     }
   }]);
@@ -58744,8 +58797,7 @@ var _search = function () {
           case 0:
             set = function set(path, value) {
               _store.store.dispatch({ type: 'SET_IN', path: path, value: value });
-            }; // #
-
+            };
 
             page = Math.max(0, page | 0);
 
@@ -58761,8 +58813,8 @@ var _search = function () {
             set('search.results', []);
             set('search.page', page);
             set('search.query', query);
-            set('ui.searching', true);
-            set('ui.searchError', undefined);
+            set('search.searching', true);
+            set('search.error', undefined);
 
             dbc = window.dbcOpenPlatform;
             _context.prev = 11;
@@ -58775,12 +58827,16 @@ var _search = function () {
             _context.next = 15;
             return dbc.connect(
             // TODO: use actual client-id, and local library branch
-            "a36227da-e477-491e-b4a2-ccd9df365cf9", "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
+            'a36227da-e477-491e-b4a2-ccd9df365cf9', 'YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM'
+            //          "@715100", "@715100"
+            );
 
           case 15:
             _context.next = 17;
             return window.dbcOpenPlatform.search({
-              q: query, limit: resultsPerPage, offset: page * resultsPerPage
+              q: query,
+              limit: resultsPerPage,
+              offset: page * resultsPerPage
             });
 
           case 17:
@@ -58790,43 +58846,47 @@ var _search = function () {
               results = results.map(function (o) {
                 return Object.assign(o, {
                   TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
-                  CREATOR: o.dcCreator || o.creatorAut || o.creator || []
+                  CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
+                  // TODO currently random status, should be loaded from pouchdb
+                  STATUS: { uploaded: Math.random() > 0.7 }
                 });
               });
             }
-            set(['search', 'results'], results);
-            _context.next = 22;
+
+            _context.next = 21;
             return window.dbcOpenPlatform.search({
-              q: query, limit: resultsPerPage, offset: page * resultsPerPage,
+              q: query,
+              limit: resultsPerPage,
+              offset: page * resultsPerPage,
               fields: ['pid', 'coverUrlThumbnail']
             });
 
-          case 22:
+          case 21:
             thumbs = _context.sent;
 
             for (i = 0; i < thumbs.length; ++i) {
               results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
             }
             set(['search', 'results'], results);
-            _context.next = 31;
+            _context.next = 30;
             break;
 
-          case 27:
-            _context.prev = 27;
+          case 26:
+            _context.prev = 26;
             _context.t0 = _context['catch'](11);
 
             console.log(_context.t0);
-            set('ui.searchError', (0, _solsortUtil.str)(_context.t0));
+            set('search.error', (0, _solsortUtil.str)(_context.t0));
+
+          case 30:
+            set('search.searching', false);
 
           case 31:
-            set('ui.searching', false);
-
-          case 32:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this, [[11, 27]]);
+    }, _callee, this, [[11, 26]]);
   }));
 
   return function _search(_x, _x2) {
@@ -58887,11 +58947,9 @@ exports.search = _search;
 var SearchCQL = exports.SearchCQL = function (_ReCom) {
   _inherits(SearchCQL, _ReCom);
 
-  // #
   function SearchCQL(props, context) {
     _classCallCheck(this, SearchCQL);
 
-    // ##
     return _possibleConstructorReturn(this, (SearchCQL.__proto__ || Object.getPrototypeOf(SearchCQL)).call(this, props, _store.store));
   }
 
@@ -58903,16 +58961,10 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                // ##
-                this.set('ui.searching', true);
-                this.set('ui.searchError', undefined);
-                _context2.next = 4;
+                _context2.next = 2;
                 return _search(this.get('query', ''), this.get('search.page', 0));
 
-              case 4:
-                this.set('ui.searching', false);
-
-              case 5:
+              case 2:
               case 'end':
                 return _context2.stop();
             }
@@ -58931,7 +58983,6 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
     value: function render() {
       var _this2 = this;
 
-      // ##
       var setPage = function () {
         var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(n) {
           return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -58956,7 +59007,8 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
 
       return _react2.default.createElement(
         'div',
-        { style: {
+        {
+          style: {
             //padding: '0px 0px 10px 30px'
           } },
         _react2.default.createElement(_TextField2.default, {
@@ -58967,24 +59019,27 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
           value: this.get('query', ''),
           onChange: function onChange(_, val) {
             _this2.set('search.results', []);
-            _this2.set('ui.searchError', undefined);
+            _this2.set('search.error', undefined);
             _this2.set('query', val);
             _this2.set('search.page', 0);
           },
-          floatingLabelText: 'CQL S\xF8gestreng' }),
+          floatingLabelText: 'CQL S\xF8gestreng'
+        }),
         _react2.default.createElement(
           _IconButton2.default,
           { onClick: function onClick() {
               return _this2.search();
             } },
-          this.get('ui.searching') ? _react2.default.createElement(_CircularProgress2.default, { size: 32 }) : _react2.default.createElement(_search3.default, null)
+          this.get('search.searching') ? _react2.default.createElement(_CircularProgress2.default, { size: 32 }) : _react2.default.createElement(_search3.default, null)
         ),
         ' ',
         _react2.default.createElement('br', null),
-        'Side ',
+        'Side',
+        ' ',
         _react2.default.createElement(_TextField2.default, {
           type: 'number',
           value: this.get('search.page', 0) + 1,
+          key: 'Side',
           style: { width: 60 },
           onChange: function onChange(_, val) {
             return setPage(Math.max(0, (val | 0) - 1));
@@ -58995,8 +59050,7 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
           {
             onClick: function onClick() {
               return setPage(Math.max(0, _this2.get('search.page', 0) - 1));
-            }
-          },
+            } },
           _react2.default.createElement(_chevronLeft2.default, null)
         ),
         _react2.default.createElement(
@@ -59004,8 +59058,7 @@ var SearchCQL = exports.SearchCQL = function (_ReCom) {
           {
             onClick: function onClick() {
               return setPage(_this2.get('search.page', 0) + 1);
-            }
-          },
+            } },
           _react2.default.createElement(_chevronRight2.default, null)
         )
       );
