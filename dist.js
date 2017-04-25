@@ -58405,8 +58405,6 @@ var _coverHtml2 = _interopRequireDefault(_coverHtml);
 
 var _SearchCQL = __webpack_require__(458);
 
-var _SearchCQL2 = _interopRequireDefault(_SearchCQL);
-
 var _Results = __webpack_require__(457);
 
 var _Results2 = _interopRequireDefault(_Results);
@@ -58466,7 +58464,7 @@ var Main = function (_ReCom) {
         _react2.default.createElement(
           _Paper2.default,
           { style: { margin: 10, padding: '0 10px 0 10px' } },
-          _react2.default.createElement(_SearchCQL2.default, null),
+          _react2.default.createElement(_SearchCQL.SearchCQL, null),
           _react2.default.createElement(_Results2.default, null)
         ),
         _react2.default.createElement(
@@ -58475,6 +58473,49 @@ var Main = function (_ReCom) {
           _react2.default.createElement(
             'div',
             { style: { flex: '0 0 334px' } },
+            _react2.default.createElement(
+              _Paper2.default,
+              { style: { margin: 10, padding: 10 } },
+              _react2.default.createElement(_Toggle2.default, {
+                style: Object.assign({
+                  display: 'inline-block',
+                  width: 200 }, { margin: 10 }),
+                labelPosition: 'right',
+                toggled: this.get('upload.singlePage', true),
+                onToggle: function onToggle(_, val) {
+                  return _this2.set('upload.singlePage', val);
+                },
+                label: 'Upload kun \xE9n side',
+                labelStyle: { color: '#000' }
+              }),
+              _react2.default.createElement(_Toggle2.default, {
+                style: Object.assign({
+                  display: 'inline-block',
+                  width: 200 }, { margin: 10 }),
+                toggled: this.get('upload.overwrite', false),
+                onToggle: function onToggle(_, val) {
+                  return _this2.set('upload.overwrite', val);
+                },
+                labelPosition: 'right',
+                label: 'Overskriv',
+                thumbSwitchedStyle: { backgroundColor: '#f00' },
+                trackSwitchedStyle: { backgroundColor: '#faa' },
+                labelStyle: { color: '#000' }
+              }),
+              this.get('upload.uploading', false) ? _react2.default.createElement(_RaisedButton2.default, { label: 'Stop upload',
+                fullWidth: true,
+                secondary: true,
+                onClick: function onClick() {
+                  return _this2.set('upload.uploading', false);
+                }
+              }) : _react2.default.createElement(_RaisedButton2.default, { label: 'Upload opdatering af forsider',
+                fullWidth: true,
+                primary: true,
+                onClick: function onClick() {
+                  return _this2.set('upload.uploading', true);
+                }
+              })
+            ),
             _react2.default.createElement(
               _Paper2.default,
               { style: { display: 'inline-block', margin: 10, width: 334 } },
@@ -58489,25 +58530,6 @@ var Main = function (_ReCom) {
                 padding: 10 } },
             _react2.default.createElement(_CoverOptions2.default, null)
           )
-        ),
-        _react2.default.createElement(
-          _Paper2.default,
-          { style: { margin: 10, padding: 10 } },
-          _react2.default.createElement(_TextField2.default, { floatingLabelText: 'Download sti' }),
-          _react2.default.createElement(_FlatButton2.default, { label: 'Gem til disk', primary: true }),
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(_RaisedButton2.default, { label: 'Upload opdatering af forsider', primary: true }),
-          _react2.default.createElement(_Toggle2.default, {
-            style: Object.assign({
-              display: 'inline-block',
-              width: 200 }, { margin: 10 }),
-            labelPosition: 'right',
-            label: 'Overskriv',
-            thumbSwitchedStyle: { backgroundColor: '#f00' },
-            trackSwitchedStyle: { backgroundColor: '#faa' },
-            labelStyle: { color: '#000' }
-          }),
-          _react2.default.createElement('br', null)
         ),
         _react2.default.createElement(
           'h1',
@@ -58657,13 +58679,20 @@ var Results = function (_ReCom2) {
       return _react2.default.createElement(
         'div',
         { style: {
-            //padding: '0px 0px 10px 30px'
+            display: 'inline-block',
+            textAlign: 'left',
+            whiteSpace: 'nowrap',
+            overflow: 'auto',
+            width: '100%'
           } },
         this.get('ui.searchError') && _react2.default.createElement(
           'div',
           { style: {
               display: 'inline-block',
-              textAlign: 'left'
+              outline: '1px solid red',
+              textAlign: 'left',
+              whiteSpace: 'nowrap',
+              overflow: 'auto'
             } },
           _react2.default.createElement(
             'h3',
@@ -58676,9 +58705,13 @@ var Results = function (_ReCom2) {
             String(this.get('ui.searchError'))
           )
         ),
-        _lodash2.default.range(10).map(function (i) {
-          return _react2.default.createElement(Result, { n: i });
-        })
+        _react2.default.createElement(
+          'div',
+          { style: {} },
+          _lodash2.default.range(10).map(function (i) {
+            return _react2.default.createElement(Result, { n: i });
+          })
+        )
       );
     }
   }]);
@@ -58698,6 +58731,7 @@ exports.default = Results;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.SearchCQL = exports.search = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -58710,37 +58744,46 @@ var _search = function () {
           case 0:
             set = function set(path, value) {
               _store.store.dispatch({ type: 'SET_IN', path: path, value: value });
-            };
+            }; // #
 
-            if (!(_store.store.getState().getIn(['search', page], undefined) === page)) {
-              _context.next = 4;
+
+            page = Math.max(0, page | 0);
+
+            if (!(_store.store.getState().getIn(['search', 'page'], undefined) === page && _store.store.getState().getIn(['search', 'query'], undefined) === query)) {
+              _context.next = 5;
               break;
             }
 
             console.log('search already requested');
             return _context.abrupt('return');
 
-          case 4:
+          case 5:
+            set('search.results', []);
+            set('search.page', page);
+            set('search.query', query);
+            set('ui.searching', true);
+            set('ui.searchError', undefined);
+
             dbc = window.dbcOpenPlatform;
-            _context.prev = 5;
+            _context.prev = 11;
 
             if (dbc.connected()) {
-              _context.next = 9;
+              _context.next = 15;
               break;
             }
 
-            _context.next = 9;
+            _context.next = 15;
             return dbc.connect(
             // TODO: use actual client-id, and local library branch
             "a36227da-e477-491e-b4a2-ccd9df365cf9", "YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM");
 
-          case 9:
-            _context.next = 11;
+          case 15:
+            _context.next = 17;
             return window.dbcOpenPlatform.search({
               q: query, limit: resultsPerPage, offset: page * resultsPerPage
             });
 
-          case 11:
+          case 17:
             results = _context.sent;
 
             if (Array.isArray(results)) {
@@ -58752,35 +58795,38 @@ var _search = function () {
               });
             }
             set(['search', 'results'], results);
-            _context.next = 16;
+            _context.next = 22;
             return window.dbcOpenPlatform.search({
               q: query, limit: resultsPerPage, offset: page * resultsPerPage,
               fields: ['pid', 'coverUrlThumbnail']
             });
 
-          case 16:
+          case 22:
             thumbs = _context.sent;
 
             for (i = 0; i < thumbs.length; ++i) {
               results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
             }
             set(['search', 'results'], results);
-            _context.next = 25;
+            _context.next = 31;
             break;
 
-          case 21:
-            _context.prev = 21;
-            _context.t0 = _context['catch'](5);
+          case 27:
+            _context.prev = 27;
+            _context.t0 = _context['catch'](11);
 
             console.log(_context.t0);
             set('ui.searchError', (0, _solsortUtil.str)(_context.t0));
 
-          case 25:
+          case 31:
+            set('ui.searching', false);
+
+          case 32:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this, [[5, 21]]);
+    }, _callee, this, [[11, 27]]);
   }));
 
   return function _search(_x, _x2) {
@@ -58836,14 +58882,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var resultsPerPage = 10;
 
-var SearchCQL = function (_ReCom) {
+exports.search = _search;
+
+var SearchCQL = exports.SearchCQL = function (_ReCom) {
   _inherits(SearchCQL, _ReCom);
 
-  // ##
+  // #
   function SearchCQL(props, context) {
     _classCallCheck(this, SearchCQL);
 
-    // ###
+    // ##
     return _possibleConstructorReturn(this, (SearchCQL.__proto__ || Object.getPrototypeOf(SearchCQL)).call(this, props, _store.store));
   }
 
@@ -58855,11 +58903,11 @@ var SearchCQL = function (_ReCom) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                // ###
+                // ##
                 this.set('ui.searching', true);
                 this.set('ui.searchError', undefined);
                 _context2.next = 4;
-                return _search(this.get('query', ''), this.get('ui.resultPage', 0));
+                return _search(this.get('query', ''), this.get('search.page', 0));
 
               case 4:
                 this.set('ui.searching', false);
@@ -58883,25 +58931,17 @@ var SearchCQL = function (_ReCom) {
     value: function render() {
       var _this2 = this;
 
-      // ###
+      // ##
       var setPage = function () {
         var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(n) {
           return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
-                  n = Math.max(0, n | 0);
-                  _this2.set('search.results', []);
-                  _this2.set('ui.resultPage', n);
-                  _this2.set('ui.searching', true);
-                  _this2.set('ui.searchError', undefined);
-                  _context3.next = 7;
+                  _context3.next = 2;
                   return _search(_this2.get('query', ''), n);
 
-                case 7:
-                  _this2.set('ui.searching', false);
-
-                case 8:
+                case 2:
                 case 'end':
                   return _context3.stop();
               }
@@ -58929,7 +58969,7 @@ var SearchCQL = function (_ReCom) {
             _this2.set('search.results', []);
             _this2.set('ui.searchError', undefined);
             _this2.set('query', val);
-            _this2.set('ui.resultPage', 0);
+            _this2.set('search.page', 0);
           },
           floatingLabelText: 'CQL S\xF8gestreng' }),
         _react2.default.createElement(
@@ -58944,7 +58984,7 @@ var SearchCQL = function (_ReCom) {
         'Side ',
         _react2.default.createElement(_TextField2.default, {
           type: 'number',
-          value: this.get('ui.resultPage', 0) + 1,
+          value: this.get('search.page', 0) + 1,
           style: { width: 60 },
           onChange: function onChange(_, val) {
             return setPage(Math.max(0, (val | 0) - 1));
@@ -58954,7 +58994,7 @@ var SearchCQL = function (_ReCom) {
           _IconButton2.default,
           {
             onClick: function onClick() {
-              return setPage(Math.max(0, _this2.get('ui.resultPage', 0) - 1));
+              return setPage(Math.max(0, _this2.get('search.page', 0) - 1));
             }
           },
           _react2.default.createElement(_chevronLeft2.default, null)
@@ -58963,7 +59003,7 @@ var SearchCQL = function (_ReCom) {
           _IconButton2.default,
           {
             onClick: function onClick() {
-              return setPage(_this2.get('ui.resultPage', 0) + 1);
+              return setPage(_this2.get('search.page', 0) + 1);
             }
           },
           _react2.default.createElement(_chevronRight2.default, null)
@@ -58974,8 +59014,6 @@ var SearchCQL = function (_ReCom) {
 
   return SearchCQL;
 }(_ReCom3.default);
-
-exports.default = SearchCQL;
 
 /***/ }),
 /* 459 */
