@@ -60,19 +60,29 @@ export default class Results extends ReCom { // ##
 
   render() {
     return <div style={{
-      //padding: '0px 0px 10px 30px'
+      display: 'inline-block',
+      textAlign: 'left',
+      whiteSpace: 'nowrap',
+      overflow: 'auto',
+      width: '100%'
     }}>
 
     {this.get('ui.searchError') && 
       <div style={{
         display: 'inline-block',
-        textAlign: 'left'
+        outline: '1px solid red',
+        textAlign: 'left',
+        whiteSpace: 'nowrap',
+        overflow: 'auto'
       }}>
       <h3>Error</h3>
       <pre>{String(this.get('ui.searchError'))}</pre>
     </div>
     }
+      <div style={{
+      }}>
     {_.range(10).map(i => <Result n={i}/>)}
+    </div>
   </div>
   }
 }

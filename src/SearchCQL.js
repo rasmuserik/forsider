@@ -13,16 +13,24 @@ import {str} from 'solsort-util';
 
 let resultsPerPage = 10;
 
-async function search(query, page) { // ###
-  
-  if(store.getState().getIn(['search', page], undefined) === page) {
-    console.log('search already requested');
-    return;
-  }
-
+export async function search(query, page) { // #
   function set(path, value) {
     store.dispatch({type: 'SET_IN', path, value});
   }
+
+  page = Math.max(0, page | 0);
+  if(store.getState().getIn(['search', 'page'], undefined) === page &&
+    store.getState().getIn(['search', 'query'], undefined) === query) {
+    console.log('search already requested');
+    return;
+  }
+  set('search.results', []);
+  set('search.page', page);
+  set('search.query', query);
+  set('ui.searching', true);
+  set('ui.searchError', undefined);
+
+
 
   let dbc = window.dbcOpenPlatform;
   try {
@@ -58,29 +66,24 @@ async function search(query, page) { // ###
     console.log(e);
     set('ui.searchError', str(e)) 
   }
+  set('ui.searching', false);
 }
 
-export default class SearchCQL extends ReCom { // ##
-  constructor(props, context) { // ###
+export class SearchCQL extends ReCom { // #
+  constructor(props, context) { // ##
     super(props, store);
   }
 
-  async search() { // ###
+  async search() { // ##
     this.set('ui.searching', true);
     this.set('ui.searchError', undefined);
-    await search(this.get('query', ''), this.get('ui.resultPage', 0));
+    await search(this.get('query', ''), this.get('search.page', 0));
     this.set('ui.searching', false);
   }
 
-  render() { // ###
+  render() { // ##
     let setPage  = async (n) => {
-      n = Math.max(0, n | 0);
-      this.set('search.results', []);
-      this.set('ui.resultPage', n);
-      this.set('ui.searching', true);
-      this.set('ui.searchError', undefined);
       await search(this.get('query', ''), n);
-      this.set('ui.searching', false);
     }
 
 
@@ -96,7 +99,7 @@ export default class SearchCQL extends ReCom { // ##
         this.set('search.results', []);
         this.set('ui.searchError', undefined);
         this.set('query', val);
-        this.set('ui.resultPage', 0);
+        this.set('search.page', 0);
       }}
       floatingLabelText="CQL Søgestreng"/>
 
@@ -108,23 +111,23 @@ export default class SearchCQL extends ReCom { // ##
 
       Side <TextField
         type="number"
-        value={this.get('ui.resultPage', 0) + 1}
+        value={this.get('search.page', 0) + 1}
         style={{width:60}}
         onChange={(_, val) => setPage(Math.max(0,(val|0) - 1)) }
       />
 
     <IconButton
       onClick={() => setPage(Math.max(0,
-          this.get('ui.resultPage', 0) - 1))}
-        >
-          <ActionPrev/>
-        </IconButton>
-        <IconButton
-          onClick={() => setPage(this.get('ui.resultPage', 0) + 1)} 
-          >
-            <ActionNext />
-          </IconButton>
+        this.get('search.page', 0) - 1))}
+      >
+        <ActionPrev/>
+      </IconButton>
+      <IconButton
+        onClick={() => setPage(this.get('search.page', 0) + 1)} 
+      >
+        <ActionNext />
+      </IconButton>
 
-        </div>
+    </div>
   }
 }
