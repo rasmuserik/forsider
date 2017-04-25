@@ -1,15 +1,15 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import { ChromePicker } from 'react-color';
-import ReCom from './ReCom'
-import {store} from './store'
+import {ChromePicker} from 'react-color';
+import ReCom from './ReCom';
+import {store} from './store';
 
 let colorStyle = {
   display: 'inline-block',
   overflow: 'hidden',
   height: 240,
   width: 225
-}
+};
 export default class Color extends ReCom {
   constructor(props) {
     super(props, store);
@@ -21,8 +21,8 @@ export default class Color extends ReCom {
       <div style={colorStyle}>
         <ChromePicker
           color={c}
-          onChangeComplete={(c) => {
-            this.set(this.props.path, c.rgb)
+          onChangeComplete={c => {
+            this.set(this.props.path, c.rgb);
           }}
         />
       </div>

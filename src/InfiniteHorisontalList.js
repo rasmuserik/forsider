@@ -4,7 +4,8 @@ import {store} from './store.js';
 import ReCom from './ReCom.js';
 import _ from 'lodash';
 
-function throttle(fn, time) { // ##
+function throttle(fn, time) {
+  // ##
   let lastCall = 0;
   time = time || 500;
   let args, tis;
@@ -12,19 +13,20 @@ function throttle(fn, time) { // ##
   function run() {
     scheduled = false;
     lastCall = Date.now();
-    fn.apply(tis,args);
+    fn.apply(tis, args);
   }
   return function() {
     args = _.slice(arguments);
     tis = this;
-    if(!scheduled) {
+    if (!scheduled) {
       scheduled = true;
       setTimeout(run, Math.max(0, time + lastCall - Date.now()));
     }
-  }
+  };
 }
 
-class InfiniteHorisontalList extends ReCom { // ##
+class InfiniteHorisontalList extends ReCom {
+  // ##
 
   constructor(props, context) {
     super(props, store);
@@ -36,41 +38,47 @@ class InfiniteHorisontalList extends ReCom { // ##
   render() {
     let path = this.props.path;
     let elemWidth = this.props.elemWidth;
-    let entryStyle = { display: 'inline-block', width: elemWidth };
+    let entryStyle = {display: 'inline-block', width: elemWidth};
     let divProps = Object.assign({}, this.props);
     delete divProps.path;
     delete divProps.elemWidth;
     delete divProps.generator;
-    let elemCount = (window.innerWidth / elemWidth);
-    let start = Math.max(this.get(path, 0) - 2 * elemCount | 0, 0);
-    if(start !== this.prevStart) {
+    let elemCount = window.innerWidth / elemWidth;
+    let start = Math.max((this.get(path, 0) - 2 * elemCount) | 0, 0);
+    if (start !== this.prevStart) {
       let delta = start - this.prevStart;
       this.elem.scrollLeft -= delta * elemWidth;
       this.offset += delta;
     }
     this.prevStart = start;
 
-    return <div {...divProps}
-      style={{
-        whiteSpace: 'nowrap',
-        width: '100%',
-        display: 'inline-block',
-        overflowY: 'hidden',
-        overflowX: 'auto',
-      }}
-      onScroll={(e) => {
-        this.elem = e.target;
-        this.throttleSet(path, this.offset + e.target.scrollLeft / this.props.elemWidth);
-      }}
-    >
-      {_.range(start, start + 5 * elemCount).map(i => 
-        <div style={entryStyle}>{this.props.generator(i)}</div>)}
-    </div>
+    return (
+      <div
+        {...divProps}
+        style={{
+          whiteSpace: 'nowrap',
+          width: '100%',
+          display: 'inline-block',
+          overflowY: 'hidden',
+          overflowX: 'auto'
+        }}
+        onScroll={e => {
+          this.elem = e.target;
+          this.throttleSet(
+            path,
+            this.offset + e.target.scrollLeft / this.props.elemWidth
+          );
+        }}>
+        {_.range(start, start + 5 * elemCount).map(i => (
+          <div style={entryStyle}>{this.props.generator(i)}</div>
+        ))}
+      </div>
+    );
   }
-
 }
 
-let resultStyle = { // ##
+let resultStyle = {
+  // ##
   display: 'inline-block',
   width: 120,
   verticalAlign: 'top',
@@ -79,72 +87,87 @@ let resultStyle = { // ##
   height: 140,
   fontSize: 10,
   whiteSpace: 'nowrap',
-  overflow:'hidden',
+  overflow: 'hidden'
 };
 
-class Result extends ReCom { // ##
+class Result extends ReCom {
+  // ##
   constructor(props, context) {
     super(props, store);
   }
 
-  render () {
+  render() {
     let n = this.props.n;
-    let o = this.get(['results', n / 10 |0, n % 10]);
-    if(!o) {
-      return <div key={n} style={resultStyle} />
+    let o = this.get(['results', (n / 10) | 0, n % 10]);
+    if (!o) {
+      return <div key={n} style={resultStyle} />;
     } else {
-    return o && <div key={n}
-      onMouseEnter={() => this.set('ui.currentResult', n)}
-      style={resultStyle}>
-      <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
-      <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
-      <br/>
-      <img src={'https:' + o.coverUrlThumbnail} alt=""
-           style={{ 
+      return (
+        o &&
+        <div
+          key={n}
+          onMouseEnter={() => this.set('ui.currentResult', n)}
+          style={resultStyle}>
+          <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
+          <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
+          <br />
+          <img
+            src={'https:' + o.coverUrlThumbnail}
+            alt=""
+            style={{
               height: 50,
               width: 35,
               border: '1px solid black',
-              float: 'left',
-            }}/>
-          <img src="" alt="Ny forside (TODO)"
-           style={{ 
+              float: 'left'
+            }}
+          />
+          <img
+            src=""
+            alt="Ny forside (TODO)"
+            style={{
               height: 100,
               width: 70,
               border: '1px solid black',
-              float: 'right',
-            }}/>
-    </div>
+              float: 'right'
+            }}
+          />
+        </div>
+      );
     }
   }
-
 }
 
-export default class Results extends ReCom { // ##
+export default class Results extends ReCom {
+  // ##
 
   constructor(props, context) {
     super(props, store);
   }
 
   render() {
-    return <div style={{
-      //padding: '0px 0px 10px 30px'
-    }}>
+    return (
+      <div
+        style={{
+          //padding: '0px 0px 10px 30px'
+        }}>
 
-    {this.get('ui.searchError') && 
-      <div style={{
-        display: 'inline-block',
-        textAlign: 'left'
-      }}>
-      <h3>Error</h3>
-      <pre>{String(this.get('ui.searchError'))}</pre>
-    </div>
-    }
-    <InfiniteHorisontalList
-      path={'ui.resultScroll'}
-      elemWidth={140}
-      generator={(i) => <div><small>{i+1}.</small><br/><Result n={i}/></div>}
-    />
-  </div>
+        {this.get('ui.searchError') &&
+          <div
+            style={{
+              display: 'inline-block',
+              textAlign: 'left'
+            }}>
+            <h3>Error</h3>
+            <pre>{String(this.get('ui.searchError'))}</pre>
+          </div>}
+        <InfiniteHorisontalList
+          path={'ui.resultScroll'}
+          elemWidth={140}
+          generator={i => (
+            <div><small>{i + 1}.</small><br /><Result n={i} /></div>
+          )}
+        />
+      </div>
+    );
   }
 }
-

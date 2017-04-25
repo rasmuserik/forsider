@@ -10,106 +10,121 @@ import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
 
 function hash(str) {
-  return btoa(String.fromCharCode.apply(String, sha.sha256.create().update(str).array())).slice(0,20)
+  return btoa(
+    String.fromCharCode.apply(
+      String,
+      sha.sha256.create().update(str).array()
+    )
+  ).slice(0, 20);
 }
 let height = 120;
 
 dispatchTable.REMOVE_IMAGE = (state, action) =>
-  state.set('images', state.get('images').filter(o => o.get('id') !== action.id));
+  state.set(
+    'images',
+    state.get('images').filter(o => o.get('id') !== action.id)
+  );
 
-export default class ImageUpload extends ReCom { 
+export default class ImageUpload extends ReCom {
   constructor(props, context) {
     super(props, store);
     this.inputId = randomId();
   }
   async addImages(imgs) {
     let result = [];
-    for(var i = 0; i < imgs.length; ++i) {
+    for (var i = 0; i < imgs.length; ++i) {
       let img = imgs[i];
-      let url =  await file2url(img);
+      let url = await file2url(img);
       result.push({
         id: hash(url),
         name: img.name,
-        url: url,
+        url: url
       });
     }
     this.set('images', this.get('images', []).concat(result));
   }
   render() {
-    return <div style={{
-        display: 'inline-block',
-        position: 'relative',
-      width: '100%',
-      height: height + 35,
-      }}>
-      <div style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        display: 'inline-block',
-        height: height + 35,
-        whiteSpace: 'nowrap',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-      }}>
-      <input 
-        type="file"
-        accept="image/*"
-        multiple={true}
-        id={this.inputId} 
-        onChange={o => this.addImages(o.target.files)}
-        style={{display: 'none'}} />
-
-
-      {this.get('images', []).map(o => <Paper 
-        key={o.id}
-        onClick={() => this.set('currentImage', o.id)}
+    return (
+      <div
         style={{
           display: 'inline-block',
-          width: .7 * height,
-          height: height,
-          verticalAlign: 'middle',
-          margin: 10,
-          overflow: 'hidden',
           position: 'relative',
+          width: '100%',
+          height: height + 35
         }}>
-        <FloatingActionButton
-          style={{
-            position: 'absolute', 
-            right: 0
-          }}
-          secondary={true}
-          mini={true}
-          onClick={() => this.dispatch({
-            type: 'REMOVE_IMAGE',
-            id: o.id
-          })}
-        >
-        <ContentRemove />
-      </FloatingActionButton>
-        <img src={o.url} 
-          alt=""
+        <div
           style={{
             position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}/>
-        {o.name}
-      </Paper>)}
+            left: 0,
+            right: 0,
+            display: 'inline-block',
+            height: height + 35,
+            whiteSpace: 'nowrap',
+            overflowX: 'auto',
+            overflowY: 'hidden'
+          }}>
+          <input
+            type="file"
+            accept="image/*"
+            multiple={true}
+            id={this.inputId}
+            onChange={o => this.addImages(o.target.files)}
+            style={{display: 'none'}}
+          />
 
-      <FloatingActionButton 
-        style={{
-          margin: 10,
-        }}
-        onClick={()=>{
-          let elem = document.getElementById(this.inputId);
-          elem.click();
-        }}
-      >
-        <ContentAdd />
-      </FloatingActionButton>
+          {this.get('images', []).map(o => (
+            <Paper
+              key={o.id}
+              onClick={() => this.set('currentImage', o.id)}
+              style={{
+                display: 'inline-block',
+                width: 0.7 * height,
+                height: height,
+                verticalAlign: 'middle',
+                margin: 10,
+                overflow: 'hidden',
+                position: 'relative'
+              }}>
+              <FloatingActionButton
+                style={{
+                  position: 'absolute',
+                  right: 0
+                }}
+                secondary={true}
+                mini={true}
+                onClick={() =>
+                  this.dispatch({
+                    type: 'REMOVE_IMAGE',
+                    id: o.id
+                  })}>
+                <ContentRemove />
+              </FloatingActionButton>
+              <img
+                src={o.url}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%'
+                }}
+              />
+              {o.name}
+            </Paper>
+          ))}
 
-    </div>
-  </div>;
+          <FloatingActionButton
+            style={{
+              margin: 10
+            }}
+            onClick={() => {
+              let elem = document.getElementById(this.inputId);
+              elem.click();
+            }}>
+            <ContentAdd />
+          </FloatingActionButton>
+
+        </div>
+      </div>
+    );
   }
 }

@@ -1,5 +1,5 @@
-import { createStore } from 'redux'
-import { reduce } from './reducer.js'
+import {createStore} from 'redux';
+import {reduce} from './reducer.js';
 
 export const store = createStore(reduce);
 

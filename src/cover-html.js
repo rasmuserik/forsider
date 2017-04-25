@@ -1,10 +1,10 @@
-import {escapeXml} from 'solsort-util'
+import {escapeXml} from 'solsort-util';
 
 function truncateWords(str, maxLen) {
   let words = str.split(/\s+/g);
   let result = words[0];
   let i = 1;
-  while((result + ' ' + words[i]).length < maxLen) {
+  while ((result + ' ' + words[i]).length < maxLen) {
     result += ' ' + words[i];
     ++i;
   }
@@ -12,29 +12,29 @@ function truncateWords(str, maxLen) {
 }
 
 export default function coverHtml(img, meta, cfg) {
-  img = img || {url:''};
+  img = img || {url: ''};
 
   let maxAuthors = 2;
 
-  let bg = cfg.background || {r:50,g:50,b:100,a:0.2};
-  let fg = cfg.textColor || {r:0,g:0,b:0,a:1};
+  let bg = cfg.background || {r: 50, g: 50, b: 100, a: 0.2};
+  let fg = cfg.textColor || {r: 0, g: 0, b: 0, a: 1};
   let maxLength = cfg.maxLen || 30;
   let fontScale = cfg.fontScale || 50;
   let yPos = cfg.yPos || 20;
 
   let creator = meta.CREATOR || [];
-  if(creator.length > maxAuthors) {
+  if (creator.length > maxAuthors) {
     creator = '';
   } else {
     creator = creator.join(' & ');
   }
   creator = creator.replace(/\s+[(][^)]*[)]/g, '');
-  if(creator.length > maxLength) {
+  if (creator.length > maxLength) {
     creator = truncateWords(creator, maxLength) + '...';
   }
 
   let title = (meta.TITLE || [''])[0];
-  if(title.length > maxLength) {
+  if (title.length > maxLength) {
     title = truncateWords(title, maxLength) + '...';
   }
 
@@ -76,6 +76,6 @@ export default function coverHtml(img, meta, cfg) {
         <br/>
         ${escapeXml(creator)}
       </div>
-    </div>`
+    </div>`;
   return html;
 }
