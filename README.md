@@ -17,8 +17,6 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
     - Autogenerer forsider i preview
     - Autovælg forsidebillede baseret på søgeresultat
     - Visning af status for upload
-    - UI til start af upload, upload, herunder start/slut-resultatside
-    - Opdater UI, - de 10 søgeresultater ser rodede ud.
 - Misc
     - **Blokeret** Korrekt søgebase. Mangler `client_id` / `client_secret` til app og/eller adgang til opensearch og moreinfo.
     - **Blokeret** Søgning på manifest-niveau, samt antal hits. Er vist ikke understøttet i den åbne platform, - så kan ikke udvikle dette uden adgang til opensearch/moreinfo.
@@ -36,6 +34,7 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 ## Sprint 2 (in progress)
 
 - visning af søgeresultater udover de første ti
+- opdater UI for upload.
 - roadmap
 - fremdrift på bladre i søgeresultater
 - titler beskæres ikke midt i ord
