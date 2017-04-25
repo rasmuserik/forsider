@@ -43,7 +43,7 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - indstillinger knyttet til billede i stedet for globale 
 - drop at skrive forfatter hvis mere end to
 - søgning som ikke/lokalt bibliotek
-- kodeoprydning (app-state, udtræk moduler til separate filer, webpack, etc.)
+- kodeoprydning (app-state, udtræk moduler til separate filer, webpack, prettier code, etc.)
 - mulighed for at slette billeder
 - html2canvas billedgenerering
 - preview-størrelse matcher størrelse på hjemmeside
