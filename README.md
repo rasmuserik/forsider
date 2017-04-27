@@ -12,31 +12,30 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 
 - Upload til forsideservice
     - Gennemløb af resultater + upload-mock
-    - **Blokeret** Mangler adgang til moreinfoupdate.
+    - **Blokeret** Mangler sepcifikation af FTP-upload
 - Komplet UI
     - Autogenerer forsider i preview
     - Autovælg forsidebillede baseret på søgeresultat
     - Visning af status for upload
 - Misc
+    - tilføj mulihed for angivelse af søge-id.
     - **Blokeret** Korrekt søgebase. Mangler `client_id` / `client_secret` til app og/eller adgang til opensearch og moreinfo.
     - **Blokeret** Søgning på manifest-niveau, samt antal hits. Er vist ikke understøttet i den åbne platform, - så kan ikke udvikle dette uden adgang til opensearch/moreinfo.
     - **Blokeret** Søgning timer ud for sene søgeresultater, i.e. side 100.
     - Mål font-størrelse of skalér derefter
 - Separate felter for titel/forfatter
 - Gem/synkroniser info om uploadede billeder
-    - Vil nok bruge PouchDB/CouchDB i stedet for filer, da det er en bedre måde at synkroniserer på.
 - Dokumentation
     - Yderligere udvikler dokumentation for videreudvikling
     - Gennemgå og refaktorer hvor det giver mening
 
 
 # Changelog
-## Sprint 2 (in progress)
+## Sprint 2
 
 - visning af søgeresultater udover de første ti
 - opdater UI for upload.
 - roadmap
-- fremdrift på bladre i søgeresultater
 - titler beskæres ikke midt i ord
 - font-valg
 - drop årstal i forfatternavn
@@ -111,6 +110,13 @@ Overblik over applikationstilstanden
     - `previewUrl`
 
 # Noter
+
+## Møde 2017-04-27
+
+- status
+- demo
+- plan næste sprint
+- faktura
 
 ## misc
 
