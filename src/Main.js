@@ -62,7 +62,7 @@ export default class Main extends ReCom {
 
     let currentResult = this.get('ui.currentResult', 0);
     let currentPage = this.get('search.page', 0);
-    let images = this.get('images');
+    let images = this.get('images', []);
     let currentImage = '';
     if(images.length > 0) {
       currentImage = images[(currentResult + 10 * currentPage) % images.length].id;
