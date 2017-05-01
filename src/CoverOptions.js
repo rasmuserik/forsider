@@ -22,15 +22,8 @@ export default class CoverOptions extends ReCom {
   }
 
   render() {
-    let currentImage =
-      this.get('currentImage') || this.get(['images', 0, 'id']) || '';
+    let currentImage = this.props.currentImage || ''
     let optionPath = name => ['options', currentImage, name];
-    let bg = this.get(optionPath('background'), {
-      r: 50,
-      g: 50,
-      b: 100,
-      a: 0.2
-    });
 
     return (
       <div>

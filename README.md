@@ -31,6 +31,7 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 
 
 # Changelog
+## Sprint 3
 ## Sprint 2
 
 - visning af søgeresultater udover de første ti
@@ -116,6 +117,7 @@ Overblik over applikationstilstanden
 - status
 - demo
 - plan næste sprint
+- opensearch parametre
 - faktura
 
 ## misc

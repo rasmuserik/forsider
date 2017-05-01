@@ -1,6 +1,6 @@
 {
   "name": "nodewebkit-dev",
-  "main": "http://localhost:3000/",
+  "main": "http://localhost:8080/",
   "dependencies": {
     "react-canvas": "^1.3.0"
   }

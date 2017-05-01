@@ -13,41 +13,61 @@ import coverHtml from './cover-html';
 import {SearchCQL} from './SearchCQL.js';
 import Results from './Results.js';
 import CoverOptions from './CoverOptions';
+import Immutable from 'immutable';
 
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
   }
 
+  async renderPreviews() {
+    if(this.renderRunning) {
+      this.renderRerun = true;
+      return;
+    }
+    this.renderRerun = false;
+    this.renderRunning = true;
+
+    let state = store.getState();
+    let images = this.get('images', []);
+    let results = this.get('search.results', []);
+    let previews;
+    if(images.length > 0 
+      && results.length > 0) {
+      previews = this.get('previews', []);
+      let searchPage = this.get('search.page', 0);
+      for(let i = 0; i < results.length; ++i) {
+        let image = images[(i + searchPage * 10) % images.length];
+        let currentImage = image.id;
+        let cfg = this.get(['options', currentImage], {});
+        let meta = results[i];
+        let html = coverHtml(image, meta, cfg);
+        previews[i] = previews[i] || {};
+        previews[i].dataUrl = await html2png(html, {width: 334, height: 540});
+      }
+    } else {
+      previews = [];
+    }
+    this.set('previews', previews);
+
+    this.renderRunning = false;
+    if(this.renderRerun) {
+      setTimeout(() => this.renderPreviews(), 0);
+    }
+  }
+
   render() {
+    this.renderPreviews();
     console.log('Store:', store.getState().toJS());
 
-    let currentImage = this.get(
-      'currentImage',
-      this.get(['images', 0, 'id'])
-    );
-    let image = this.get('images', []).filter(
-      o => o.id === currentImage
-    )[0];
-    let cfg = this.get(['options', currentImage], {});
     let currentResult = this.get('ui.currentResult', 0);
-    let meta = this.get(['search', 'results', currentResult], {});
-
-    let optionPath = name => ['options', currentImage, name];
-    let bg = this.get(optionPath('background'), {
-      r: 50,
-      g: 50,
-      b: 100,
-      a: 0.2
-    });
-
-    let html = coverHtml(image, meta, cfg);
-    html2png(html, {width: 334, height: 540}).then(s => {
-      if (html !== this.get('ui.previewHtml')) {
-        this.set('ui.previewUrl', s);
-        this.set('ui.previewHtml', html);
-      }
-    });
+    let currentPage = this.get('search.page', 0);
+    let images = this.get('images');
+    let currentImage = '';
+    if(images.length > 0) {
+      currentImage = images[(currentResult + 10 * currentPage) % images.length].id;
+    }
+    this.get(['options', currentImage]);
 
     return (
       <div>
@@ -116,42 +136,42 @@ export default class Main extends ReCom {
                 labelStyle={{color: '#000'}}
               />
               {this.get('upload.uploading', false)
-                ? <RaisedButton
+                  ? <RaisedButton
                     label="Stop upload"
                     fullWidth={true}
                     secondary={true}
                     onClick={() => this.set('upload.uploading', false)}
                   />
-                : <RaisedButton
+                  : <RaisedButton
                     label="Upload opdatering af forsider"
                     fullWidth={true}
                     primary={true}
                     onClick={() => this.set('upload.uploading', true)}
                   />}
-            </Paper>
-            <Paper
-              style={{
-                display: 'inline-block',
-                margin: 10,
-                width: 334
-              }}>
-              <img src={this.get('ui.previewUrl')} />
-            </Paper>
-          </div>
+                </Paper>
+                <Paper
+                  style={{
+                    display: 'inline-block',
+                    margin: 10,
+                    width: 334
+                  }}>
+                  <img src={this.get(['previews', currentResult , 'dataUrl'])} />
+                </Paper>
+              </div>
 
-          <Paper
-            style={{
-              flex: '1 1 auto',
-              margin: 10,
-              padding: 10
-            }}>
-            <CoverOptions />
-          </Paper>
-        </div>
-        <h1 style={{background: '#f00'}}>
-          Denne app er under udvikling, virker ikke.
-        </h1>
-      </div>
+              <Paper
+                style={{
+                  flex: '1 1 auto',
+                  margin: 10,
+                  padding: 10
+                }}>
+                <CoverOptions currentImage={currentImage} />
+              </Paper>
+            </div>
+            <h1 style={{background: '#f00'}}>
+              Denne app er under udvikling, virker ikke.
+            </h1>
+          </div>
     );
   }
 }

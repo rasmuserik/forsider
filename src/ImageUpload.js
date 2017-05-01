@@ -75,7 +75,6 @@ export default class ImageUpload extends ReCom {
           {this.get('images', []).map(o => (
             <Paper
               key={o.id}
-              onClick={() => this.set('currentImage', o.id)}
               style={{
                 display: 'inline-block',
                 width: 0.7 * height,

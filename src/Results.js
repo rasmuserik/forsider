@@ -5,7 +5,6 @@ import ReCom from './ReCom.js';
 import _ from 'lodash';
 
 let resultStyle = {
-  // ##
   display: 'inline-block',
   width: 120,
   verticalAlign: 'top',
@@ -17,7 +16,6 @@ let resultStyle = {
   overflow: 'hidden'
 };
 class Result extends ReCom {
-  // ##
   constructor(props, context) {
     super(props, store);
   }
@@ -48,8 +46,7 @@ class Result extends ReCom {
           />
           <div style={{textAlign: 'right'}}>
           <img
-            src=""
-            alt="Ny forside (TODO)"
+            src={this.get(['previews', n, 'dataUrl'])}
             style={{
               height: 100,
               width: 70,
@@ -71,8 +68,6 @@ class Result extends ReCom {
 }
 
 export default class Results extends ReCom {
-  // ##
-
   constructor(props, context) {
     super(props, store);
   }
