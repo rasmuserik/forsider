@@ -58537,7 +58537,7 @@ var Main = function (_ReCom) {
 
       var currentResult = this.get('ui.currentResult', 0);
       var currentPage = this.get('search.page', 0);
-      var images = this.get('images');
+      var images = this.get('images', []);
       var currentImage = '';
       if (images.length > 0) {
         currentImage = images[(currentResult + 10 * currentPage) % images.length].id;
@@ -58895,7 +58895,7 @@ var _search = function () {
             _context.next = 15;
             return dbc.connect(
             // TODO: use actual client-id, and local library branch
-            'a36227da-e477-491e-b4a2-ccd9df365cf9', 'YfO7hc8OJ+vUGh9GhMZhJw06cyHxNi48fwWnVLJGPrPHvkZaYYj0cboM'
+            '25255a72-8b1d-4c6a-a7bf-c150e2de2a3c', '953788b65c480bf59f6eeee4257fb190b5ce1a3ee3fec1af58f8362d78770484'
             //          "@715100", "@715100"
             );
 
