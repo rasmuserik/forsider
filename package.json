@@ -19,7 +19,7 @@
   },
   "homepage": "https://forsider.solsort.com/",
   "dependencies": {
-    "html-to-canvas": "^0.0.9",
+    "html-to-canvas": "^0.0.10",
     "immutable": "^4.0.0-rc.2",
     "installed-fonts": "^0.0.1",
     "js-sha256": "^0.5.0",

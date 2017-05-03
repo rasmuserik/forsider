@@ -5,7 +5,7 @@ import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {html2png} from 'html-to-canvas';
+import {html2png, html2jpg} from 'html-to-canvas';
 import ReCom from './ReCom.js';
 import {store} from './store.js';
 import coverHtml from './cover-html';
@@ -15,18 +15,72 @@ import Results from './Results.js';
 import CoverOptions from './CoverOptions';
 import Immutable from 'immutable';
 
+let uploadWidth = 1000;
+let uploadHeight = 1620;
+
+
+/* NB: <input type="file" nwdirectory /> */
+
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
   }
 
+  async generateCovers() {
+    let upload = this.get('upload', {});
+    console.log('generateCovers', upload);
+    this.set('upload.uploading', true);
+
+    let state = store.getState();
+    let images = this.get('images', []);
+    let results = this.get('search.results', []);
+    if(images.length > 0 
+      && results.length > 0) {
+      let searchPage = this.get('search.page', 0);
+      for(let i = 0; i < results.length; ++i) {
+        let meta = results[i];
+
+        if((meta.coverUrlThumbnail && upload.overwrite)
+          ||(/*TODO has own cover*/ false && upload.overwriteOwn) 
+        ) {
+          continue;
+        }
+
+        if(!this.get('upload.uploading')) {
+          return;
+        }
+
+        let image = images[(i + searchPage * 10) % images.length];
+        let currentImage = image.id;
+        let cfg = this.get(['options', currentImage], {});
+        let html = coverHtml(image, meta, cfg);
+        let dataUrl = await html2jpg(html, {deviceWidth: 334, width: uploadWidth, height: uploadHeight});
+
+        if(!dataUrl.startsWith('data:image/jpeg;base64,')) {
+          alert('error');
+          throw new Error('encoding error');
+        }
+
+        if(window.require) {
+          let fs = window.require('fs');
+          let imageData = atob(dataUrl.slice(23));
+          let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+          fs.writeFile(pid + '.jpg', imageData, 'binary');
+        }
+      }
+      if(!upload.singlePage) {
+        // Handle next-page
+      }
+    } 
+  }
+
   async renderPreviews() {
-    if(this.renderRunning) {
-      this.renderRerun = true;
+    if(this.previewRunning) {
+      this.previewRerun= true;
       return;
     }
-    this.renderRerun = false;
-    this.renderRunning = true;
+    this.previewRerun = false;
+    this.previewRunning = true;
 
     let state = store.getState();
     let images = this.get('images', []);
@@ -50,8 +104,8 @@ export default class Main extends ReCom {
     }
     this.set('previews', previews);
 
-    this.renderRunning = false;
-    if(this.renderRerun) {
+    this.previewRunning = false;
+    if(this.previewRerun) {
       setTimeout(() => this.renderPreviews(), 0);
     }
   }
@@ -146,7 +200,8 @@ export default class Main extends ReCom {
                     label="Upload opdatering af forsider"
                     fullWidth={true}
                     primary={true}
-                    onClick={() => this.set('upload.uploading', true)}
+                    onClick={() => this.generateCovers()
+                    }
                   />}
                 </Paper>
                 <Paper

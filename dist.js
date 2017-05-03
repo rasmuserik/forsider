@@ -58426,6 +58426,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var uploadWidth = 1000;
+var uploadHeight = 1620;
+
+/* NB: <input type="file" nwdirectory /> */
+
 var Main = function (_ReCom) {
   _inherits(Main, _ReCom);
 
@@ -58436,27 +58441,129 @@ var Main = function (_ReCom) {
   }
 
   _createClass(Main, [{
-    key: 'renderPreviews',
+    key: 'generateCovers',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var _this2 = this;
-
-        var state, images, results, previews, searchPage, i, image, currentImage, cfg, meta, html;
+        var upload, state, images, results, searchPage, i, meta, image, currentImage, cfg, html, dataUrl, fs, imageData, pid;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!this.renderRunning) {
-                  _context.next = 3;
+                upload = this.get('upload', {});
+
+                console.log('generateCovers', upload);
+                this.set('upload.uploading', true);
+
+                state = _store.store.getState();
+                images = this.get('images', []);
+                results = this.get('search.results', []);
+
+                if (!(images.length > 0 && results.length > 0)) {
+                  _context.next = 30;
                   break;
                 }
 
-                this.renderRerun = true;
+                searchPage = this.get('search.page', 0);
+                i = 0;
+
+              case 9:
+                if (!(i < results.length)) {
+                  _context.next = 29;
+                  break;
+                }
+
+                meta = results[i];
+
+                if (!(meta.coverUrlThumbnail && upload.overwrite || /*TODO has own cover*/false && upload.overwriteOwn)) {
+                  _context.next = 13;
+                  break;
+                }
+
+                return _context.abrupt('continue', 26);
+
+              case 13:
+                if (this.get('upload.uploading')) {
+                  _context.next = 15;
+                  break;
+                }
+
                 return _context.abrupt('return');
 
+              case 15:
+                image = images[(i + searchPage * 10) % images.length];
+                currentImage = image.id;
+                cfg = this.get(['options', currentImage], {});
+                html = (0, _coverHtml2.default)(image, meta, cfg);
+                _context.next = 21;
+                return (0, _htmlToCanvas.html2jpg)(html, { deviceWidth: 334, width: uploadWidth, height: uploadHeight });
+
+              case 21:
+                dataUrl = _context.sent;
+
+                if (dataUrl.startsWith('data:image/jpeg;base64,')) {
+                  _context.next = 25;
+                  break;
+                }
+
+                alert('error');
+                throw new Error('encoding error');
+
+              case 25:
+
+                if (window.require) {
+                  fs = window.require('fs');
+                  imageData = atob(dataUrl.slice(23));
+                  pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+
+                  fs.writeFile(pid + '.jpg', imageData, 'binary');
+                }
+
+              case 26:
+                ++i;
+                _context.next = 9;
+                break;
+
+              case 29:
+                if (!upload.singlePage) {
+                  // Handle next-page
+                }
+
+              case 30:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function generateCovers() {
+        return _ref.apply(this, arguments);
+      }
+
+      return generateCovers;
+    }()
+  }, {
+    key: 'renderPreviews',
+    value: function () {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+        var _this2 = this;
+
+        var state, images, results, previews, searchPage, i, image, currentImage, cfg, meta, html;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!this.previewRunning) {
+                  _context2.next = 3;
+                  break;
+                }
+
+                this.previewRerun = true;
+                return _context2.abrupt('return');
+
               case 3:
-                this.renderRerun = false;
-                this.renderRunning = true;
+                this.previewRerun = false;
+                this.previewRunning = true;
 
                 state = _store.store.getState();
                 images = this.get('images', []);
@@ -58464,7 +58571,7 @@ var Main = function (_ReCom) {
                 previews = void 0;
 
                 if (!(images.length > 0 && results.length > 0)) {
-                  _context.next = 28;
+                  _context2.next = 28;
                   break;
                 }
 
@@ -58474,7 +58581,7 @@ var Main = function (_ReCom) {
 
               case 13:
                 if (!(i < results.length)) {
-                  _context.next = 26;
+                  _context2.next = 26;
                   break;
                 }
 
@@ -58485,19 +58592,19 @@ var Main = function (_ReCom) {
                 html = (0, _coverHtml2.default)(image, meta, cfg);
 
                 previews[i] = previews[i] || {};
-                _context.next = 22;
+                _context2.next = 22;
                 return (0, _htmlToCanvas.html2png)(html, { width: 334, height: 540 });
 
               case 22:
-                previews[i].dataUrl = _context.sent;
+                previews[i].dataUrl = _context2.sent;
 
               case 23:
                 ++i;
-                _context.next = 13;
+                _context2.next = 13;
                 break;
 
               case 26:
-                _context.next = 29;
+                _context2.next = 29;
                 break;
 
               case 28:
@@ -58506,8 +58613,8 @@ var Main = function (_ReCom) {
               case 29:
                 this.set('previews', previews);
 
-                this.renderRunning = false;
-                if (this.renderRerun) {
+                this.previewRunning = false;
+                if (this.previewRerun) {
                   setTimeout(function () {
                     return _this2.renderPreviews();
                   }, 0);
@@ -58515,14 +58622,14 @@ var Main = function (_ReCom) {
 
               case 32:
               case 'end':
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function renderPreviews() {
-        return _ref.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       }
 
       return renderPreviews;
@@ -58621,7 +58728,7 @@ var Main = function (_ReCom) {
                 fullWidth: true,
                 primary: true,
                 onClick: function onClick() {
-                  return _this3.set('upload.uploading', true);
+                  return _this3.generateCovers();
                 }
               })
             ),
@@ -73086,14 +73193,14 @@ let main = (() => {
   };
 })();
 
-// ## Create a new dataurl
+// ## Create a new png dataurl
 //
 // options: 
 //
 // - `width`, `height` - size of image/canvas
 // - `deviceWidth` - virtual width of rendered html document
 //
-
+// implementation:
 
 let html2png = (() => {
   var _ref2 = _asyncToGenerator(function* (html, opt) {
@@ -73105,10 +73212,31 @@ let html2png = (() => {
     return _ref2.apply(this, arguments);
   };
 })();
+
+// ## Create a new jpg dataurl
+//
+// options: 
+//
+// - `width`, `height` - size of image/canvas
+// - `deviceWidth` - virtual width of rendered html document
+//
+// implementation:
+
+let html2jpg = (() => {
+  var _ref3 = _asyncToGenerator(function* (html, opt) {
+    let canvas = yield html2canvas(html, opt);
+    return canvas.toDataURL("image/jpeg", 0.95);
+  });
+
+  return function html2jpg(_x3, _x4) {
+    return _ref3.apply(this, arguments);
+  };
+})();
+
 // ## Create a new canvas
 
 let html2canvas = (() => {
-  var _ref3 = _asyncToGenerator(function* (html, opt) {
+  var _ref4 = _asyncToGenerator(function* (html, opt) {
     opt = opt || {};
 
     let canvas = document.createElement('canvas');
@@ -73118,15 +73246,15 @@ let html2canvas = (() => {
     return canvas;
   });
 
-  return function html2canvas(_x3, _x4) {
-    return _ref3.apply(this, arguments);
+  return function html2canvas(_x5, _x6) {
+    return _ref4.apply(this, arguments);
   };
 })();
 
 // ## Code for drawing the html to a canvas
 
 let drawHtml = (() => {
-  var _ref4 = _asyncToGenerator(function* (canvas, html, opt) {
+  var _ref5 = _asyncToGenerator(function* (canvas, html, opt) {
     opt = opt || {};
     let w = opt.width || 320;
     let h = opt.height || 480;
@@ -73144,8 +73272,8 @@ let drawHtml = (() => {
     canvas.getContext('2d').drawImage(svgImg, 0, 0);
   });
 
-  return function drawHtml(_x5, _x6, _x7) {
-    return _ref4.apply(this, arguments);
+  return function drawHtml(_x7, _x8, _x9) {
+    return _ref5.apply(this, arguments);
   };
 })();
 
@@ -73160,7 +73288,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // Notice: it works by rendering the html as a svg foreignObject, so the html has to be valid xhtml, and all resources have to be inlined. 
 //
 
-module.exports = { drawHtml, html2canvas, html2png, main };let loadImage = src => new Promise(function (resolve, reject) {
+module.exports = { drawHtml, html2canvas, html2png, html2jpg, main };let loadImage = src => new Promise(function (resolve, reject) {
   var img = new Image();
   img.src = src;
   img.onload = function () {
