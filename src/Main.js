@@ -19,7 +19,6 @@ import EditIcon from 'material-ui/svg-icons/image/edit';
 let uploadWidth = 1000;
 let uploadHeight = 1620;
 
-
 /* NB: <input type="file" nwdirectory /> */
 
 export default class Main extends ReCom {
@@ -35,19 +34,19 @@ export default class Main extends ReCom {
     let state = store.getState();
     let images = this.get('images', []);
     let results = this.get('search.results', []);
-    if(images.length > 0 
-      && results.length > 0) {
+    if (images.length > 0 && results.length > 0) {
       let searchPage = this.get('search.page', 0);
-      for(let i = 0; i < results.length; ++i) {
+      for (let i = 0; i < results.length; ++i) {
         let meta = results[i];
 
-        if((meta.coverUrlThumbnail && upload.overwrite)
-          ||(/*TODO has own cover*/ false && upload.overwriteOwn) 
+        if (
+          (meta.coverUrlThumbnail && upload.overwrite) ||
+          /*TODO has own cover*/ (false && upload.overwriteOwn)
         ) {
           continue;
         }
 
-        if(!this.get('upload.uploading')) {
+        if (!this.get('upload.uploading')) {
           return;
         }
 
@@ -55,29 +54,33 @@ export default class Main extends ReCom {
         let currentImage = image.id;
         let cfg = this.get(['options', currentImage], {});
         let html = coverHtml(image, meta, cfg);
-        let dataUrl = await html2jpg(html, {deviceWidth: 334, width: uploadWidth, height: uploadHeight});
+        let dataUrl = await html2jpg(html, {
+          deviceWidth: 334,
+          width: uploadWidth,
+          height: uploadHeight
+        });
 
-        if(!dataUrl.startsWith('data:image/jpeg;base64,')) {
+        if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
           alert('error');
           throw new Error('encoding error');
         }
 
-        if(window.require) {
+        if (window.require) {
           let fs = window.require('fs');
           let imageData = atob(dataUrl.slice(23));
           let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
           fs.writeFile(pid + '.jpg', imageData, 'binary');
         }
       }
-      if(!upload.singlePage) {
+      if (!upload.singlePage) {
         // Handle next-page
       }
-    } 
+    }
   }
 
   async renderPreviews() {
-    if(this.previewRunning) {
-      this.previewRerun= true;
+    if (this.previewRunning) {
+      this.previewRerun = true;
       return;
     }
     this.previewRerun = false;
@@ -87,18 +90,20 @@ export default class Main extends ReCom {
     let images = this.get('images', []);
     let results = this.get('search.results', []);
     let previews;
-    if(images.length > 0 
-      && results.length > 0) {
+    if (images.length > 0 && results.length > 0) {
       previews = this.get('previews', []);
       let searchPage = this.get('search.page', 0);
-      for(let i = 0; i < results.length; ++i) {
+      for (let i = 0; i < results.length; ++i) {
         let image = images[(i + searchPage * 10) % images.length];
         let currentImage = image.id;
         let cfg = this.get(['options', currentImage], {});
         let meta = results[i];
         let html = coverHtml(image, meta, cfg);
         previews[i] = previews[i] || {};
-        previews[i].dataUrl = await html2png(html, {width: 334, height: 540});
+        previews[i].dataUrl = await html2png(html, {
+          width: 334,
+          height: 540
+        });
       }
     } else {
       previews = [];
@@ -106,7 +111,7 @@ export default class Main extends ReCom {
     this.set('previews', previews);
 
     this.previewRunning = false;
-    if(this.previewRerun) {
+    if (this.previewRerun) {
       setTimeout(() => this.renderPreviews(), 0);
     }
   }
@@ -125,11 +130,11 @@ export default class Main extends ReCom {
     let currentPage = this.get('search.page', 0);
     let images = this.get('images', []);
     let currentImage = '';
-    if(images.length > 0) {
-      currentImage = images[(currentResult + 10 * currentPage) % images.length].id;
+    if (images.length > 0) {
+      currentImage =
+        images[(currentResult + 10 * currentPage) % images.length].id;
     }
     this.get(['options', currentImage]);
-       
 
     return (
       <div>
@@ -141,18 +146,30 @@ export default class Main extends ReCom {
         <div style={{display: 'flex'}}>
           <div style={{flex: '0 0 334px'}}>
             <Paper style={{margin: 10, padding: 10}}>
-              <input id="select-directory"
-                style={{display:'none'}}
-                onChange={()=>{
-                    let elem = document.getElementById('select-directory');
-                    this.set('upload.dirname', elem.files[0] && elem.files[0].path);
-                }}/>
+              <input
+                id="select-directory"
+                style={{display: 'none'}}
+                onChange={() => {
+                  let elem = document.getElementById(
+                    'select-directory'
+                  );
+                  this.set(
+                    'upload.dirname',
+                    elem.files[0] && elem.files[0].path
+                  );
+                }}
+              />
               <div
-                style={{display: 'inline-block', width: '314', overflowX: 'auto'}}
-                onClick={()=>document.getElementById('select-directory').click()}
-              >
-                <EditIcon/>
-                {this.get('upload.dirname') || 'Sti til genererede forsider'}
+                style={{
+                  display: 'inline-block',
+                  width: '314',
+                  overflowX: 'auto'
+                }}
+                onClick={() =>
+                  document.getElementById('select-directory').click()}>
+                <EditIcon />
+                {this.get('upload.dirname') ||
+                  'Sti til genererede forsider'}
               </div>
 
               <Toggle
@@ -201,8 +218,8 @@ export default class Main extends ReCom {
                 onToggle={(_, val) => {
                   this.set('upload.overwrite', val);
                   this.set('upload.uploading', false);
-                  if(val) {
-                    this.set('upload.overwriteOwn', true)
+                  if (val) {
+                    this.set('upload.overwriteOwn', true);
                   }
                 }}
                 labelPosition="right"
@@ -212,43 +229,44 @@ export default class Main extends ReCom {
                 labelStyle={{color: '#000'}}
               />
               {this.get('upload.uploading', false)
-                  ? <RaisedButton
+                ? <RaisedButton
                     label="Stop upload"
                     fullWidth={true}
                     secondary={true}
                     onClick={() => this.set('upload.uploading', false)}
                   />
-                  : <RaisedButton
+                : <RaisedButton
                     label="Upload opdatering af forsider"
                     fullWidth={true}
                     primary={true}
-                    onClick={() => this.generateCovers()
-                    }
+                    onClick={() => this.generateCovers()}
                   />}
-                </Paper>
-                <Paper
-                  style={{
-                    display: 'inline-block',
-                    margin: 10,
-                    width: 334
-                  }}>
-                  <img src={this.get(['previews', currentResult , 'dataUrl'])} />
-                </Paper>
-              </div>
-
-              <Paper
-                style={{
-                  flex: '1 1 auto',
-                  margin: 10,
-                  padding: 10
-                }}>
-                <CoverOptions currentImage={currentImage} />
-              </Paper>
-            </div>
-            <h1 style={{background: '#f00'}}>
-              Denne app er under udvikling, virker ikke.
-            </h1>
+            </Paper>
+            <Paper
+              style={{
+                display: 'inline-block',
+                margin: 10,
+                width: 334
+              }}>
+              <img
+                src={this.get(['previews', currentResult, 'dataUrl'])}
+              />
+            </Paper>
           </div>
+
+          <Paper
+            style={{
+              flex: '1 1 auto',
+              margin: 10,
+              padding: 10
+            }}>
+            <CoverOptions currentImage={currentImage} />
+          </Paper>
+        </div>
+        <h1 style={{background: '#f00'}}>
+          Denne app er under udvikling, virker ikke.
+        </h1>
+      </div>
     );
   }
 }

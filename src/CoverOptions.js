@@ -22,7 +22,7 @@ export default class CoverOptions extends ReCom {
   }
 
   render() {
-    let currentImage = this.props.currentImage || ''
+    let currentImage = this.props.currentImage || '';
     let optionPath = name => ['options', currentImage, name];
 
     return (

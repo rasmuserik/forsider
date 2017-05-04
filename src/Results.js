@@ -45,22 +45,18 @@ class Result extends ReCom {
             }}
           />
           <div style={{textAlign: 'right'}}>
-          <img
-            src={this.get(['previews', n, 'dataUrl'])}
-            style={{
-              height: 100,
-              width: 70,
-              border: '1px solid black'
-            }}
-          />
-        </div><br/>
-          {
-            o.STATUS.uploaded
-              ? 'Forside uploadet'
-              : o.coverUrlThumbnail 
-              ? ''
-            : 'Ingen forside'
-          }
+            <img
+              src={this.get(['previews', n, 'dataUrl'])}
+              style={{
+                height: 100,
+                width: 70,
+                border: '1px solid black'
+              }}
+            />
+          </div><br />
+          {o.STATUS.uploaded
+            ? 'Forside uploadet'
+            : o.coverUrlThumbnail ? '' : 'Ingen forside'}
         </div>
       );
     }
