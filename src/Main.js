@@ -14,6 +14,7 @@ import {SearchCQL} from './SearchCQL.js';
 import Results from './Results.js';
 import CoverOptions from './CoverOptions';
 import Immutable from 'immutable';
+import EditIcon from 'material-ui/svg-icons/image/edit';
 
 let uploadWidth = 1000;
 let uploadHeight = 1620;
@@ -110,6 +111,12 @@ export default class Main extends ReCom {
     }
   }
 
+  componentDidMount() {
+    super.componentDidMount();
+    let elem = document.getElementById('select-directory');
+    elem.setAttribute('type', 'file');
+    elem.setAttribute('nwdirectory', 'true');
+  }
   render() {
     this.renderPreviews();
     console.log('Store:', store.getState().toJS());
@@ -122,6 +129,7 @@ export default class Main extends ReCom {
       currentImage = images[(currentResult + 10 * currentPage) % images.length].id;
     }
     this.get(['options', currentImage]);
+       
 
     return (
       <div>
@@ -133,6 +141,20 @@ export default class Main extends ReCom {
         <div style={{display: 'flex'}}>
           <div style={{flex: '0 0 334px'}}>
             <Paper style={{margin: 10, padding: 10}}>
+              <input id="select-directory"
+                style={{display:'none'}}
+                onChange={()=>{
+                    let elem = document.getElementById('select-directory');
+                    this.set('upload.dirname', elem.files[0] && elem.files[0].path);
+                }}/>
+              <div
+                style={{display: 'inline-block', width: '314', overflowX: 'auto'}}
+                onClick={()=>document.getElementById('select-directory').click()}
+              >
+                <EditIcon/>
+                {this.get('upload.dirname') || 'Sti til genererede forsider'}
+              </div>
+
               <Toggle
                 style={Object.assign(
                   {
