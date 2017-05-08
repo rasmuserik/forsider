@@ -58480,7 +58480,8 @@ var Main = function (_ReCom) {
 
                 meta = results[i];
 
-                if (!(meta.coverUrlThumbnail && upload.overwrite || /*TODO has own cover*/false && upload.overwriteOwn)) {
+                if (!(meta.coverUrlThumbnail && upload.overwrite ||
+                /*TODO has own cover*/false && upload.overwriteOwn)) {
                   _context.next = 13;
                   break;
                 }
@@ -58501,7 +58502,11 @@ var Main = function (_ReCom) {
                 cfg = this.get(['options', currentImage], {});
                 html = (0, _coverHtml2.default)(image, meta, cfg);
                 _context.next = 21;
-                return (0, _htmlToCanvas.html2jpg)(html, { deviceWidth: 334, width: uploadWidth, height: uploadHeight });
+                return (0, _htmlToCanvas.html2jpg)(html, {
+                  deviceWidth: 334,
+                  width: uploadWidth,
+                  height: uploadHeight
+                });
 
               case 21:
                 dataUrl = _context.sent;
@@ -58599,7 +58604,10 @@ var Main = function (_ReCom) {
 
                 previews[i] = previews[i] || {};
                 _context2.next = 22;
-                return (0, _htmlToCanvas.html2png)(html, { width: 334, height: 540 });
+                return (0, _htmlToCanvas.html2png)(html, {
+                  width: 334,
+                  height: 540
+                });
 
               case 22:
                 previews[i].dataUrl = _context2.sent;
@@ -58683,20 +58691,25 @@ var Main = function (_ReCom) {
             _react2.default.createElement(
               _Paper2.default,
               { style: { margin: 10, padding: 10 } },
-              _react2.default.createElement('input', { id: 'select-directory',
+              _react2.default.createElement('input', {
+                id: 'select-directory',
                 style: { display: 'none' },
                 onChange: function onChange() {
                   var elem = document.getElementById('select-directory');
                   _this3.set('upload.dirname', elem.files[0] && elem.files[0].path);
-                } }),
+                }
+              }),
               _react2.default.createElement(
                 'div',
                 {
-                  style: { display: 'inline-block', width: '314', overflowX: 'auto' },
+                  style: {
+                    display: 'inline-block',
+                    width: '314',
+                    overflowX: 'auto'
+                  },
                   onClick: function onClick() {
                     return document.getElementById('select-directory').click();
-                  }
-                },
+                  } },
                 _react2.default.createElement(_edit2.default, null),
                 this.get('upload.dirname') || 'Sti til genererede forsider'
               ),
@@ -58771,7 +58784,9 @@ var Main = function (_ReCom) {
                   margin: 10,
                   width: 334
                 } },
-              _react2.default.createElement('img', { src: this.get(['previews', currentResult, 'dataUrl']) })
+              _react2.default.createElement('img', {
+                src: this.get(['previews', currentResult, 'dataUrl'])
+              })
             )
           ),
           _react2.default.createElement(
