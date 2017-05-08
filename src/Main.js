@@ -27,6 +27,11 @@ export default class Main extends ReCom {
   }
 
   async generateCovers() {
+    if (!window.require) {
+      return
+    }
+
+    let fs = window.require('fs');
     let upload = this.get('upload', {});
     console.log('generateCovers', upload);
     this.set('upload.uploading', true);
@@ -38,6 +43,9 @@ export default class Main extends ReCom {
       let searchPage = this.get('search.page', 0);
       for (let i = 0; i < results.length; ++i) {
         let meta = results[i];
+        let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+        let filename = (upload.dirname ? upload.dirname + window.require('path').sep : '')
+          + pid + '.jpg';
 
         if (
           (meta.coverUrlThumbnail && upload.overwrite) ||
@@ -65,12 +73,8 @@ export default class Main extends ReCom {
           throw new Error('encoding error');
         }
 
-        if (window.require) {
-          let fs = window.require('fs');
           let imageData = atob(dataUrl.slice(23));
-          let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
-          fs.writeFile(pid + '.jpg', imageData, 'binary');
-        }
+          fs.writeFile(filename, imageData, 'binary');
       }
       if (!upload.singlePage) {
         // Handle next-page

@@ -58450,11 +58450,20 @@ var Main = function (_ReCom) {
     key: 'generateCovers',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var upload, state, images, results, searchPage, i, meta, image, currentImage, cfg, html, dataUrl, fs, imageData, pid;
+        var fs, upload, state, images, results, searchPage, i, meta, pid, filename, image, currentImage, cfg, html, dataUrl, imageData;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                if (window.require) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt('return');
+
+              case 2:
+                fs = window.require('fs');
                 upload = this.get('upload', {});
 
                 console.log('generateCovers', upload);
@@ -58465,81 +58474,78 @@ var Main = function (_ReCom) {
                 results = this.get('search.results', []);
 
                 if (!(images.length > 0 && results.length > 0)) {
-                  _context.next = 30;
+                  _context.next = 36;
                   break;
                 }
 
                 searchPage = this.get('search.page', 0);
                 i = 0;
 
-              case 9:
+              case 12:
                 if (!(i < results.length)) {
-                  _context.next = 29;
+                  _context.next = 35;
                   break;
                 }
 
                 meta = results[i];
+                pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+                filename = (upload.dirname ? upload.dirname + window.require('path').sep : '') + pid + '.jpg';
 
                 if (!(meta.coverUrlThumbnail && upload.overwrite ||
                 /*TODO has own cover*/false && upload.overwriteOwn)) {
-                  _context.next = 13;
+                  _context.next = 18;
                   break;
                 }
 
-                return _context.abrupt('continue', 26);
+                return _context.abrupt('continue', 32);
 
-              case 13:
+              case 18:
                 if (this.get('upload.uploading')) {
-                  _context.next = 15;
+                  _context.next = 20;
                   break;
                 }
 
                 return _context.abrupt('return');
 
-              case 15:
+              case 20:
                 image = images[(i + searchPage * 10) % images.length];
                 currentImage = image.id;
                 cfg = this.get(['options', currentImage], {});
                 html = (0, _coverHtml2.default)(image, meta, cfg);
-                _context.next = 21;
+                _context.next = 26;
                 return (0, _htmlToCanvas.html2jpg)(html, {
                   deviceWidth: 334,
                   width: uploadWidth,
                   height: uploadHeight
                 });
 
-              case 21:
+              case 26:
                 dataUrl = _context.sent;
 
                 if (dataUrl.startsWith('data:image/jpeg;base64,')) {
-                  _context.next = 25;
+                  _context.next = 30;
                   break;
                 }
 
                 alert('error');
                 throw new Error('encoding error');
 
-              case 25:
+              case 30:
+                imageData = atob(dataUrl.slice(23));
 
-                if (window.require) {
-                  fs = window.require('fs');
-                  imageData = atob(dataUrl.slice(23));
-                  pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+                fs.writeFile(filename, imageData, 'binary');
 
-                  fs.writeFile(pid + '.jpg', imageData, 'binary');
-                }
-
-              case 26:
+              case 32:
                 ++i;
-                _context.next = 9;
+                _context.next = 12;
                 break;
 
-              case 29:
+              case 35:
                 if (!upload.singlePage) {
                   // Handle next-page
                 }
 
-              case 30:
+              case 36:
               case 'end':
                 return _context.stop();
             }
