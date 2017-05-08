@@ -31,7 +31,6 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 
 
 # Changelog
-## Sprint 3
 ## Sprint 2
 
 - visning af søgeresultater udover de første ti
@@ -103,28 +102,11 @@ Overblik over applikationstilstanden
     - `overwriteOwn`
     - `singlePage`
     - `uploading`
+    - `dirname`
 - `currentImage`
 - `query` search query which yields results
 - `ui`
     - `currentResult`
     - `previewHtml`
     - `previewUrl`
-
-# Noter
-
-## Møde 2017-04-27
-
-- status
-- demo
-- plan næste sprint
-- opensearch parametre
-- faktura
-
-## misc
-
-- Forsider uploades via <https://moreinfoupdate.addi.dk/1.0/>. Eksempel på brug af denne kan ses på <https://github.com/DBCDK/dbc-ufo/tree/master/src/services/moreinfoUpdate>
-- Bygges som en [NW.js](https://nwjs.io) applikation, da direkte kommunikation med addi.dk-services ikke er mulig fra ren webapp.
-- Gamle Backlog og sprint-status kan ses på <https://github.com/solsort/forsider/milestones/>.
-- List fonts on windows: `powershell '[void] [System.Reflection.Assembly]::LoadWithPartialName(\"System.Drawing\") ; (New-Object System.Drawing.Text.InstalledFontCollection).Families'` (linux: `fc-list`)
-
 
