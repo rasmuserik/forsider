@@ -58450,7 +58450,10 @@ var Main = function (_ReCom) {
   function Main(props, context) {
     _classCallCheck(this, Main);
 
-    return _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, _store.store));
+    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, _store.store));
+
+    _this.set('upload.dirname', localStorage.getItem('forsider.dirname', ''));
+    return _this;
   }
 
   _createClass(Main, [{
@@ -58728,7 +58731,11 @@ var Main = function (_ReCom) {
                 style: { display: 'none' },
                 onChange: function onChange() {
                   var elem = document.getElementById('select-directory');
-                  _this3.set('upload.dirname', elem.files[0] && elem.files[0].path);
+                  if (elem.files[0]) {
+                    var dirname = elem.files[0].path;
+                    localStorage.setItem('forsider.dirname', dirname);
+                    _this3.set('upload.dirname', dirname);
+                  }
                 }
               }),
               _react2.default.createElement(

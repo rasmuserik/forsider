@@ -25,6 +25,10 @@ let uploadHeight = 1620;
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props, store);
+    this.set(
+      'upload.dirname',
+      localStorage.getItem('forsider.dirname', '')
+    );
   }
 
   async generateCovers() {
@@ -176,10 +180,11 @@ export default class Main extends ReCom {
                   let elem = document.getElementById(
                     'select-directory'
                   );
-                  this.set(
-                    'upload.dirname',
-                    elem.files[0] && elem.files[0].path
-                  );
+                  if (elem.files[0]) {
+                    let dirname = elem.files[0].path;
+                    localStorage.setItem('forsider.dirname', dirname);
+                    this.set('upload.dirname', dirname);
+                  }
                 }}
               />
               <div
