@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
-import {ReCom, store} from './ReCom.js';
+import {ReCom, store, set, get} from './ReCom.js';
 import coverHtml from './cover-html';
 
 import {SearchCQL} from './SearchCQL.js';
@@ -20,17 +20,10 @@ let uploadWidth = 1000;
 let uploadHeight = 1620;
 
 /* NB: <input type="file" nwdirectory /> */
+let previewRerun = false,
+    previewRunning = false;
 
-export default class Main extends ReCom {
-  constructor(props, context) {
-    super(props);
-    this.set(
-      'upload.dirname',
-      localStorage.getItem('forsider.dirname', '')
-    );
-  }
-
-  async generateCovers() {
+  async function generateCovers() {
     let writeFile, pathSep;
     if (window.require) {
       writeFile = window.require('fs').writeFile;
@@ -39,15 +32,15 @@ export default class Main extends ReCom {
       writeFile = () => {};
       pathSep = '/';
     }
-    let upload = this.get('upload', {});
+    let upload = get('upload', {});
     console.log('generateCovers', upload);
-    this.set('upload.uploading', true);
+    set('upload.uploading', true);
 
     let state = store.getState();
-    let images = this.get('images', []);
-    let results = this.get('search.results', []);
+    let images = get('images', []);
+    let results = get('search.results', []);
     if (images.length > 0 && results.length > 0) {
-      let searchPage = this.get('search.page', 0);
+      let searchPage = get('search.page', 0);
       for (let i = 0; i < results.length; ++i) {
         let meta = results[i];
         let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
@@ -63,13 +56,13 @@ export default class Main extends ReCom {
           continue;
         }
 
-        if (!this.get('upload.uploading')) {
+        if (!get('upload.uploading')) {
           return;
         }
 
         let image = images[(i + searchPage * 10) % images.length];
         let currentImage = image.id;
-        let cfg = this.get(['options', currentImage], {});
+        let cfg = get(['options', currentImage], {});
         let html = coverHtml(image, meta, cfg);
         let dataUrl = await html2jpg(html, {
           deviceWidth: 334,
@@ -89,28 +82,29 @@ export default class Main extends ReCom {
         // Handle next-page
       }
     }
-    this.set('upload.uploading', false);
+    set('upload.uploading', false);
   }
 
-  async renderPreviews() {
-    if (this.previewRunning) {
-      this.previewRerun = true;
+
+  async function renderPreviews() {
+    if (previewRunning) {
+      previewRerun = true;
       return;
     }
-    this.previewRerun = false;
-    this.previewRunning = true;
+    previewRerun = false;
+    previewRunning = true;
 
     let state = store.getState();
-    let images = this.get('images', []);
-    let results = this.get('search.results', []);
+    let images = get('images', []);
+    let results = get('search.results', []);
     let previews;
     if (images.length > 0 && results.length > 0) {
-      previews = this.get('previews', []);
-      let searchPage = this.get('search.page', 0);
+      previews = get('previews', []);
+      let searchPage = get('search.page', 0);
       for (let i = 0; i < results.length; ++i) {
         let image = images[(i + searchPage * 10) % images.length];
         let currentImage = image.id;
-        let cfg = this.get(['options', currentImage], {});
+        let cfg = get(['options', currentImage], {});
         let meta = results[i];
         let html = coverHtml(image, meta, cfg);
         previews[i] = previews[i] || {};
@@ -124,12 +118,21 @@ export default class Main extends ReCom {
     }
 
     await sleep();
-    this.set('previews', previews);
+    set('previews', previews);
 
-    this.previewRunning = false;
-    if (this.previewRerun) {
-      setTimeout(() => this.renderPreviews(), 0);
+    previewRunning = false;
+    if (previewRerun) {
+      setTimeout(() => renderPreviews(), 0);
     }
+  }
+
+export default class Main extends ReCom {
+  constructor(props, context) {
+    super(props);
+    set(
+      'upload.dirname',
+      localStorage.getItem('forsider.dirname', '')
+    );
   }
 
   componentDidMount() {
@@ -139,7 +142,7 @@ export default class Main extends ReCom {
     elem.setAttribute('nwdirectory', 'true');
   }
   render() {
-    this.renderPreviews();
+    renderPreviews();
     console.log('Store:', store.getState().toJS());
 
     let currentResult = this.get('ui.currentResult', 0);
@@ -266,7 +269,7 @@ export default class Main extends ReCom {
                     label="Upload opdatering af forsider"
                     fullWidth={true}
                     primary={true}
-                    onClick={() => this.generateCovers()}
+                    onClick={generateCovers}
                   />}
             </Paper>
           </div>
