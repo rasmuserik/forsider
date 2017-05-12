@@ -58710,6 +58710,18 @@ var Main = function (_ReCom) {
             { style: { flex: '0 0 334px' } },
             _react2.default.createElement(
               _Paper2.default,
+              {
+                style: {
+                  display: 'inline-block',
+                  margin: 10,
+                  width: 334
+                } },
+              _react2.default.createElement('img', {
+                src: this.get(['previews', currentResult, 'dataUrl'])
+              })
+            ),
+            _react2.default.createElement(
+              _Paper2.default,
               { style: { margin: 10, padding: 10 } },
               _react2.default.createElement('input', {
                 id: 'select-directory',
@@ -58795,18 +58807,6 @@ var Main = function (_ReCom) {
                   return _this3.generateCovers();
                 }
               })
-            ),
-            _react2.default.createElement(
-              _Paper2.default,
-              {
-                style: {
-                  display: 'inline-block',
-                  margin: 10,
-                  width: 334
-                } },
-              _react2.default.createElement('img', {
-                src: this.get(['previews', currentResult, 'dataUrl'])
-              })
             )
           ),
           _react2.default.createElement(
@@ -58819,11 +58819,6 @@ var Main = function (_ReCom) {
               } },
             _react2.default.createElement(_CoverOptions2.default, { currentImage: currentImage })
           )
-        ),
-        _react2.default.createElement(
-          'h1',
-          { style: { background: '#f00' } },
-          'Denne app er under udvikling, virker ikke.'
         )
       );
     }
