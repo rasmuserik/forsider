@@ -20,119 +20,112 @@ let uploadWidth = 1000;
 let uploadHeight = 1620;
 
 /* NB: <input type="file" nwdirectory /> */
-let previewRerun = false,
-    previewRunning = false;
+let previewRerun = false, previewRunning = false;
 
-  async function generateCovers() {
-    let writeFile, pathSep;
-    if (window.require) {
-      writeFile = window.require('fs').writeFile;
-      pathSep = window.require('path').sep;
-    } else {
-      writeFile = () => {};
-      pathSep = '/';
-    }
-    let upload = get('upload', {});
-    console.log('generateCovers', upload);
-    set('upload.uploading', true);
-
-    let state = store.getState();
-    let images = get('images', []);
-    let results = get('search.results', []);
-    if (images.length > 0 && results.length > 0) {
-      let searchPage = get('search.page', 0);
-      for (let i = 0; i < results.length; ++i) {
-        let meta = results[i];
-        let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
-        let filename =
-          (upload.dirname ? upload.dirname + pathSep : '') +
-          pid +
-          '.jpg';
-
-        if (
-          (meta.coverUrlThumbnail && upload.overwrite) ||
-          /*TODO has own cover*/ (false && upload.overwriteOwn)
-        ) {
-          continue;
-        }
-
-        if (!get('upload.uploading')) {
-          return;
-        }
-
-        let image = images[(i + searchPage * 10) % images.length];
-        let currentImage = image.id;
-        let cfg = get(['options', currentImage], {});
-        let html = coverHtml(image, meta, cfg);
-        let dataUrl = await html2jpg(html, {
-          deviceWidth: 334,
-          width: uploadWidth,
-          height: uploadHeight
-        });
-
-        if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
-          alert('error');
-          throw new Error('encoding error');
-        }
-
-        let imageData = atob(dataUrl.slice(23));
-        writeFile(filename, imageData, 'binary');
-      }
-      if (!upload.singlePage) {
-        // Handle next-page
-      }
-    }
-    set('upload.uploading', false);
+async function generateCovers() {
+  let writeFile, pathSep;
+  if (window.require) {
+    writeFile = window.require('fs').writeFile;
+    pathSep = window.require('path').sep;
+  } else {
+    writeFile = () => {};
+    pathSep = '/';
   }
+  let upload = get('upload', {});
+  console.log('generateCovers', upload);
+  set('upload.uploading', true);
 
+  let state = store.getState();
+  let images = get('images', []);
+  let results = get('search.results', []);
+  if (images.length > 0 && results.length > 0) {
+    let searchPage = get('search.page', 0);
+    for (let i = 0; i < results.length; ++i) {
+      let meta = results[i];
+      let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
+      let filename =
+        (upload.dirname ? upload.dirname + pathSep : '') + pid + '.jpg';
 
-  async function renderPreviews() {
-    if (previewRunning) {
-      previewRerun = true;
-      return;
-    }
-    previewRerun = false;
-    previewRunning = true;
-
-    let state = store.getState();
-    let images = get('images', []);
-    let results = get('search.results', []);
-    let previews;
-    if (images.length > 0 && results.length > 0) {
-      previews = get('previews', []);
-      let searchPage = get('search.page', 0);
-      for (let i = 0; i < results.length; ++i) {
-        let image = images[(i + searchPage * 10) % images.length];
-        let currentImage = image.id;
-        let cfg = get(['options', currentImage], {});
-        let meta = results[i];
-        let html = coverHtml(image, meta, cfg);
-        previews[i] = previews[i] || {};
-        previews[i].dataUrl = await html2png(html, {
-          width: 334,
-          height: 540
-        });
+      if (
+        (meta.coverUrlThumbnail && upload.overwrite) ||
+        /*TODO has own cover*/ (false && upload.overwriteOwn)
+      ) {
+        continue;
       }
-    } else {
-      previews = [];
+
+      if (!get('upload.uploading')) {
+        return;
+      }
+
+      let image = images[(i + searchPage * 10) % images.length];
+      let currentImage = image.id;
+      let cfg = get(['options', currentImage], {});
+      let html = coverHtml(image, meta, cfg);
+      let dataUrl = await html2jpg(html, {
+        deviceWidth: 334,
+        width: uploadWidth,
+        height: uploadHeight
+      });
+
+      if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
+        alert('error');
+        throw new Error('encoding error');
+      }
+
+      let imageData = atob(dataUrl.slice(23));
+      writeFile(filename, imageData, 'binary');
     }
-
-    await sleep();
-    set('previews', previews);
-
-    previewRunning = false;
-    if (previewRerun) {
-      setTimeout(() => renderPreviews(), 0);
+    if (!upload.singlePage) {
+      // Handle next-page
     }
   }
+  set('upload.uploading', false);
+}
+
+async function renderPreviews() {
+  if (previewRunning) {
+    previewRerun = true;
+    return;
+  }
+  previewRerun = false;
+  previewRunning = true;
+
+  let state = store.getState();
+  let images = get('images', []);
+  let results = get('search.results', []);
+  let previews;
+  if (images.length > 0 && results.length > 0) {
+    previews = get('previews', []);
+    let searchPage = get('search.page', 0);
+    for (let i = 0; i < results.length; ++i) {
+      let image = images[(i + searchPage * 10) % images.length];
+      let currentImage = image.id;
+      let cfg = get(['options', currentImage], {});
+      let meta = results[i];
+      let html = coverHtml(image, meta, cfg);
+      previews[i] = previews[i] || {};
+      previews[i].dataUrl = await html2png(html, {
+        width: 334,
+        height: 540
+      });
+    }
+  } else {
+    previews = [];
+  }
+
+  await sleep();
+  set('previews', previews);
+
+  previewRunning = false;
+  if (previewRerun) {
+    setTimeout(() => renderPreviews(), 0);
+  }
+}
 
 export default class Main extends ReCom {
   constructor(props, context) {
     super(props);
-    set(
-      'upload.dirname',
-      localStorage.getItem('forsider.dirname', '')
-    );
+    set('upload.dirname', localStorage.getItem('forsider.dirname', ''));
   }
 
   componentDidMount() {

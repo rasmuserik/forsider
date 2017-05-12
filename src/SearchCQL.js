@@ -15,12 +15,8 @@ import {str} from 'solsort-util';
 let resultsPerPage = 10;
 
 export async function search(query, page) {
-
   page = Math.max(0, page | 0);
-  if (
-    get('search.page') === page &&
-    get('search.query') === query
-  ) {
+  if (get('search.page') === page && get('search.query') === query) {
     console.log('search already requested');
     return;
   }
