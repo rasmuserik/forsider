@@ -1,7 +1,6 @@
 import React from 'react';
 
-import {store} from './store.js';
-import ReCom from './ReCom.js';
+import {ReCom} from './ReCom.js';
 import _ from 'lodash';
 
 function throttle(fn, time) {
@@ -29,7 +28,7 @@ class InfiniteHorisontalList extends ReCom {
   // ##
 
   constructor(props, context) {
-    super(props, store);
+    super(props);
     this.prevStart = 0;
     this.offset = 0;
     this.throttleSet = throttle((k, v) => this.set(k, v));
@@ -93,7 +92,7 @@ let resultStyle = {
 class Result extends ReCom {
   // ##
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   render() {
@@ -141,7 +140,7 @@ export default class Results extends ReCom {
   // ##
 
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   render() {

@@ -1,26 +1,25 @@
 import React from 'react';
-import {SET_IN, makePath} from './reducer.js';
 import Immutable from 'immutable';
 import _ from 'lodash';
+import {createStore} from 'redux';
+import assert from 'assert';
 
-export default class ReCom extends React.Component {
-  constructor(props, store) {
+export const SET_IN = 'SET_IN';
+
+export const dispatchTable = {
+  SET_IN: (state, action) => setIn(state, action.path, action.value)
+};
+
+export const store = createStore(reduce);
+
+export class ReCom extends React.Component {
+  constructor(props) {
     super(props);
-    this.store = store;
     this.dependencies = new Map();
   }
 
-  dispatch(o) {
-    this.store.dispatch(o);
-  }
   get(path, defaultValue) {
-    path = makePath(path);
-    let result;
-    try {
-      result = this.store.getState().getIn(path);
-    } catch (e) {
-      result = undefined;
-    }
+    let result = getImm(path);
 
     if (this.accessed instanceof Map) {
       this.accessed.set(path, result);
@@ -38,7 +37,7 @@ export default class ReCom extends React.Component {
   }
 
   set(path, value) {
-    this.dispatch({type: SET_IN, path, value});
+    set(path, value);
   }
 
   componentWillUpdate() {
@@ -54,16 +53,9 @@ export default class ReCom extends React.Component {
     if (!_.isEqual(props, this.props)) {
       return true;
     }
-    if (!_.isEqual(state, this.state)) {
-      return true;
-    }
     for (let [path, val] of this.dependencies) {
-      try {
-        if (!Immutable.is(val, this.store.getState().getIn(path))) {
-          return true;
-        }
-      } catch (e) {
-        // do nothing
+      if (!Immutable.is(val, get(path))) {
+        return true;
       }
     }
     return false;
@@ -76,10 +68,72 @@ export default class ReCom extends React.Component {
   componentDidMount() {
     this.dependencies = this.accessed;
     this.accessed = undefined;
-    this.unsubscribe = this.store.subscribe(() => this.setState({}));
+    this.unsubscribe = store.subscribe(() => this.setState({}));
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
+}
+
+export function set(path, value) {
+  store.dispatch({type: SET_IN, path, value});
+}
+
+function getImm(path, defaultValue) {
+  try {
+    return store.getState().getIn(makePath(path), defaultValue);
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
+export function get(path, defaultValue) {
+  let result = getImm(path, defaultValue);
+  if (!Immutable.isImmutable(result)) {
+    return result;
+  }
+  return result.toJS();
+}
+
+function reduce(state = new Immutable.Map(), action) {
+  console.log(state, dispatchTable, action);
+  return (dispatchTable[action.type] || (state => state))(
+    state,
+    action
+  );
+}
+
+function makePath(path) {
+  if (typeof path === 'string') {
+    path = path.split('.');
+  }
+
+  assert(Array.isArray(path));
+  return path;
+}
+
+function setIn(o, path, val) {
+  path = makePath(path);
+
+  if (path.length === 0) {
+    return Immutable.fromJS(val);
+  }
+
+  let key = path[0];
+  path = path.slice(1);
+
+  if (typeof key === 'string') {
+    if (!(o instanceof Immutable.Map)) {
+      o = new Immutable.Map();
+    }
+  } else if (typeof key === 'number') {
+    if (!(o instanceof Immutable.List)) {
+      o = new Immutable.List();
+    }
+  } else {
+    assert(false);
+  }
+
+  return o.set(key, setIn(o.get(key), path, val));
 }

@@ -7,8 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
-import ReCom from './ReCom.js';
-import {store} from './store.js';
+import {ReCom, store} from './ReCom.js';
 import coverHtml from './cover-html';
 
 import {SearchCQL} from './SearchCQL.js';
@@ -24,7 +23,7 @@ let uploadHeight = 1620;
 
 export default class Main extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
     this.set(
       'upload.dirname',
       localStorage.getItem('forsider.dirname', '')

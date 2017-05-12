@@ -3,9 +3,7 @@ import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import ReCom from './ReCom.js';
-import {store} from './store';
-import {dispatchTable} from './reducer';
+import {ReCom, dispatchTable} from './ReCom.js';
 import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
 
@@ -27,7 +25,7 @@ dispatchTable.REMOVE_IMAGE = (state, action) =>
 
 export default class ImageUpload extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
     this.inputId = randomId();
   }
   async addImages(imgs) {

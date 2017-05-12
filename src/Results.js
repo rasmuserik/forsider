@@ -1,7 +1,5 @@
 import React from 'react';
-
-import {store} from './store.js';
-import ReCom from './ReCom.js';
+import {ReCom} from './ReCom.js';
 import _ from 'lodash';
 
 let resultStyle = {
@@ -17,7 +15,7 @@ let resultStyle = {
 };
 class Result extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   render() {
@@ -65,7 +63,7 @@ class Result extends ReCom {
 
 export default class Results extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   render() {

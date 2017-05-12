@@ -9,21 +9,17 @@ import ActionPrev
   from 'material-ui/svg-icons/navigation/chevron-left.js';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import {store} from './store.js';
-import ReCom from './ReCom.js';
+import {ReCom, set, get} from './ReCom.js';
 import {str} from 'solsort-util';
 
 let resultsPerPage = 10;
 
 export async function search(query, page) {
-  function set(path, value) {
-    store.dispatch({type: 'SET_IN', path, value});
-  }
 
   page = Math.max(0, page | 0);
   if (
-    store.getState().getIn(['search', 'page'], undefined) === page &&
-    store.getState().getIn(['search', 'query'], undefined) === query
+    get('search.page') === page &&
+    get('search.query') === query
   ) {
     console.log('search already requested');
     return;
@@ -79,7 +75,7 @@ export async function search(query, page) {
 
 export class SearchCQL extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   async search() {

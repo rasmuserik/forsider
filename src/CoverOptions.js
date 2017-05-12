@@ -7,8 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import {ChromePicker} from 'react-color';
 
-import ReCom from './ReCom.js';
-import {store} from './store.js';
+import {ReCom} from './ReCom.js';
 import {installedFonts} from 'installed-fonts';
 
 import ImageUpload from './ImageUpload.js';
@@ -18,7 +17,7 @@ let fonts = [];
 installedFonts().then(o => (fonts = o));
 export default class CoverOptions extends ReCom {
   constructor(props, context) {
-    super(props, store);
+    super(props);
   }
 
   render() {

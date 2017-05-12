@@ -1,8 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {ChromePicker} from 'react-color';
-import ReCom from './ReCom';
-import {store} from './store';
+import {ReCom} from './ReCom';
 
 let colorStyle = {
   display: 'inline-block',
@@ -12,7 +11,7 @@ let colorStyle = {
 };
 export default class Color extends ReCom {
   constructor(props) {
-    super(props, store);
+    super(props);
   }
 
   render() {
