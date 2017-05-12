@@ -42,7 +42,7 @@
     "release": "webpack; ./build-nw.sh",
     "dist": "npm run build && npm run test && increment-patch-version",
     "dev": "webpack-dev-server --hot --inline",
-    "pretty": "prettier --write --print-width 72 --single-quote --no-bracket-spacing --jsx-bracket-same-line src/*.js"
+    "prettier": "prettier --write --print-width 72 --single-quote --no-bracket-spacing --jsx-bracket-same-line src/*.js"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

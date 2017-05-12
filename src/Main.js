@@ -29,7 +29,7 @@ export default class Main extends ReCom {
 
   async generateCovers() {
     let writeFile, pathSep;
-    if(window.require) {
+    if (window.require) {
       writeFile = window.require('fs').writeFile;
       pathSep = window.require('path').sep;
     } else {
@@ -48,8 +48,10 @@ export default class Main extends ReCom {
       for (let i = 0; i < results.length; ++i) {
         let meta = results[i];
         let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
-        let filename = (upload.dirname ? upload.dirname + pathSep : '')
-          + pid + '.jpg';
+        let filename =
+          (upload.dirname ? upload.dirname + pathSep : '') +
+          pid +
+          '.jpg';
 
         if (
           (meta.coverUrlThumbnail && upload.overwrite) ||
@@ -156,6 +158,16 @@ export default class Main extends ReCom {
 
         <div style={{display: 'flex'}}>
           <div style={{flex: '0 0 334px'}}>
+            <Paper
+              style={{
+                display: 'inline-block',
+                margin: 10,
+                width: 334
+              }}>
+              <img
+                src={this.get(['previews', currentResult, 'dataUrl'])}
+              />
+            </Paper>
             <Paper style={{margin: 10, padding: 10}}>
               <input
                 id="select-directory"
@@ -177,107 +189,94 @@ export default class Main extends ReCom {
                   overflowX: 'auto'
                 }}
                 onClick={() =>
-                    document.getElementById('select-directory').click()}>
-                    <EditIcon />
-                    {this.get('upload.dirname') ||
-                        'Sti til genererede forsider'}
-                      </div>
+                  document.getElementById('select-directory').click()}>
+                <EditIcon />
+                {this.get('upload.dirname') ||
+                  'Sti til genererede forsider'}
+              </div>
 
-                      <Toggle
-                        style={Object.assign(
-                          {
-                            display: 'inline-block',
-                            width: 200
-                          },
-                          {margin: 10}
-                        )}
-                        labelPosition="right"
-                        toggled={this.get('upload.singlePage', true)}
-                        onToggle={(_, val) => {
-                          this.set('upload.singlePage', val);
-                          this.set('upload.uploading', false);
-                        }}
-                        label="Upload kun for én side søgeresultater"
-                        labelStyle={{color: '#000'}}
-                      />
-                      <Toggle
-                        style={Object.assign(
-                          {
-                            display: 'inline-block',
-                            width: 200
-                          },
-                          {margin: 10}
-                        )}
-                        toggled={this.get('upload.overwriteOwn', false)}
-                        onToggle={(_, val) => {
-                          this.set('upload.overwriteOwn', val);
-                          this.set('upload.uploading', false);
-                        }}
-                        labelPosition="right"
-                        label="Overskriv egne forsider"
-                        labelStyle={{color: '#000'}}
-                      />
-                      <Toggle
-                        style={Object.assign(
-                          {
-                            display: 'inline-block',
-                            width: 200
-                          },
-                          {margin: 10}
-                        )}
-                        toggled={this.get('upload.overwrite', false)}
-                        onToggle={(_, val) => {
-                          this.set('upload.overwrite', val);
-                          this.set('upload.uploading', false);
-                          if (val) {
-                            this.set('upload.overwriteOwn', true);
-                          }
-                        }}
-                        labelPosition="right"
-                        label="Overskriv forsider"
-                        thumbSwitchedStyle={{backgroundColor: '#f00'}}
-                        trackSwitchedStyle={{backgroundColor: '#faa'}}
-                        labelStyle={{color: '#000'}}
-                      />
-                      {this.get('upload.uploading', false)
-                          ? <RaisedButton
-                            label="Stop upload"
-                            fullWidth={true}
-                            secondary={true}
-                            onClick={() => this.set('upload.uploading', false)}
-                          />
-                          : <RaisedButton
-                            label="Upload opdatering af forsider"
-                            fullWidth={true}
-                            primary={true}
-                            onClick={() => this.generateCovers()}
-                          />}
-                        </Paper>
-                        <Paper
-                          style={{
-                            display: 'inline-block',
-                            margin: 10,
-                            width: 334
-                          }}>
-                          <img
-                            src={this.get(['previews', currentResult, 'dataUrl'])}
-                          />
-                        </Paper>
-                      </div>
+              <Toggle
+                style={Object.assign(
+                  {
+                    display: 'inline-block',
+                    width: 200
+                  },
+                  {margin: 10}
+                )}
+                labelPosition="right"
+                toggled={this.get('upload.singlePage', true)}
+                onToggle={(_, val) => {
+                  this.set('upload.singlePage', val);
+                  this.set('upload.uploading', false);
+                }}
+                label="Upload kun for én side søgeresultater"
+                labelStyle={{color: '#000'}}
+              />
+              <Toggle
+                style={Object.assign(
+                  {
+                    display: 'inline-block',
+                    width: 200
+                  },
+                  {margin: 10}
+                )}
+                toggled={this.get('upload.overwriteOwn', false)}
+                onToggle={(_, val) => {
+                  this.set('upload.overwriteOwn', val);
+                  this.set('upload.uploading', false);
+                }}
+                labelPosition="right"
+                label="Overskriv egne forsider"
+                labelStyle={{color: '#000'}}
+              />
+              <Toggle
+                style={Object.assign(
+                  {
+                    display: 'inline-block',
+                    width: 200
+                  },
+                  {margin: 10}
+                )}
+                toggled={this.get('upload.overwrite', false)}
+                onToggle={(_, val) => {
+                  this.set('upload.overwrite', val);
+                  this.set('upload.uploading', false);
+                  if (val) {
+                    this.set('upload.overwriteOwn', true);
+                  }
+                }}
+                labelPosition="right"
+                label="Overskriv forsider"
+                thumbSwitchedStyle={{backgroundColor: '#f00'}}
+                trackSwitchedStyle={{backgroundColor: '#faa'}}
+                labelStyle={{color: '#000'}}
+              />
+              {this.get('upload.uploading', false)
+                ? <RaisedButton
+                    label="Stop upload"
+                    fullWidth={true}
+                    secondary={true}
+                    onClick={() => this.set('upload.uploading', false)}
+                  />
+                : <RaisedButton
+                    label="Upload opdatering af forsider"
+                    fullWidth={true}
+                    primary={true}
+                    onClick={() => this.generateCovers()}
+                  />}
+            </Paper>
+          </div>
 
-                      <Paper
-                        style={{
-                          flex: '1 1 auto',
-                          margin: 10,
-                          padding: 10
-                        }}>
-                        <CoverOptions currentImage={currentImage} />
-                      </Paper>
-                    </div>
-                    <h1 style={{background: '#f00'}}>
-                      Denne app er under udvikling, virker ikke.
-                    </h1>
-                  </div>
+          <Paper
+            style={{
+              flex: '1 1 auto',
+              margin: 10,
+              padding: 10
+            }}>
+            <CoverOptions currentImage={currentImage} />
+          </Paper>
+        </div>
+      </div>
     );
   }
 }
