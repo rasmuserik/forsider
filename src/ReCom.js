@@ -55,7 +55,6 @@ export class ReCom extends React.Component {
     }
     for (let [path, val] of this.dependencies) {
       if (!Immutable.is(val, getImm(path))) {
-        console.log('dirty',  path, val, getImm(path))
         return true;
       }
     }
