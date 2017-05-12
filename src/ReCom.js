@@ -54,7 +54,8 @@ export class ReCom extends React.Component {
       return true;
     }
     for (let [path, val] of this.dependencies) {
-      if (!Immutable.is(val, get(path))) {
+      if (!Immutable.is(val, getImm(path))) {
+        console.log('dirty',  path, val, getImm(path))
         return true;
       }
     }
@@ -97,7 +98,6 @@ export function get(path, defaultValue) {
 }
 
 function reduce(state = new Immutable.Map(), action) {
-  console.log(state, dispatchTable, action);
   return (dispatchTable[action.type] || (state => state))(
     state,
     action
