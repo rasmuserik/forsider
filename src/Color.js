@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {ChromePicker} from 'react-color';
-import {ReCom} from './ReCom';
+import {ReCom} from 'recom';
 
 let colorStyle = {
   display: 'inline-block',

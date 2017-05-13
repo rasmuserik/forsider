@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import {ChromePicker} from 'react-color';
 
-import {ReCom} from './ReCom.js';
+import {ReCom} from 'recom';
 import {installedFonts} from 'installed-fonts';
 
 import ImageUpload from './ImageUpload.js';

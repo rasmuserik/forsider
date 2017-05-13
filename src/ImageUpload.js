@@ -3,7 +3,7 @@ import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import {ReCom, dispatchTable} from './ReCom.js';
+import {ReCom, dispatchTable} from 'recom';
 import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
 

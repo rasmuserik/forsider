@@ -7,7 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
-import {ReCom, store, set, get} from './ReCom.js';
+//import {ReCom, store, set, get} from 'recom';
+import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
 
 import {SearchCQL} from './SearchCQL.js';

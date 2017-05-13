@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ReCom} from './ReCom.js';
+import {ReCom} from 'recom';
 import _ from 'lodash';
 
 function throttle(fn, time) {

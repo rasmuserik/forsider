@@ -9,7 +9,7 @@ import ActionPrev
   from 'material-ui/svg-icons/navigation/chevron-left.js';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import {ReCom, set, get} from './ReCom.js';
+import {ReCom, set, get} from 'recom';
 import {str} from 'solsort-util';
 
 let resultsPerPage = 10;
