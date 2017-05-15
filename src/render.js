@@ -2,6 +2,7 @@ import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
 import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
+import {search} from './SearchCQL';
 
 let uploadWidth = 1000;
 let uploadHeight = 1620;
@@ -23,10 +24,16 @@ export async function generateCovers() {
 
   let state = store.getState();
   let images = get('images', []);
-  let results = get('search.results', []);
-  if (images.length > 0 && results.length > 0) {
+  do {
+    let results = get('search.results', []);
+    if(images.length === 0 || results.length === 0) {
+      set('upload.uploading', false);
+      return;
+    }
+
     let searchPage = get('search.page', 0);
     for (let i = 0; i < results.length; ++i) {
+      await sleep();
       let meta = results[i];
       let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
       let filename =
@@ -61,11 +68,12 @@ export async function generateCovers() {
       let imageData = atob(dataUrl.slice(23));
       writeFile(filename, imageData, 'binary');
     }
-    if (!upload.singlePage) {
-      // Handle next-page
+    if (upload.singlePage) {
+      set('upload.uploading', false);
+      return;
     }
-  }
-  set('upload.uploading', false);
+    await search(get('search.query'), 1 + get('search.page', 0));
+  } while(get('upload.uploading'));
 }
 
 export async function renderPreviews() {
@@ -94,6 +102,7 @@ export async function renderPreviews() {
         width: 334,
         height: 540
       });
+      await sleep();
     }
   } else {
     previews = [];

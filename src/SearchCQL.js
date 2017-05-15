@@ -10,7 +10,8 @@ import ActionPrev
 import CircularProgress from 'material-ui/CircularProgress';
 
 import {ReCom, set, get} from 'recom';
-import {str} from 'solsort-util';
+import {str, sleep} from 'solsort-util';
+import _ from 'lodash';
 
 let resultsPerPage = 10;
 
@@ -62,6 +63,16 @@ export async function search(query, page) {
       results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
     }
     set(['search', 'results'], results);
+
+    // wait until results has been set
+    await sleep();
+    for(let i = 0; !_.isEqual(results, get('search.results')); ++i) {
+      await sleep(10);
+      if(i >= 100) {
+        throw new Error('changes to results did not get through');
+      }
+    } 
+
   } catch (e) {
     console.log(e);
     set('search.error', str(e));
@@ -102,10 +113,10 @@ export class SearchCQL extends ReCom {
           floatingLabelText="CQL Søgestreng"
         />
 
-        <IconButton onClick={() => this.search()}>
-          {this.get('search.searching')
-            ? <CircularProgress size={32} />
-            : <ActionSearch />}
+      <IconButton onClick={() => this.search()}>
+        {this.get('search.searching')
+          ? <CircularProgress size={32} />
+          : <ActionSearch />}
         </IconButton> <br />
 
         Side
@@ -118,17 +129,17 @@ export class SearchCQL extends ReCom {
           onChange={(_, val) => setPage(Math.max(0, (val | 0) - 1))}
         />
 
-        <IconButton
-          onClick={() =>
+      <IconButton
+        onClick={() =>
             setPage(Math.max(0, this.get('search.page', 0) - 1))}>
-          <ActionPrev />
-        </IconButton>
-        <IconButton
-          onClick={() => setPage(this.get('search.page', 0) + 1)}>
-          <ActionNext />
-        </IconButton>
+            <ActionPrev />
+          </IconButton>
+          <IconButton
+            onClick={() => setPage(this.get('search.page', 0) + 1)}>
+            <ActionNext />
+          </IconButton>
 
-      </div>
+        </div>
     );
   }
 }
