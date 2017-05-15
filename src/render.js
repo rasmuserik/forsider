@@ -18,13 +18,12 @@ export async function generateCovers() {
     writeFile = () => {};
     pathSep = '/';
   }
-  let upload = get('upload', {});
-  console.log('generateCovers', upload);
   set('upload.uploading', true);
 
-  let state = store.getState();
-  let images = get('images', []);
   do {
+    let upload = Object.assign({singlePage: true}, get('upload', {}));
+    let state = store.getState();
+    let images = get('images', []);
     let results = get('search.results', []);
     if (images.length === 0 || results.length === 0) {
       set('upload.uploading', false);
