@@ -26,7 +26,7 @@ export async function generateCovers() {
   let images = get('images', []);
   do {
     let results = get('search.results', []);
-    if(images.length === 0 || results.length === 0) {
+    if (images.length === 0 || results.length === 0) {
       set('upload.uploading', false);
       return;
     }
@@ -73,7 +73,7 @@ export async function generateCovers() {
       return;
     }
     await search(get('search.query'), 1 + get('search.page', 0));
-  } while(get('upload.uploading'));
+  } while (get('upload.uploading'));
 }
 
 export async function renderPreviews() {
