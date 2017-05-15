@@ -58850,13 +58850,12 @@ let generateCovers = (() => {
       writeFile = function () {};
       pathSep = '/';
     }
-    let upload = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload', {});
-    console.log('generateCovers', upload);
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["b" /* set */])('upload.uploading', true);
 
-    let state = __WEBPACK_IMPORTED_MODULE_2_recom__["c" /* store */].getState();
-    let images = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []);
     do {
+      let upload = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload', {}));
+      let state = __WEBPACK_IMPORTED_MODULE_2_recom__["c" /* store */].getState();
+      let images = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []);
       let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
       if (images.length === 0 || results.length === 0) {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["b" /* set */])('upload.uploading', false);
