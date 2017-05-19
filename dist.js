@@ -39214,7 +39214,9 @@ function encodeTag(tag, primitive, cls, reporter) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_solsort_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_solsort_util__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return search; });
+/* unused harmony export fileName */
+/* harmony export (immutable) */ __webpack_exports__["b"] = updateCoverStatus;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return search; });
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 
@@ -39231,6 +39233,26 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 let resultsPerPage = 10;
+
+function fileName(id) {
+  let pathSep = window.require('path').sep;
+  let dirName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["e" /* get */])('upload.dirname');
+  dirName = dirName ? dirName + pathSep : '';
+  return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg';
+}
+
+function updateCoverStatus() {
+  if (window.require) {
+    let fsExistsSync = window.require('fs').existsSync;
+    fsExistsSync = f => {
+      console.log('fsExistsSync', f);
+      return window.require('fs').existsSync(f);
+    };
+
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])('search.results', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["e" /* get */])('search.results', []).map(o => Object.assign(o, { HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0])) })));
+    console.log('done');
+  }
+}
 
 let search = (() => {
   var _ref = _asyncToGenerator(function* (query, page) {
@@ -39259,13 +39281,12 @@ let search = (() => {
         limit: resultsPerPage,
         offset: page * resultsPerPage
       });
+
       if (Array.isArray(results)) {
         results = results.map(function (o) {
           return Object.assign(o, {
             TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
-            CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
-            // TODO currently random status, should be loaded from pouchdb
-            STATUS: { uploaded: Math.random() > 0.7 }
+            CREATOR: o.dcCreator || o.creatorAut || o.creator || []
           });
         });
       }
@@ -39279,6 +39300,7 @@ let search = (() => {
       for (let i = 0; i < thumbs.length; ++i) {
         results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
       }
+
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])(['search', 'results'], results);
 
       // wait until results has been set
@@ -39293,6 +39315,7 @@ let search = (() => {
       console.log(e);
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])('search.error', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_solsort_util__["str"])(e));
     }
+    updateCoverStatus();
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])('search.searching', false);
   });
 
@@ -58586,6 +58609,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_8_recom__["a" /* ReCom */] {
                   localStorage.setItem('forsider.dirname', dirname);
                   this.set('upload.dirname', dirname);
                 }
+                setTimeout(__WEBPACK_IMPORTED_MODULE_10__SearchCQL_js__["b" /* updateCoverStatus */], 100);
               }
             }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -58762,7 +58786,7 @@ class Result extends __WEBPACK_IMPORTED_MODULE_1_recom__["a" /* ReCom */] {
           })
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        o.STATUS.uploaded ? 'Forside uploadet' : o.coverUrlThumbnail ? '' : 'Ingen forside'
+        o.HAS_OWN_COVER ? 'Egen genereret forside' : o.coverUrlThumbnail ? 'MoreInfo forside' : 'Ingen forside'
       );
     }
   }
@@ -58842,9 +58866,9 @@ let previewRerun = false,
 
 let generateCovers = (() => {
   var _ref = _asyncToGenerator(function* () {
-    let writeFile, pathSep;
+    let writeFileSync, pathSep;
     if (window.require) {
-      writeFile = window.require('fs').writeFile;
+      writeFileSync = window.require('fs').writeFileSync;
       pathSep = window.require('path').sep;
     } else {
       writeFile = function () {};
@@ -58894,13 +58918,15 @@ let generateCovers = (() => {
         }
 
         let imageData = atob(dataUrl.slice(23));
-        writeFile(filename, imageData, 'binary');
+        writeFileSync(filename, imageData, 'binary');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__SearchCQL__["b" /* updateCoverStatus */])();
       }
+
       if (upload.singlePage) {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["b" /* set */])('upload.uploading', false);
         return;
       }
-      yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__SearchCQL__["b" /* search */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.query'), 1 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0));
+      yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__SearchCQL__["c" /* search */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.query'), 1 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0));
     } while (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload.uploading'));
   });
 

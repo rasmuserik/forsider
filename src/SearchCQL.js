@@ -15,6 +15,28 @@ import _ from 'lodash';
 
 let resultsPerPage = 10;
 
+export function fileName(id) {
+  let pathSep = window.require('path').sep;
+  let dirName = get('upload.dirname');
+  dirName= (dirName ? dirName + pathSep : '');
+  return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg'
+}
+
+export function updateCoverStatus() {
+  if (window.require) {
+    let fsExistsSync = window.require('fs').existsSync;
+    fsExistsSync = (f) => {
+      console.log('fsExistsSync', f);
+      return window.require('fs').existsSync(f);
+    }
+
+    set('search.results',
+      get('search.results', []).map(o =>
+        Object.assign(o, { HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0]))})));
+    console.log('done');
+  }
+}
+
 export async function search(query, page) {
   page = Math.max(0, page | 0);
   if (get('search.page') === page && get('search.query') === query) {
@@ -42,13 +64,12 @@ export async function search(query, page) {
       limit: resultsPerPage,
       offset: page * resultsPerPage
     });
+
     if (Array.isArray(results)) {
       results = results.map(o =>
         Object.assign(o, {
           TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
           CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
-          // TODO currently random status, should be loaded from pouchdb
-          STATUS: {uploaded: Math.random() > 0.7}
         })
       );
     }
@@ -62,6 +83,7 @@ export async function search(query, page) {
     for (let i = 0; i < thumbs.length; ++i) {
       results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
     }
+
     set(['search', 'results'], results);
 
     // wait until results has been set
@@ -76,6 +98,7 @@ export async function search(query, page) {
     console.log(e);
     set('search.error', str(e));
   }
+  updateCoverStatus();
   set('search.searching', false);
 }
 
@@ -112,10 +135,10 @@ export class SearchCQL extends ReCom {
           floatingLabelText="CQL Søgestreng"
         />
 
-        <IconButton onClick={() => this.search()}>
-          {this.get('search.searching')
-            ? <CircularProgress size={32} />
-            : <ActionSearch />}
+      <IconButton onClick={() => this.search()}>
+        {this.get('search.searching')
+          ? <CircularProgress size={32} />
+          : <ActionSearch />}
         </IconButton> <br />
 
         Side
@@ -128,17 +151,17 @@ export class SearchCQL extends ReCom {
           onChange={(_, val) => setPage(Math.max(0, (val | 0) - 1))}
         />
 
-        <IconButton
-          onClick={() =>
+      <IconButton
+        onClick={() =>
             setPage(Math.max(0, this.get('search.page', 0) - 1))}>
-          <ActionPrev />
-        </IconButton>
-        <IconButton
-          onClick={() => setPage(this.get('search.page', 0) + 1)}>
-          <ActionNext />
-        </IconButton>
+            <ActionPrev />
+          </IconButton>
+          <IconButton
+            onClick={() => setPage(this.get('search.page', 0) + 1)}>
+            <ActionNext />
+          </IconButton>
 
-      </div>
+        </div>
     );
   }
 }

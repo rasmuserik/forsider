@@ -11,7 +11,7 @@ import {html2png, html2jpg} from 'html-to-canvas';
 import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
 
-import {SearchCQL} from './SearchCQL.js';
+import {SearchCQL, updateCoverStatus} from './SearchCQL.js';
 import Results from './Results.js';
 import CoverOptions from './CoverOptions';
 import Immutable from 'immutable';
@@ -76,6 +76,7 @@ export default class Main extends ReCom {
                     localStorage.setItem('forsider.dirname', dirname);
                     this.set('upload.dirname', dirname);
                   }
+                  setTimeout(updateCoverStatus,100);
                 }}
               />
               <div

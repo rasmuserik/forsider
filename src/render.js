@@ -2,7 +2,7 @@ import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
 import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
-import {search} from './SearchCQL';
+import {search, updateCoverStatus} from './SearchCQL';
 
 let uploadWidth = 1000;
 let uploadHeight = 1620;
@@ -10,9 +10,9 @@ let uploadHeight = 1620;
 let previewRerun = false, previewRunning = false;
 
 export async function generateCovers() {
-  let writeFile, pathSep;
+  let writeFileSync, pathSep;
   if (window.require) {
-    writeFile = window.require('fs').writeFile;
+    writeFileSync = window.require('fs').writeFileSync;
     pathSep = window.require('path').sep;
   } else {
     writeFile = () => {};
@@ -65,8 +65,10 @@ export async function generateCovers() {
       }
 
       let imageData = atob(dataUrl.slice(23));
-      writeFile(filename, imageData, 'binary');
+      writeFileSync(filename, imageData, 'binary');
+      updateCoverStatus();
     }
+
     if (upload.singlePage) {
       set('upload.uploading', false);
       return;
