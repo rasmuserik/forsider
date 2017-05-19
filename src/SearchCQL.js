@@ -18,21 +18,26 @@ let resultsPerPage = 10;
 export function fileName(id) {
   let pathSep = window.require('path').sep;
   let dirName = get('upload.dirname');
-  dirName= (dirName ? dirName + pathSep : '');
-  return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg'
+  dirName = dirName ? dirName + pathSep : '';
+  return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg';
 }
 
 export function updateCoverStatus() {
   if (window.require) {
     let fsExistsSync = window.require('fs').existsSync;
-    fsExistsSync = (f) => {
+    fsExistsSync = f => {
       console.log('fsExistsSync', f);
       return window.require('fs').existsSync(f);
-    }
+    };
 
-    set('search.results',
+    set(
+      'search.results',
       get('search.results', []).map(o =>
-        Object.assign(o, { HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0]))})));
+        Object.assign(o, {
+          HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0]))
+        })
+      )
+    );
     console.log('done');
   }
 }
@@ -69,7 +74,7 @@ export async function search(query, page) {
       results = results.map(o =>
         Object.assign(o, {
           TITLE: o.dcTitle || o.dcTitleFull || o.title || [],
-          CREATOR: o.dcCreator || o.creatorAut || o.creator || [],
+          CREATOR: o.dcCreator || o.creatorAut || o.creator || []
         })
       );
     }
@@ -135,10 +140,10 @@ export class SearchCQL extends ReCom {
           floatingLabelText="CQL Søgestreng"
         />
 
-      <IconButton onClick={() => this.search()}>
-        {this.get('search.searching')
-          ? <CircularProgress size={32} />
-          : <ActionSearch />}
+        <IconButton onClick={() => this.search()}>
+          {this.get('search.searching')
+            ? <CircularProgress size={32} />
+            : <ActionSearch />}
         </IconButton> <br />
 
         Side
@@ -151,17 +156,17 @@ export class SearchCQL extends ReCom {
           onChange={(_, val) => setPage(Math.max(0, (val | 0) - 1))}
         />
 
-      <IconButton
-        onClick={() =>
+        <IconButton
+          onClick={() =>
             setPage(Math.max(0, this.get('search.page', 0) - 1))}>
-            <ActionPrev />
-          </IconButton>
-          <IconButton
-            onClick={() => setPage(this.get('search.page', 0) + 1)}>
-            <ActionNext />
-          </IconButton>
+          <ActionPrev />
+        </IconButton>
+        <IconButton
+          onClick={() => setPage(this.get('search.page', 0) + 1)}>
+          <ActionNext />
+        </IconButton>
 
-        </div>
+      </div>
     );
   }
 }

@@ -76,7 +76,7 @@ export default class Main extends ReCom {
                     localStorage.setItem('forsider.dirname', dirname);
                     this.set('upload.dirname', dirname);
                   }
-                  setTimeout(updateCoverStatus,100);
+                  setTimeout(updateCoverStatus, 100);
                 }}
               />
               <div
