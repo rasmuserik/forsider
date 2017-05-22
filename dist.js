@@ -39249,7 +39249,9 @@ function updateCoverStatus() {
       return window.require('fs').existsSync(f);
     };
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])('search.results', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["e" /* get */])('search.results', []).map(o => Object.assign(o, { HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0])) })));
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["b" /* set */])('search.results', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_recom__["e" /* get */])('search.results', []).map(o => Object.assign(o, {
+      HAS_OWN_COVER: fsExistsSync(fileName(o.pid[0]))
+    })));
     console.log('done');
   }
 }
@@ -58871,7 +58873,7 @@ let generateCovers = (() => {
       writeFileSync = window.require('fs').writeFileSync;
       pathSep = window.require('path').sep;
     } else {
-      writeFile = function () {};
+      writeFileSync = function () {};
       pathSep = '/';
     }
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["b" /* set */])('upload.uploading', true);
@@ -58893,8 +58895,7 @@ let generateCovers = (() => {
         let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
         let filename = (upload.dirname ? upload.dirname + pathSep : '') + pid + '.jpg';
 
-        if (meta.coverUrlThumbnail && upload.overwrite ||
-        /*TODO has own cover*/false && upload.overwriteOwn) {
+        if (!meta.HAS_OWN_COVER && meta.coverUrlThumbnail && !upload.overwrite || meta.HAS_OWN_COVER && !upload.overwriteOwn) {
           continue;
         }
 

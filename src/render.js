@@ -15,7 +15,7 @@ export async function generateCovers() {
     writeFileSync = window.require('fs').writeFileSync;
     pathSep = window.require('path').sep;
   } else {
-    writeFile = () => {};
+    writeFileSync = () => {};
     pathSep = '/';
   }
   set('upload.uploading', true);
@@ -39,8 +39,8 @@ export async function generateCovers() {
         (upload.dirname ? upload.dirname + pathSep : '') + pid + '.jpg';
 
       if (
-        (meta.coverUrlThumbnail && upload.overwrite) ||
-        /*TODO has own cover*/ (false && upload.overwriteOwn)
+        ((!meta.HAS_OWN_COVER) && meta.coverUrlThumbnail && !upload.overwrite) ||
+        (meta.HAS_OWN_COVER && !upload.overwriteOwn)
       ) {
         continue;
       }
