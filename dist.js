@@ -58458,7 +58458,7 @@ class ImageUpload extends __WEBPACK_IMPORTED_MODULE_5_recom__["a" /* ReCom */] {
               },
               secondary: true,
               mini: true,
-              onClick: () => this.dispatch({
+              onClick: () => __WEBPACK_IMPORTED_MODULE_5_recom__["c" /* store */].dispatch({
                 type: 'REMOVE_IMAGE',
                 id: o.id
               }) },

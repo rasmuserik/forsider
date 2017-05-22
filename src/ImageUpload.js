@@ -3,7 +3,7 @@ import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import {ReCom, dispatchTable} from 'recom';
+import {ReCom, dispatchTable, store} from 'recom';
 import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
 
@@ -90,7 +90,7 @@ export default class ImageUpload extends ReCom {
                 secondary={true}
                 mini={true}
                 onClick={() =>
-                  this.dispatch({
+                  store.dispatch({
                     type: 'REMOVE_IMAGE',
                     id: o.id
                   })}>
