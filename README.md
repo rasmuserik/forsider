@@ -8,28 +8,6 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - Kildekode ligger online på <https://github.com/solsort/forsider/>.
 - En meget ufærdige demo-udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>. Kun lavet så den virker i allernyeste udgave af Chrome, - da den i praksis køres some en NW.js applikation. Upload og gem er ikke mulig i webbrowser, men kun i den releasede applikation (eller hvis den startes med [NW.js](https://nwjs.io)).
 
-# Roadmap
-
-- Upload til forsideservice
-    - Gennemløb af resultater + upload-mock
-    - **Blokeret** Mangler sepcifikation af FTP-upload
-- Komplet UI
-    - Autogenerer forsider i preview
-    - Autovælg forsidebillede baseret på søgeresultat
-    - Visning af status for upload
-- Misc
-    - tilføj mulihed for angivelse af søge-id.
-    - **Blokeret** Korrekt søgebase. Mangler `client_id` / `client_secret` til app og/eller adgang til opensearch og moreinfo.
-    - **Blokeret** Søgning på manifest-niveau, samt antal hits. Er vist ikke understøttet i den åbne platform, - så kan ikke udvikle dette uden adgang til opensearch/moreinfo.
-    - **Blokeret** Søgning timer ud for sene søgeresultater, i.e. side 100.
-    - Mål font-størrelse of skalér derefter
-- Separate felter for titel/forfatter
-- Gem/synkroniser info om uploadede billeder
-- Dokumentation
-    - Yderligere udvikler dokumentation for videreudvikling
-    - Gennemgå og refaktorer hvor det giver mening
-
-
 # Changelog
 ## Sprint 2
 
