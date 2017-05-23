@@ -2,7 +2,7 @@ import {sleep} from 'solsort-util';
 import {html2png, html2jpg} from 'html-to-canvas';
 import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
-import {search, updateCoverStatus} from './SearchCQL';
+import {search, updateCoverStatus} from './search';
 
 let uploadWidth = 1000;
 let uploadHeight = 1620;
@@ -18,6 +18,7 @@ export async function generateCovers() {
     writeFileSync = () => {};
     pathSep = '/';
   }
+
   set('upload.uploading', true);
 
   do {

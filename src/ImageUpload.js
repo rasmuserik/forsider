@@ -1,11 +1,12 @@
 import React from 'react';
+import {ReCom, dispatchTable, store} from 'recom';
+import {randomId, file2url} from 'solsort-util';
+import sha from 'js-sha256';
+
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import {ReCom, dispatchTable, store} from 'recom';
-import {randomId, file2url} from 'solsort-util';
-import sha from 'js-sha256';
 
 function hash(str) {
   return btoa(
@@ -15,19 +16,20 @@ function hash(str) {
     )
   ).slice(0, 20);
 }
-let height = 120;
 
-dispatchTable.REMOVE_IMAGE = (state, action) =>
+dispatchTable.REMOVE_IMAGE = function(state, action) {
   state.set(
     'images',
     state.get('images').filter(o => o.get('id') !== action.id)
   );
+};
 
 export default class ImageUpload extends ReCom {
   constructor(props, context) {
     super(props);
     this.inputId = randomId();
   }
+
   async addImages(imgs) {
     let result = [];
     for (var i = 0; i < imgs.length; ++i) {
@@ -41,7 +43,9 @@ export default class ImageUpload extends ReCom {
     }
     this.set('images', this.get('images', []).concat(result));
   }
+
   render() {
+    let height = 120;
     return (
       <div
         style={{

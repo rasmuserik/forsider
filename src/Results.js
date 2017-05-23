@@ -13,6 +13,7 @@ let resultStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden'
 };
+
 class Result extends ReCom {
   constructor(props, context) {
     super(props);

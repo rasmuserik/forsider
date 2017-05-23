@@ -9,6 +9,7 @@ let colorStyle = {
   height: 240,
   width: 225
 };
+
 export default class Color extends ReCom {
   constructor(props) {
     super(props);

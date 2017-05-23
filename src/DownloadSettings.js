@@ -6,11 +6,10 @@ import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 
-import {updateCoverStatus} from './SearchCQL';
+import {updateCoverStatus} from './search';
 import {generateCovers, renderPreviews} from './render';
 
 export default class DownloadSettings extends ReCom {
-
   constructor(props, context) {
     super(props);
     set('upload.dirname', localStorage.getItem('forsider.dirname', ''));

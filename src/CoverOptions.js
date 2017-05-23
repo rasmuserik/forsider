@@ -1,20 +1,18 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
-import Slider from 'material-ui/Slider';
-import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import AutoComplete from 'material-ui/AutoComplete';
-import {ChromePicker} from 'react-color';
-
 import {ReCom} from 'recom';
 import {installedFonts} from 'installed-fonts';
 
-import ImageUpload from './ImageUpload.js';
-import Color from './Color.js';
+import TextField from 'material-ui/TextField';
+import Slider from 'material-ui/Slider';
+import FlatButton from 'material-ui/FlatButton';
+import AutoComplete from 'material-ui/AutoComplete';
+
+import ImageUpload from './ImageUpload';
+import Color from './Color';
 
 let fonts = [];
 installedFonts().then(o => (fonts = o));
+
 export default class CoverOptions extends ReCom {
   constructor(props, context) {
     super(props);

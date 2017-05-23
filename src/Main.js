@@ -3,15 +3,14 @@ import {ReCom, store, set, get} from 'recom';
 
 import Paper from 'material-ui/Paper';
 
-import {SearchCQL, updateCoverStatus} from './SearchCQL';
+import SearchCQL from './SearchCQL';
+import {updateCoverStatus} from './search';
 import Results from './Results';
 import CoverOptions from './CoverOptions';
 import {generateCovers, renderPreviews} from './render';
 import DownloadSettings from './DownloadSettings';
 
-
 export default class Main extends ReCom {
-
   constructor(props, context) {
     super(props);
   }
