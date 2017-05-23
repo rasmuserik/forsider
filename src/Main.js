@@ -1,31 +1,22 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import {sleep} from 'solsort-util';
-import {html2png, html2jpg} from 'html-to-canvas';
-//import {ReCom, store, set, get} from 'recom';
 import {ReCom, store, set, get} from 'recom';
-import coverHtml from './cover-html';
 
-import {SearchCQL, updateCoverStatus} from './SearchCQL.js';
-import Results from './Results.js';
+import Paper from 'material-ui/Paper';
+
+import {SearchCQL, updateCoverStatus} from './SearchCQL';
+import Results from './Results';
 import CoverOptions from './CoverOptions';
-import Immutable from 'immutable';
-import EditIcon from 'material-ui/svg-icons/image/edit';
 import {generateCovers, renderPreviews} from './render';
 import DownloadSettings from './DownloadSettings';
 
+
 export default class Main extends ReCom {
+
   constructor(props, context) {
     super(props);
   }
 
   render() {
-    renderPreviews();
     console.log('Store:', store.getState().toJS());
 
     let currentResult = this.get('ui.currentResult', 0);
@@ -36,7 +27,9 @@ export default class Main extends ReCom {
       currentImage =
         images[(currentResult + 10 * currentPage) % images.length].id;
     }
+
     this.get(['options', currentImage]);
+    renderPreviews();
 
     return (
       <div>

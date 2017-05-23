@@ -1,24 +1,16 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import {sleep} from 'solsort-util';
-import {html2png, html2jpg} from 'html-to-canvas';
-//import {ReCom, store, set, get} from 'recom';
 import {ReCom, store, set, get} from 'recom';
-import coverHtml from './cover-html';
 
-import {SearchCQL, updateCoverStatus} from './SearchCQL.js';
-import Results from './Results.js';
-import CoverOptions from './CoverOptions';
-import Immutable from 'immutable';
+import Paper from 'material-ui/Paper';
+import Toggle from 'material-ui/Toggle';
+import RaisedButton from 'material-ui/RaisedButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
+
+import {updateCoverStatus} from './SearchCQL';
 import {generateCovers, renderPreviews} from './render';
 
 export default class DownloadSettings extends ReCom {
+
   constructor(props, context) {
     super(props);
     set('upload.dirname', localStorage.getItem('forsider.dirname', ''));
@@ -30,6 +22,7 @@ export default class DownloadSettings extends ReCom {
     elem.setAttribute('type', 'file');
     elem.setAttribute('nwdirectory', 'true');
   }
+
   render() {
     return (
       <Paper style={{margin: 10, padding: 10}}>
