@@ -39316,6 +39316,28 @@ function encodeTag(tag, primitive, cls, reporter) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__search__ = __webpack_require__(143);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return generateCovers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return renderPreviews; });
+let renderSearchResult = (() => {
+  var _ref = _asyncToGenerator(function* (i, width, height) {
+    let images = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []);
+    let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
+    let searchPage = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0);
+    let image = images[(i + searchPage * 10) % images.length];
+    let currentImage = image.id;
+    let cfg = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])(['options', currentImage], {});
+    let meta = results[i];
+    let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg);
+    return yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_html_to_canvas__["html2jpg"])(html, {
+      deviceWidth: 334,
+      width: width,
+      height: height
+    });
+  });
+
+  return function renderSearchResult(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 
@@ -39324,14 +39346,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
-let uploadWidth = 1000;
-let uploadHeight = 1620;
-
-let previewRerun = false,
-    previewRunning = false;
-
 let generateCovers = (() => {
-  var _ref = _asyncToGenerator(function* () {
+  var _ref2 = _asyncToGenerator(function* () {
     let writeFileSync, pathSep;
     if (window.require) {
       writeFileSync = window.require('fs').writeFileSync;
@@ -39345,15 +39361,12 @@ let generateCovers = (() => {
 
     do {
       let upload = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload', {}));
-      let state = __WEBPACK_IMPORTED_MODULE_2_recom__["b" /* store */].getState();
-      let images = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []);
       let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
-      if (images.length === 0 || results.length === 0) {
+      if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length === 0 || results.length === 0) {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["d" /* set */])('upload.uploading', false);
         return;
       }
 
-      let searchPage = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0);
       for (let i = 0; i < results.length; ++i) {
         yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
         let meta = results[i];
@@ -39368,15 +39381,7 @@ let generateCovers = (() => {
           return;
         }
 
-        let image = images[(i + searchPage * 10) % images.length];
-        let currentImage = image.id;
-        let cfg = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])(['options', currentImage], {});
-        let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg);
-        let dataUrl = yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_html_to_canvas__["html2jpg"])(html, {
-          deviceWidth: 334,
-          width: uploadWidth,
-          height: uploadHeight
-        });
+        let dataUrl = yield renderSearchResult(i, 1000, 1620);
 
         if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
           alert('error');
@@ -39397,12 +39402,15 @@ let generateCovers = (() => {
   });
 
   return function generateCovers() {
-    return _ref.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 })();
 
+let previewRerun = false,
+    previewRunning = false;
+
 let renderPreviews = (() => {
-  var _ref2 = _asyncToGenerator(function* () {
+  var _ref3 = _asyncToGenerator(function* () {
     if (previewRunning) {
       previewRerun = true;
       return;
@@ -39410,43 +39418,28 @@ let renderPreviews = (() => {
     previewRerun = false;
     previewRunning = true;
 
-    let state = __WEBPACK_IMPORTED_MODULE_2_recom__["b" /* store */].getState();
-    let images = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []);
     let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
     let previews;
-    if (images.length > 0 && results.length > 0) {
+    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length > 0 && results.length > 0) {
       previews = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('previews', []);
-      let searchPage = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0);
       for (let i = 0; i < results.length; ++i) {
-        let image = images[(i + searchPage * 10) % images.length];
-        let currentImage = image.id;
-        let cfg = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])(['options', currentImage], {});
-        let meta = results[i];
-        let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg);
         previews[i] = previews[i] || {};
-        previews[i].dataUrl = yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_html_to_canvas__["html2png"])(html, {
-          width: 334,
-          height: 540
-        });
+        previews[i].dataUrl = yield renderSearchResult(i, 334, 540);
         yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
       }
     } else {
       previews = [];
     }
-
-    yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["d" /* set */])('previews', previews);
 
     previewRunning = false;
     if (previewRerun) {
-      setTimeout(function () {
-        return renderPreviews();
-      }, 0);
+      setTimeout(renderPreviews, 0);
     }
   });
 
   return function renderPreviews() {
-    return _ref2.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 })();
 
@@ -52769,7 +52762,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["a" /* ReCom */] {
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2_material_ui_Paper___default.a,
         { style: { margin: 10, padding: '0 10px 0 10px' } },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__SearchCQL__["a" /* SearchCQL */], null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__SearchCQL__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Results__["a" /* default */], null)
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
