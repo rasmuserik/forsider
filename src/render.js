@@ -4,10 +4,21 @@ import {ReCom, store, set, get} from 'recom';
 import coverHtml from './cover-html';
 import {search, updateCoverStatus} from './search';
 
-let uploadWidth = 1000;
-let uploadHeight = 1620;
-
-let previewRerun = false, previewRunning = false;
+async function renderSearchResult(i, width, height) {
+  let images = get('images', []);
+  let results = get('search.results', []);
+  let searchPage = get('search.page', 0);
+  let image = images[(i + searchPage * 10) % images.length];
+  let currentImage = image.id;
+  let cfg = get(['options', currentImage], {});
+  let meta = results[i];
+  let html = coverHtml(image, meta, cfg);
+  return await html2jpg(html, {
+    deviceWidth: 334,
+    width: width,
+    height: height
+  });
+}
 
 export async function generateCovers() {
   let writeFileSync, pathSep;
@@ -23,15 +34,12 @@ export async function generateCovers() {
 
   do {
     let upload = Object.assign({singlePage: true}, get('upload', {}));
-    let state = store.getState();
-    let images = get('images', []);
     let results = get('search.results', []);
-    if (images.length === 0 || results.length === 0) {
+    if (get('images', []).length === 0 || results.length === 0) {
       set('upload.uploading', false);
       return;
     }
 
-    let searchPage = get('search.page', 0);
     for (let i = 0; i < results.length; ++i) {
       await sleep();
       let meta = results[i];
@@ -52,16 +60,8 @@ export async function generateCovers() {
         return;
       }
 
-      let image = images[(i + searchPage * 10) % images.length];
-      let currentImage = image.id;
-      let cfg = get(['options', currentImage], {});
-      let html = coverHtml(image, meta, cfg);
-      let dataUrl = await html2jpg(html, {
-        deviceWidth: 334,
-        width: uploadWidth,
-        height: uploadHeight
-      });
-
+      let dataUrl = await renderSearchResult(i, 1000, 1620);
+        
       if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
         alert('error');
         throw new Error('encoding error');
@@ -80,6 +80,9 @@ export async function generateCovers() {
   } while (get('upload.uploading'));
 }
 
+
+let previewRerun = false, previewRunning = false;
+
 export async function renderPreviews() {
   if (previewRunning) {
     previewRerun = true;
@@ -88,35 +91,23 @@ export async function renderPreviews() {
   previewRerun = false;
   previewRunning = true;
 
-  let state = store.getState();
-  let images = get('images', []);
   let results = get('search.results', []);
   let previews;
-  if (images.length > 0 && results.length > 0) {
+  if (get('images', []).length > 0 && results.length > 0) {
     previews = get('previews', []);
-    let searchPage = get('search.page', 0);
     for (let i = 0; i < results.length; ++i) {
-      let image = images[(i + searchPage * 10) % images.length];
-      let currentImage = image.id;
-      let cfg = get(['options', currentImage], {});
-      let meta = results[i];
-      let html = coverHtml(image, meta, cfg);
       previews[i] = previews[i] || {};
-      previews[i].dataUrl = await html2png(html, {
-        width: 334,
-        height: 540
-      });
+      previews[i].dataUrl = await renderSearchResult(i, 334, 540);
       await sleep();
     }
   } else {
     previews = [];
   }
-
-  await sleep();
   set('previews', previews);
 
   previewRunning = false;
   if (previewRerun) {
-    setTimeout(() => renderPreviews(), 0);
+    setTimeout(renderPreviews, 0);
   }
 }
+
