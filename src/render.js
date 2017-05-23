@@ -39,7 +39,9 @@ export async function generateCovers() {
         (upload.dirname ? upload.dirname + pathSep : '') + pid + '.jpg';
 
       if (
-        ((!meta.HAS_OWN_COVER) && meta.coverUrlThumbnail && !upload.overwrite) ||
+        (!meta.HAS_OWN_COVER &&
+          meta.coverUrlThumbnail &&
+          !upload.overwrite) ||
         (meta.HAS_OWN_COVER && !upload.overwriteOwn)
       ) {
         continue;
