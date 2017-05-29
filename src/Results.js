@@ -79,6 +79,11 @@ export default class Results extends ReCom {
           overflow: 'auto',
           width: '100%'
         }}>
+        {this.get('search.resultCount') &&
+          <p>
+            <small>{this.get('search.resultCount')} resultater</small>
+          </p>
+        }
 
         {this.get('ui.searchError') &&
           <div
