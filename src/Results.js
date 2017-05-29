@@ -82,8 +82,7 @@ export default class Results extends ReCom {
         {this.get('search.resultCount') &&
           <p>
             <small>{this.get('search.resultCount')} resultater</small>
-          </p>
-        }
+          </p>}
 
         {this.get('ui.searchError') &&
           <div

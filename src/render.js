@@ -61,7 +61,7 @@ export async function generateCovers() {
       }
 
       let dataUrl = await renderSearchResult(i, 1000, 1620);
-        
+
       if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
         alert('error');
         throw new Error('encoding error');
@@ -79,7 +79,6 @@ export async function generateCovers() {
     await search(get('search.query'), 1 + get('search.page', 0));
   } while (get('upload.uploading'));
 }
-
 
 let previewRerun = false, previewRunning = false;
 
@@ -110,4 +109,3 @@ export async function renderPreviews() {
     setTimeout(renderPreviews, 0);
   }
 }
-

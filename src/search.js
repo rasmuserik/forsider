@@ -29,7 +29,6 @@ export function updateCoverStatus() {
 }
 
 export async function search(query, page) {
-
   page = Math.max(0, page | 0);
   /*
   if (get('search.page') === page && get('search.query') === query) {
@@ -67,7 +66,7 @@ export async function search(query, page) {
       <os:query>${query}</os:query>
       <os:agency>${get('search.agency')}</os:agency>
       <os:profile>${get('search.profile')}</os:profile>
-      <os:start>${page * 10  + 1}</os:start>
+      <os:start>${page * 10 + 1}</os:start>
       <os:stepValue>10</os:stepValue>
       <os:collectionType>manifestation</os:collectionType>
       <os:outputType>json</os:outputType>
@@ -75,30 +74,34 @@ export async function search(query, page) {
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 `;
-      let result = await fetch('https://opensearch.addi.dk/staging_4.3/', {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        method: 'POST', body: soapString
-      });
+      let result = await fetch(
+        'https://opensearch.addi.dk/staging_4.3/',
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          method: 'POST',
+          body: soapString
+        }
+      );
       result = await result.json();
       result = result.searchResponse.result;
       count = +result.hitCount.$;
-      pids = (result.searchResult || []).map(o => o.collection.object[0].identifier.$);
+      pids = (result.searchResult || [])
+        .map(o => o.collection.object[0].identifier.$);
     } catch (e) {
-      console.log('error getting result from opensearch', e)
+      console.log('error getting result from opensearch', e);
       // error trying to get result from opensearch
       // graceful degradation: using only openplatform instead.
       pids = await window.dbcOpenPlatform.search({
         q: query,
         limit: 10,
-        offset: page * 10,
+        offset: page * 10
       });
       pids = results.map(o => o.pid[0]);
     }
 
     let results = await window.dbcOpenPlatform.work({pids: pids});
-
 
     if (Array.isArray(results)) {
       results = results.map(o =>
