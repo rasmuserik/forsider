@@ -74,8 +74,9 @@ export async function search(query, page) {
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 `;
+      console.log('opensearch request', soapString);
       let result = await fetch(
-        'https://opensearch.addi.dk/staging_4.3/',
+        'https://opensearch.addi.dk/b3.5_4.5/',
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

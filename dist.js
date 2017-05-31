@@ -13097,7 +13097,8 @@ let search = (() => {
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 `;
-        let result = yield fetch('https://opensearch.addi.dk/staging_4.3/', {
+        console.log('opensearch request', soapString);
+        let result = yield fetch('https://opensearch.addi.dk/b3.5_4.5/', {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
