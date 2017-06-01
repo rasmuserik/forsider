@@ -13033,7 +13033,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function fileName(id) {
   let pathSep = window.require('path').sep;
-  let dirName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["e" /* get */])('download.dirname');
+  let dirName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["e" /* get */])('export.dirname');
   dirName = dirName ? dirName + pathSep : '';
   return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg';
 }
@@ -13120,7 +13120,7 @@ let search = (() => {
           limit: 10,
           offset: page * 10
         });
-        pids = results.map(function (o) {
+        pids = pids.map(function (o) {
           return o.pid[0];
         });
       }
@@ -39404,13 +39404,13 @@ let generateCovers = (() => {
       pathSep = '/';
     }
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', true);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('export.exporting', true);
 
     do {
-      let download = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download', {}));
+      let exportSettings = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('export', {}));
       let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
       if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length === 0 || results.length === 0) {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', false);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('export.exporting', false);
         return;
       }
 
@@ -39418,13 +39418,13 @@ let generateCovers = (() => {
         yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
         let meta = results[i];
         let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
-        let filename = (download.dirname ? download.dirname + pathSep : '') + pid + '.jpg';
+        let filename = (exportSettings.dirname ? exportSettings.dirname + pathSep : '') + pid + '.jpg';
 
-        if (!meta.HAS_OWN_COVER && meta.coverUrlThumbnail && !download.overwrite || meta.HAS_OWN_COVER && !download.overwriteOwn) {
+        if (!meta.HAS_OWN_COVER && meta.coverUrlThumbnail && !exportSettings.overwrite || meta.HAS_OWN_COVER && !exportSettings.overwriteOwn) {
           continue;
         }
 
-        if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download.downloading')) {
+        if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('export.exporting')) {
           return;
         }
 
@@ -39440,12 +39440,12 @@ let generateCovers = (() => {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__search__["a" /* updateCoverStatus */])();
       }
 
-      if (download.singlePage) {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', false);
+      if (exportSettings.singlePage) {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('export.exporting', false);
         return;
       }
       yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__search__["b" /* search */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.query'), 1 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0));
-    } while (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download.downloading'));
+    } while (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('export.exporting'));
   });
 
   return function generateCovers() {
@@ -52498,7 +52498,7 @@ class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] 
 class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
   constructor(props, context) {
     super(props);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["a" /* set */])('download.dirname', localStorage.getItem('forsider.dirname', ''));
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["a" /* set */])('export.dirname', localStorage.getItem('forsider.dirname', ''));
   }
 
   componentDidMount() {
@@ -52520,7 +52520,7 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           if (elem.files[0]) {
             let dirname = elem.files[0].path;
             localStorage.setItem('forsider.dirname', dirname);
-            this.set('download.dirname', dirname);
+            this.set('export.dirname', dirname);
           }
           setTimeout(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */], 100);
         }
@@ -52535,7 +52535,7 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           },
           onClick: () => document.getElementById('select-directory').click() },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_material_ui_svg_icons_image_edit___default.a, null),
-        this.get('download.dirname') || 'Sti til genererede forsider'
+        this.get('export.dirname') || 'Sti til genererede forsider'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_material_ui_Toggle___default.a, {
         style: Object.assign({
@@ -52543,12 +52543,12 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           width: 200
         }, { margin: 10 }),
         labelPosition: 'right',
-        toggled: this.get('download.singlePage', true),
+        toggled: this.get('export.singlePage', true),
         onToggle: (_, val) => {
-          this.set('download.singlePage', val);
-          this.set('download.downloading', false);
+          this.set('export.singlePage', val);
+          this.set('export.exporting', false);
         },
-        label: 'Upload kun for \xE9n side s\xF8geresultater',
+        label: 'Gem kun for \xE9n side s\xF8geresultater',
         labelStyle: { color: '#000' }
       }),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_material_ui_Toggle___default.a, {
@@ -52556,10 +52556,10 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           display: 'inline-block',
           width: 200
         }, { margin: 10 }),
-        toggled: this.get('download.overwriteOwn', false),
+        toggled: this.get('export.overwriteOwn', false),
         onToggle: (_, val) => {
-          this.set('download.overwriteOwn', val);
-          this.set('download.downloading', false);
+          this.set('export.overwriteOwn', val);
+          this.set('export.exporting', false);
         },
         labelPosition: 'right',
         label: 'Overskriv egne forsider',
@@ -52570,12 +52570,12 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           display: 'inline-block',
           width: 200
         }, { margin: 10 }),
-        toggled: this.get('download.overwrite', false),
+        toggled: this.get('export.overwrite', false),
         onToggle: (_, val) => {
-          this.set('download.overwrite', val);
-          this.set('download.downloading', false);
+          this.set('export.overwrite', val);
+          this.set('export.exporting', false);
           if (val) {
-            this.set('download.overwriteOwn', true);
+            this.set('export.overwriteOwn', true);
           }
         },
         labelPosition: 'right',
@@ -52584,13 +52584,13 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
         trackSwitchedStyle: { backgroundColor: '#faa' },
         labelStyle: { color: '#000' }
       }),
-      this.get('download.downloading', false) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
-        label: 'Stop download',
+      this.get('export.exporting', false) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
+        label: 'Stop forsidegenerering',
         fullWidth: true,
         secondary: true,
-        onClick: () => this.set('download.downloading', false)
+        onClick: () => this.set('export.exporting', false)
       }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
-        label: 'Upload opdatering af forsider',
+        label: 'Gem generiske forsider',
         fullWidth: true,
         primary: true,
         onClick: __WEBPACK_IMPORTED_MODULE_7__render__["b" /* generateCovers */]
@@ -52771,7 +52771,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Results__ = __webpack_require__(453);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__CoverOptions__ = __webpack_require__(449);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__render__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__DownloadSettings__ = __webpack_require__(450);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ExportSettings__ = __webpack_require__(450);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_material_ui_TextField__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_material_ui_TextField___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_material_ui_TextField__);
 
@@ -52836,7 +52836,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
               src: this.get(['previews', currentResult, 'dataUrl'])
             })
           ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__DownloadSettings__["a" /* default */], null),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__ExportSettings__["a" /* default */], null),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_material_ui_Paper___default.a,
             { style: { margin: 10, padding: 10 } },
