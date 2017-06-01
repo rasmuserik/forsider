@@ -9,6 +9,9 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - En meget ufærdige demo-udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>. Kun lavet så den virker i allernyeste udgave af Chrome, - da den i praksis køres some en NW.js applikation. Upload og gem er ikke mulig i webbrowser, men kun i den releasede applikation (eller hvis den startes med [NW.js](https://nwjs.io)).
 
 # Changelog
+
+Status for sprint 3, og senere, kan ses i roadmap i issue-trackeren: http://platform.dandigbib.org/projects/generiske-forsider/roadmap
+
 ## Sprint 2
 
 - visning af søgeresultater udover de første ti
@@ -75,11 +78,11 @@ Overblik over applikationstilstanden
     - `fontScale`
     - `maxLen`
     - `yPos` 0-100
-- `upload`
+- `download`
     - `overwrite`
     - `overwriteOwn`
     - `singlePage`
-    - `uploading`
+    - `downloading`
     - `dirname`
 - `currentImage`
 - `query` search query which yields results
