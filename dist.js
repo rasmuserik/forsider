@@ -13033,7 +13033,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function fileName(id) {
   let pathSep = window.require('path').sep;
-  let dirName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["e" /* get */])('upload.dirname');
+  let dirName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["e" /* get */])('download.dirname');
   dirName = dirName ? dirName + pathSep : '';
   return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg';
 }
@@ -39404,13 +39404,13 @@ let generateCovers = (() => {
       pathSep = '/';
     }
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('upload.uploading', true);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', true);
 
     do {
-      let upload = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload', {}));
+      let download = Object.assign({ singlePage: true }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download', {}));
       let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
       if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length === 0 || results.length === 0) {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('upload.uploading', false);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', false);
         return;
       }
 
@@ -39418,13 +39418,13 @@ let generateCovers = (() => {
         yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
         let meta = results[i];
         let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
-        let filename = (upload.dirname ? upload.dirname + pathSep : '') + pid + '.jpg';
+        let filename = (download.dirname ? download.dirname + pathSep : '') + pid + '.jpg';
 
-        if (!meta.HAS_OWN_COVER && meta.coverUrlThumbnail && !upload.overwrite || meta.HAS_OWN_COVER && !upload.overwriteOwn) {
+        if (!meta.HAS_OWN_COVER && meta.coverUrlThumbnail && !download.overwrite || meta.HAS_OWN_COVER && !download.overwriteOwn) {
           continue;
         }
 
-        if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload.uploading')) {
+        if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download.downloading')) {
           return;
         }
 
@@ -39440,12 +39440,12 @@ let generateCovers = (() => {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__search__["a" /* updateCoverStatus */])();
       }
 
-      if (upload.singlePage) {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('upload.uploading', false);
+      if (download.singlePage) {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('download.downloading', false);
         return;
       }
       yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__search__["b" /* search */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.query'), 1 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.page', 0));
-    } while (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('upload.uploading'));
+    } while (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('download.downloading'));
   });
 
   return function generateCovers() {
@@ -52498,7 +52498,7 @@ class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] 
 class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
   constructor(props, context) {
     super(props);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["a" /* set */])('upload.dirname', localStorage.getItem('forsider.dirname', ''));
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_recom__["a" /* set */])('download.dirname', localStorage.getItem('forsider.dirname', ''));
   }
 
   componentDidMount() {
@@ -52520,7 +52520,7 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           if (elem.files[0]) {
             let dirname = elem.files[0].path;
             localStorage.setItem('forsider.dirname', dirname);
-            this.set('upload.dirname', dirname);
+            this.set('download.dirname', dirname);
           }
           setTimeout(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */], 100);
         }
@@ -52535,7 +52535,7 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           },
           onClick: () => document.getElementById('select-directory').click() },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_material_ui_svg_icons_image_edit___default.a, null),
-        this.get('upload.dirname') || 'Sti til genererede forsider'
+        this.get('download.dirname') || 'Sti til genererede forsider'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_material_ui_Toggle___default.a, {
         style: Object.assign({
@@ -52543,10 +52543,10 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           width: 200
         }, { margin: 10 }),
         labelPosition: 'right',
-        toggled: this.get('upload.singlePage', true),
+        toggled: this.get('download.singlePage', true),
         onToggle: (_, val) => {
-          this.set('upload.singlePage', val);
-          this.set('upload.uploading', false);
+          this.set('download.singlePage', val);
+          this.set('download.downloading', false);
         },
         label: 'Upload kun for \xE9n side s\xF8geresultater',
         labelStyle: { color: '#000' }
@@ -52556,10 +52556,10 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           display: 'inline-block',
           width: 200
         }, { margin: 10 }),
-        toggled: this.get('upload.overwriteOwn', false),
+        toggled: this.get('download.overwriteOwn', false),
         onToggle: (_, val) => {
-          this.set('upload.overwriteOwn', val);
-          this.set('upload.uploading', false);
+          this.set('download.overwriteOwn', val);
+          this.set('download.downloading', false);
         },
         labelPosition: 'right',
         label: 'Overskriv egne forsider',
@@ -52570,12 +52570,12 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
           display: 'inline-block',
           width: 200
         }, { margin: 10 }),
-        toggled: this.get('upload.overwrite', false),
+        toggled: this.get('download.overwrite', false),
         onToggle: (_, val) => {
-          this.set('upload.overwrite', val);
-          this.set('upload.uploading', false);
+          this.set('download.overwrite', val);
+          this.set('download.downloading', false);
           if (val) {
-            this.set('upload.overwriteOwn', true);
+            this.set('download.overwriteOwn', true);
           }
         },
         labelPosition: 'right',
@@ -52584,11 +52584,11 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
         trackSwitchedStyle: { backgroundColor: '#faa' },
         labelStyle: { color: '#000' }
       }),
-      this.get('upload.uploading', false) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
-        label: 'Stop upload',
+      this.get('download.downloading', false) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
+        label: 'Stop download',
         fullWidth: true,
         secondary: true,
-        onClick: () => this.set('upload.uploading', false)
+        onClick: () => this.set('download.downloading', false)
       }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_RaisedButton___default.a, {
         label: 'Upload opdatering af forsider',
         fullWidth: true,
