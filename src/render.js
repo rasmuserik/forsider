@@ -30,13 +30,13 @@ export async function generateCovers() {
     pathSep = '/';
   }
 
-  set('download.downloading', true);
+  set('export.exporting', true);
 
   do {
-    let download = Object.assign({singlePage: true}, get('download', {}));
+    let exportSettings = Object.assign({singlePage: true}, get('export', {}));
     let results = get('search.results', []);
     if (get('images', []).length === 0 || results.length === 0) {
-      set('download.downloading', false);
+      set('export.exporting', false);
       return;
     }
 
@@ -45,18 +45,18 @@ export async function generateCovers() {
       let meta = results[i];
       let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
       let filename =
-        (download.dirname ? download.dirname + pathSep : '') + pid + '.jpg';
+        (exportSettings.dirname ? exportSettings.dirname + pathSep : '') + pid + '.jpg';
 
       if (
         (!meta.HAS_OWN_COVER &&
           meta.coverUrlThumbnail &&
-          !download.overwrite) ||
-        (meta.HAS_OWN_COVER && !download.overwriteOwn)
+          !exportSettings.overwrite) ||
+        (meta.HAS_OWN_COVER && !exportSettings.overwriteOwn)
       ) {
         continue;
       }
 
-      if (!get('download.downloading')) {
+      if (!get('export.exporting')) {
         return;
       }
 
@@ -72,12 +72,12 @@ export async function generateCovers() {
       updateCoverStatus();
     }
 
-    if (download.singlePage) {
-      set('download.downloading', false);
+    if (exportSettings.singlePage) {
+      set('export.exporting', false);
       return;
     }
     await search(get('search.query'), 1 + get('search.page', 0));
-  } while (get('download.downloading'));
+  } while (get('export.exporting'));
 }
 
 let previewRerun = false, previewRunning = false;

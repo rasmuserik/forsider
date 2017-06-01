@@ -8,7 +8,7 @@ import {updateCoverStatus} from './search';
 import Results from './Results';
 import CoverOptions from './CoverOptions';
 import {generateCovers, renderPreviews} from './render';
-import DownloadSettings from './DownloadSettings';
+import ExportSettings from './ExportSettings';
 import TextField from 'material-ui/TextField';
 
 set('search.agency', localStorage.getItem('search.agency') || '715100');
@@ -53,7 +53,7 @@ export default class Main extends ReCom {
                 src={this.get(['previews', currentResult, 'dataUrl'])}
               />
             </Paper>
-            <DownloadSettings />
+            <ExportSettings />
             <Paper style={{margin: 10, padding: 10}}>
               <TextField
                 floatingLabelText="Agency"

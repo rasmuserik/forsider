@@ -78,11 +78,11 @@ Overblik over applikationstilstanden
     - `fontScale`
     - `maxLen`
     - `yPos` 0-100
-- `download`
+- `export`
     - `overwrite`
     - `overwriteOwn`
     - `singlePage`
-    - `downloading`
+    - `exporting`
     - `dirname`
 - `currentImage`
 - `query` search query which yields results

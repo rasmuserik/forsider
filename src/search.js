@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 export function fileName(id) {
   let pathSep = window.require('path').sep;
-  let dirName = get('download.dirname');
+  let dirName = get('export.dirname');
   dirName = dirName ? dirName + pathSep : '';
   return dirName + id.replace(/[^a-zA-Z0-9]/g, '_') + '.jpg';
 }

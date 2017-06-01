@@ -12,7 +12,7 @@ import {generateCovers, renderPreviews} from './render';
 export default class DownloadSettings extends ReCom {
   constructor(props, context) {
     super(props);
-    set('download.dirname', localStorage.getItem('forsider.dirname', ''));
+    set('export.dirname', localStorage.getItem('forsider.dirname', ''));
   }
 
   componentDidMount() {
@@ -33,7 +33,7 @@ export default class DownloadSettings extends ReCom {
             if (elem.files[0]) {
               let dirname = elem.files[0].path;
               localStorage.setItem('forsider.dirname', dirname);
-              this.set('download.dirname', dirname);
+              this.set('export.dirname', dirname);
             }
             setTimeout(updateCoverStatus, 100);
           }}
@@ -47,7 +47,7 @@ export default class DownloadSettings extends ReCom {
           onClick={() =>
             document.getElementById('select-directory').click()}>
           <EditIcon />
-          {this.get('download.dirname') || 'Sti til genererede forsider'}
+          {this.get('export.dirname') || 'Sti til genererede forsider'}
         </div>
 
         <Toggle
@@ -59,12 +59,12 @@ export default class DownloadSettings extends ReCom {
             {margin: 10}
           )}
           labelPosition="right"
-          toggled={this.get('download.singlePage', true)}
+          toggled={this.get('export.singlePage', true)}
           onToggle={(_, val) => {
-            this.set('download.singlePage', val);
-            this.set('download.downloading', false);
+            this.set('export.singlePage', val);
+            this.set('export.exporting', false);
           }}
-          label="Upload kun for én side søgeresultater"
+          label="Gem kun for én side søgeresultater"
           labelStyle={{color: '#000'}}
         />
         <Toggle
@@ -75,10 +75,10 @@ export default class DownloadSettings extends ReCom {
             },
             {margin: 10}
           )}
-          toggled={this.get('download.overwriteOwn', false)}
+          toggled={this.get('export.overwriteOwn', false)}
           onToggle={(_, val) => {
-            this.set('download.overwriteOwn', val);
-            this.set('download.downloading', false);
+            this.set('export.overwriteOwn', val);
+            this.set('export.exporting', false);
           }}
           labelPosition="right"
           label="Overskriv egne forsider"
@@ -92,12 +92,12 @@ export default class DownloadSettings extends ReCom {
             },
             {margin: 10}
           )}
-          toggled={this.get('download.overwrite', false)}
+          toggled={this.get('export.overwrite', false)}
           onToggle={(_, val) => {
-            this.set('download.overwrite', val);
-            this.set('download.downloading', false);
+            this.set('export.overwrite', val);
+            this.set('export.exporting', false);
             if (val) {
-              this.set('download.overwriteOwn', true);
+              this.set('export.overwriteOwn', true);
             }
           }}
           labelPosition="right"
@@ -106,15 +106,15 @@ export default class DownloadSettings extends ReCom {
           trackSwitchedStyle={{backgroundColor: '#faa'}}
           labelStyle={{color: '#000'}}
         />
-        {this.get('download.downloading', false)
+        {this.get('export.exporting', false)
           ? <RaisedButton
-              label="Stop download"
+              label="Stop forsidegenerering"
               fullWidth={true}
               secondary={true}
-              onClick={() => this.set('download.downloading', false)}
+              onClick={() => this.set('export.exporting', false)}
             />
           : <RaisedButton
-              label="Upload opdatering af forsider"
+              label="Gem generiske forsider"
               fullWidth={true}
               primary={true}
               onClick={generateCovers}
