@@ -99,7 +99,7 @@ export async function search(query, page) {
         limit: 10,
         offset: page * 10
       });
-      pids = results.map(o => o.pid[0]);
+      pids = pids.map(o => o.pid[0]);
     }
 
     let results = await window.dbcOpenPlatform.work({pids: pids});
