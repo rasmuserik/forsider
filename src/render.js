@@ -33,7 +33,10 @@ export async function generateCovers() {
   set('export.exporting', true);
 
   do {
-    let exportSettings = Object.assign({singlePage: true}, get('export', {}));
+    let exportSettings = Object.assign(
+      {singlePage: true},
+      get('export', {})
+    );
     let results = get('search.results', []);
     if (get('images', []).length === 0 || results.length === 0) {
       set('export.exporting', false);
@@ -45,7 +48,11 @@ export async function generateCovers() {
       let meta = results[i];
       let pid = meta.pid[0].replace(/[^a-zA-Z0-9]/g, '_');
       let filename =
-        (exportSettings.dirname ? exportSettings.dirname + pathSep : '') + pid + '.jpg';
+        (exportSettings.dirname
+          ? exportSettings.dirname + pathSep
+          : '') +
+        pid +
+        '.jpg';
 
       if (
         (!meta.HAS_OWN_COVER &&

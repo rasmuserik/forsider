@@ -90,32 +90,33 @@ export default class CoverOptions extends ReCom {
             onChange={(_, val) => this.set(optionPath('yPos'), val)}
           />
 
-        <div>
-          <label
-            htmlFor="boxHeight"
-            style={{
-              display: 'inline-block',
-              marginTop: '20px',
-              fontSize: 12,
-              color: 'rgba(0,0,0,0.3)'
-            }}>
-            Boksens højde
-          </label>
-          <Slider
-            id="boxHeight"
-            type="number"
-            style={{
-              marginTop: -10,
-              height: 10,
-              marginBottom: 10
-            }}
-            max={100}
-            min={0}
-            step={1}
-            value={this.get(optionPath('boxHeight'), 20)}
-            onChange={(_, val) => this.set(optionPath('boxHeight'), val)}
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="boxHeight"
+              style={{
+                display: 'inline-block',
+                marginTop: '20px',
+                fontSize: 12,
+                color: 'rgba(0,0,0,0.3)'
+              }}>
+              Boksens højde
+            </label>
+            <Slider
+              id="boxHeight"
+              type="number"
+              style={{
+                marginTop: -10,
+                height: 10,
+                marginBottom: 10
+              }}
+              max={100}
+              min={0}
+              step={1}
+              value={this.get(optionPath('boxHeight'), 20)}
+              onChange={(_, val) =>
+                this.set(optionPath('boxHeight'), val)}
+            />
+          </div>
         </div>
         <div>
           <TextField

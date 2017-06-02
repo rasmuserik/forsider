@@ -75,16 +75,13 @@ export async function search(query, page) {
 </SOAP-ENV:Envelope>
 `;
       console.log('opensearch request', soapString);
-      let result = await fetch(
-        'https://opensearch.addi.dk/b3.5_4.5/',
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          method: 'POST',
-          body: soapString
-        }
-      );
+      let result = await fetch('https://opensearch.addi.dk/b3.5_4.5/', {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: 'POST',
+        body: soapString
+      });
       result = await result.json();
       result = result.searchResponse.result;
       count = +result.hitCount.$;
