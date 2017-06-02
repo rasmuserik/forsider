@@ -60,6 +60,7 @@ export default function coverHtml(img, meta, cfg) {
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
+        height: ${cfg.boxHeight || 20}%;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;
@@ -68,13 +69,20 @@ export default function coverHtml(img, meta, cfg) {
         top: ${cfg.yPos || 20}%;
         font-family: ${cfg.font}, sans-serif; 
       }
+      .inner {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     </style>
     <div id="main"> 
       <img src="${img.url}" />
       <div id="title">
+        <div class="inner">
         ${escapeXml(title)}
         <br/>
         ${escapeXml(creator)}
+        </div>
       </div>
     </div>`;
   return html;
