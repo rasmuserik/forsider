@@ -52433,7 +52433,37 @@ class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] 
           step: 1,
           value: this.get(optionPath('yPos'), 20),
           onChange: (_, val) => this.set(optionPath('yPos'), val)
-        })
+        }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'label',
+            {
+              htmlFor: 'boxHeight',
+              style: {
+                display: 'inline-block',
+                marginTop: '20px',
+                fontSize: 12,
+                color: 'rgba(0,0,0,0.3)'
+              } },
+            'Boksens h\xF8jde'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Slider___default.a, {
+            id: 'boxHeight',
+            type: 'number',
+            style: {
+              marginTop: -10,
+              height: 10,
+              marginBottom: 10
+            },
+            max: 100,
+            min: 0,
+            step: 1,
+            value: this.get(optionPath('boxHeight'), 20),
+            onChange: (_, val) => this.set(optionPath('boxHeight'), val)
+          })
+        )
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -53203,6 +53233,7 @@ function coverHtml(img, meta, cfg) {
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
+        height: ${cfg.boxHeight || 20}%;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;
@@ -53211,13 +53242,20 @@ function coverHtml(img, meta, cfg) {
         top: ${cfg.yPos || 20}%;
         font-family: ${cfg.font}, sans-serif; 
       }
+      .inner {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     </style>
     <div id="main"> 
       <img src="${img.url}" />
       <div id="title">
+        <div class="inner">
         ${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["escapeXml"])(title)}
         <br/>
         ${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["escapeXml"])(creator)}
+        </div>
       </div>
     </div>`;
   return html;
