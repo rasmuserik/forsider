@@ -85,7 +85,7 @@ export default function coverHtml(img, meta, cfg) {
     </style>
     <div id="main"> 
       <img src="${img.url}" />
-      ${sectionHtml(img, 'title', (meta.TITLE||[])[0], cfg.title || {})}
+      ${sectionHtml(img, 'title', (meta.TITLE || [])[0], cfg.title || {})}
       ${sectionHtml(img, 'creator', creator, cfg.creator || {})}
     </div>`;
   return html;
