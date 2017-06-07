@@ -52346,20 +52346,23 @@ class Color extends __WEBPACK_IMPORTED_MODULE_3_recom__["b" /* ReCom */] {
 let fonts = [];
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_installed_fonts__["installedFonts"])().then(o => fonts = o);
 
-class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
+class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
   constructor(props, context) {
     super(props);
   }
 
   render() {
     let currentImage = this.props.currentImage || '';
-    let optionPath = name => ['options', currentImage, name];
+    let optionPath = name => ['options', currentImage, this.props.name, name];
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__ImageUpload__["a" /* default */], null),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+      { style: { width: 300, margin: 10, display: 'inline-block' } },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h3',
+        { style: {} },
+        this.props.title
+      ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { style: { display: 'inline-block', textAlign: 'center' } },
@@ -52490,6 +52493,35 @@ class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] 
           maxSearchResults: 20
         })
       )
+    );
+  }
+}
+
+class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
+  constructor(props, context) {
+    super(props);
+  }
+
+  render() {
+    let currentImage = this.props.currentImage || '';
+    let optionPath = name => ['options', currentImage, this.props.name, name];
+    console.log('cfg', this.get(['options']));
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__ImageUpload__["a" /* default */], null),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BoxOptions, {
+        currentImage: this.props.currentImage,
+        name: 'title',
+        title: 'Titel'
+      }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BoxOptions, {
+        currentImage: this.props.currentImage,
+        name: 'creator',
+        title: 'Forfatter'
+      })
     );
   }
 }
@@ -52896,7 +52928,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
               margin: 10,
               padding: 10
             } },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__CoverOptions__["a" /* default */], { currentImage: currentImage })
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__CoverOptions__["a" /* default */], { name: 'title', currentImage: currentImage })
         )
       )
     );
@@ -53184,10 +53216,8 @@ function truncateWords(str, maxLen) {
   return result;
 }
 
-function coverHtml(img, meta, cfg) {
+function sectionHtml(img, id, text, cfg) {
   img = img || { url: '' };
-
-  let maxAuthors = 2;
 
   let bg = cfg.background || { r: 50, g: 50, b: 100, a: 0.2 };
   let fg = cfg.textColor || { r: 0, g: 0, b: 0, a: 1 };
@@ -53195,38 +53225,15 @@ function coverHtml(img, meta, cfg) {
   let fontScale = cfg.fontScale || 50;
   let yPos = cfg.yPos || 20;
 
-  let creator = meta.CREATOR || [];
-  if (creator.length > maxAuthors) {
-    creator = '';
-  } else {
-    creator = creator.join(' & ');
-  }
-  creator = creator.replace(/\s+[(][^)]*[)]/g, '');
-  if (creator.length > maxLength) {
-    creator = truncateWords(creator, maxLength) + '...';
+  if (text.length > maxLength) {
+    text = truncateWords(text, maxLength) + '...';
   }
 
-  let title = (meta.TITLE || [''])[0];
-  if (title.length > maxLength) {
-    title = truncateWords(title, maxLength) + '...';
-  }
-
-  let length = Math.max(creator.length, title.length);
+  let length = Math.max(text.length);
 
   let html = `
     <style>
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-      #main { 
-        width: 100%;
-        height: 100%;
-      }
-      #title {
+      #${id} {
         position: absolute;
         font-weight: bold;
         font-size: ${Math.min(64, 10 * fontScale / length)}px;
@@ -53242,6 +53249,39 @@ function coverHtml(img, meta, cfg) {
         top: ${cfg.yPos || 20}%;
         font-family: ${cfg.font}, sans-serif; 
       }
+    </style>
+    <div id="${id}">
+      <div class="inner">
+        ${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["escapeXml"])(text)}
+      </div>
+    </div>`;
+  return html;
+}
+
+function coverHtml(img, meta, cfg) {
+  let maxAuthors = 2;
+
+  let creator = meta.CREATOR || [];
+  if (creator.length > maxAuthors) {
+    creator = '';
+  } else {
+    creator = creator.join(' & ');
+  }
+  creator = creator.replace(/\s+[(][^)]*[)]/g, '');
+
+  let html = `
+    <style>
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .main { 
+        width: 100%;
+        height: 100%;
+      }
       .inner {
         position: relative;
         top: 50%;
@@ -53250,13 +53290,8 @@ function coverHtml(img, meta, cfg) {
     </style>
     <div id="main"> 
       <img src="${img.url}" />
-      <div id="title">
-        <div class="inner">
-        ${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["escapeXml"])(title)}
-        <br/>
-        ${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["escapeXml"])(creator)}
-        </div>
-      </div>
+      ${sectionHtml(img, 'title', (meta.TITLE || [])[0], cfg.title || {})}
+      ${sectionHtml(img, 'creator', creator, cfg.creator || {})}
     </div>`;
   return html;
 }
