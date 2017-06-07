@@ -80,7 +80,7 @@ export default class Main extends ReCom {
               margin: 10,
               padding: 10
             }}>
-            <CoverOptions currentImage={currentImage} />
+            <CoverOptions name="title" currentImage={currentImage} />
           </Paper>
         </div>
       </div>

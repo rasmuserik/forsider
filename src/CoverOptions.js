@@ -13,19 +13,18 @@ import Color from './Color';
 let fonts = [];
 installedFonts().then(o => (fonts = o));
 
-export default class CoverOptions extends ReCom {
+class BoxOptions extends ReCom {
   constructor(props, context) {
     super(props);
   }
 
   render() {
     let currentImage = this.props.currentImage || '';
-    let optionPath = name => ['options', currentImage, name];
+    let optionPath = name => ['options', currentImage, this.props.name, name];
 
     return (
-      <div>
-        <ImageUpload /><br />
-
+      <div style={{width:300,margin:10, display:'inline-block'}}>
+        <h3 style={{}}>{this.props.title}</h3>
         <div style={{display: 'inline-block', textAlign: 'center'}}>
           Baggrundsfarve <br />
           <Color path={optionPath('background')} />
@@ -140,6 +139,26 @@ export default class CoverOptions extends ReCom {
             maxSearchResults={20}
           />
         </div>
+      </div>
+    );
+  }
+}
+
+export default class CoverOptions extends ReCom {
+  constructor(props, context) {
+    super(props);
+  }
+
+  render() {
+    let currentImage = this.props.currentImage || '';
+    let optionPath = name => ['options', currentImage, this.props.name, name];
+    console.log('cfg', this.get(['options']));
+
+    return (
+      <div>
+        <ImageUpload /><br />
+        <BoxOptions currentImage={this.props.currentImage} name="title" title="Titel"/>
+        <BoxOptions currentImage={this.props.currentImage} name="creator" title="Forfatter" />
       </div>
     );
   }
