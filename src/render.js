@@ -14,7 +14,7 @@ async function renderSearchResult(i, width, height) {
   let meta = results[i];
   let html = coverHtml(image, meta, cfg);
   return await html2jpg(html, {
-    deviceWidth: 334,
+    deviceWidth: 260,
     width: width,
     height: height
   });
@@ -103,7 +103,7 @@ export async function renderPreviews() {
     previews = get('previews', []);
     for (let i = 0; i < results.length; ++i) {
       previews[i] = previews[i] || {};
-      previews[i].dataUrl = await renderSearchResult(i, 334, 540);
+      previews[i].dataUrl = await renderSearchResult(i, 260, 420);
       await sleep();
     }
   } else {

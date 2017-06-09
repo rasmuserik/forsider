@@ -42,12 +42,12 @@ export default class Main extends ReCom {
         </Paper>
 
         <div style={{display: 'flex'}}>
-          <div style={{flex: '0 0 334px'}}>
+          <div style={{flex: '0 0 260px'}}>
             <Paper
               style={{
                 display: 'inline-block',
                 margin: 10,
-                width: 334
+                width: 260
               }}>
               <img
                 src={this.get(['previews', currentResult, 'dataUrl'])}

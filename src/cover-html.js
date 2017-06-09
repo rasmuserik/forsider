@@ -31,7 +31,7 @@ function sectionHtml(img, id, text, cfg) {
       #${id} {
         position: absolute;
         font-weight: bold;
-        font-size: ${Math.min(64, 10 * fontScale / length)}px;
+        font-size: ${Math.min(50, 8 * fontScale / length)}px;
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
