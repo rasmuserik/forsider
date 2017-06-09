@@ -39374,7 +39374,7 @@ let renderSearchResult = (() => {
     let meta = results[i];
     let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg);
     return yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_html_to_canvas__["html2jpg"])(html, {
-      deviceWidth: 334,
+      deviceWidth: 260,
       width: width,
       height: height
     });
@@ -39471,7 +39471,7 @@ let renderPreviews = (() => {
       previews = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('previews', []);
       for (let i = 0; i < results.length; ++i) {
         previews[i] = previews[i] || {};
-        previews[i].dataUrl = yield renderSearchResult(i, 334, 540);
+        previews[i].dataUrl = yield renderSearchResult(i, 260, 420);
         yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
       }
     } else {
@@ -52885,14 +52885,14 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
         { style: { display: 'flex' } },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { style: { flex: '0 0 334px' } },
+          { style: { flex: '0 0 260px' } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_material_ui_Paper___default.a,
             {
               style: {
                 display: 'inline-block',
                 margin: 10,
-                width: 334
+                width: 260
               } },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', {
               src: this.get(['previews', currentResult, 'dataUrl'])
@@ -53236,7 +53236,7 @@ function sectionHtml(img, id, text, cfg) {
       #${id} {
         position: absolute;
         font-weight: bold;
-        font-size: ${Math.min(64, 10 * fontScale / length)}px;
+        font-size: ${Math.min(50, 8 * fontScale / length)}px;
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
