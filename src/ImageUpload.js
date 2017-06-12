@@ -2,6 +2,8 @@ import React from 'react';
 import {ReCom, dispatchTable, store} from 'recom';
 import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
+import {renderPreviews} from './render';
+
 
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -46,6 +48,7 @@ export default class ImageUpload extends ReCom {
 
   render() {
     let height = 120;
+    setTimeout(renderPreviews, 0);
     return (
       <div
         style={{

@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReCom} from 'recom';
+import {renderPreviews} from './render';
 import _ from 'lodash';
 
 let resultStyle = {
@@ -70,6 +71,7 @@ export default class Results extends ReCom {
   }
 
   render() {
+    setTimeout(renderPreviews, 0);
     return (
       <div
         style={{
