@@ -20,7 +20,7 @@ function hash(str) {
 }
 
 dispatchTable.REMOVE_IMAGE = function(state, action) {
-  state.set(
+  return state.set(
     'images',
     state.get('images').filter(o => o.get('id') !== action.id)
   );

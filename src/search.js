@@ -45,8 +45,8 @@ export async function search(query, page) {
 
   let dbc = window.dbcOpenPlatform;
   try {
-    let pids;
     let count;
+    let results;
 
     if (!dbc.connected()) {
       await dbc.connect(
@@ -85,21 +85,24 @@ export async function search(query, page) {
       result = await result.json();
       result = result.searchResponse.result;
       count = +result.hitCount.$;
-      pids = (result.searchResult || [])
-        .map(o => o.collection.object[0].identifier.$);
+      results = (result.searchResult || [])
+        .map(o => {
+          o = o.collection.object[0];
+          return {
+            pid: [o.identifier.$],
+            creator: (o.record.creator||[]).filter(r => !r['@type']).map(r => r.$),
+            title: [(o.record.title||[{}])[0].$]
+          }});
     } catch (e) {
       console.log('error getting result from opensearch', e);
       // error trying to get result from opensearch
       // graceful degradation: using only openplatform instead.
-      pids = await window.dbcOpenPlatform.search({
+      results = await window.dbcOpenPlatform.search({
         q: query,
         limit: 10,
         offset: page * 10
       });
-      pids = pids.map(o => o.pid[0]);
     }
-
-    let results = await window.dbcOpenPlatform.work({pids: pids});
 
     if (Array.isArray(results)) {
       results = results.map(o =>
@@ -111,7 +114,7 @@ export async function search(query, page) {
     }
 
     let thumbs = await window.dbcOpenPlatform.work({
-      pids: pids,
+      pids: results.map(o => o.pid[0]),
       fields: ['coverUrlThumbnail']
     });
     for (let i = 0; i < thumbs.length; ++i) {
