@@ -17,6 +17,7 @@ export default class SearchCQL extends ReCom {
   }
 
   async search() {
+    this.set('images', []);
     await search(this.get('query', ''), this.get('search.page', 0));
   }
 
