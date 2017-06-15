@@ -53778,7 +53778,6 @@ class SearchCQL extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
     var _this = this;
 
     return _asyncToGenerator(function* () {
-      _this.set('images', []);
       yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__search__["b" /* search */])(_this.get('query', ''), _this.get('search.page', 0));
     })();
   }
