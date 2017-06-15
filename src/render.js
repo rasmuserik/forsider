@@ -87,7 +87,8 @@ export async function generateCovers() {
   } while (get('export.exporting'));
 }
 
-let previewRerun = false, previewRunning = false;
+let previewRerun = false,
+  previewRunning = false;
 
 export async function renderPreviews() {
   if (previewRunning) {

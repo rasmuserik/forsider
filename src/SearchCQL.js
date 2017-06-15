@@ -5,10 +5,8 @@ import {search} from './search';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import ActionNext
-  from 'material-ui/svg-icons/navigation/chevron-right.js';
-import ActionPrev
-  from 'material-ui/svg-icons/navigation/chevron-left.js';
+import ActionNext from 'material-ui/svg-icons/navigation/chevron-right.js';
+import ActionPrev from 'material-ui/svg-icons/navigation/chevron-left.js';
 import CircularProgress from 'material-ui/CircularProgress';
 
 export default class SearchCQL extends ReCom {
@@ -49,7 +47,8 @@ export default class SearchCQL extends ReCom {
           {this.get('search.searching')
             ? <CircularProgress size={32} />
             : <ActionSearch />}
-        </IconButton> <br />
+        </IconButton>{' '}
+        <br />
 
         Side
         {' '}

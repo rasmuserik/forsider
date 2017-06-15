@@ -85,14 +85,16 @@ export async function search(query, page) {
       result = await result.json();
       result = result.searchResponse.result;
       count = +result.hitCount.$;
-      results = (result.searchResult || [])
-        .map(o => {
-          o = o.collection.object[0];
-          return {
-            pid: [o.identifier.$],
-            creator: (o.record.creator||[]).filter(r => !r['@type']).map(r => r.$),
-            title: [(o.record.title||[{}])[0].$]
-          }});
+      results = (result.searchResult || []).map(o => {
+        o = o.collection.object[0];
+        return {
+          pid: [o.identifier.$],
+          creator: (o.record.creator || [])
+            .filter(r => !r['@type'])
+            .map(r => r.$),
+          title: [(o.record.title || [{}])[0].$]
+        };
+      });
     } catch (e) {
       console.log('error getting result from opensearch', e);
       // error trying to get result from opensearch

@@ -4,7 +4,6 @@ import {randomId, file2url} from 'solsort-util';
 import sha from 'js-sha256';
 import {renderPreviews} from './render';
 
-
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -77,7 +76,7 @@ export default class ImageUpload extends ReCom {
             style={{display: 'none'}}
           />
 
-          {this.get('images', []).map(o => (
+          {this.get('images', []).map(o =>
             <Paper
               key={o.id}
               style={{
@@ -114,7 +113,7 @@ export default class ImageUpload extends ReCom {
               />
               {o.name}
             </Paper>
-          ))}
+          )}
 
           <FloatingActionButton
             style={{

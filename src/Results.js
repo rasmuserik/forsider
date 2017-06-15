@@ -53,12 +53,13 @@ class Result extends ReCom {
                 border: '1px solid black'
               }}
             />
-          </div><br />
+          </div>
+          <br />
           {o.HAS_OWN_COVER
             ? 'Egen genereret forside'
             : o.coverUrlThumbnail
-                ? 'MoreInfo forside'
-                : 'Ingen forside'}
+              ? 'MoreInfo forside'
+              : 'Ingen forside'}
         </div>
       );
     }
