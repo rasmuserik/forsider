@@ -72,7 +72,10 @@ export default class ImageUpload extends ReCom {
             accept="image/*"
             multiple={true}
             id={this.inputId}
-            onChange={o => this.addImages(o.target.files)}
+            onChange={o => {
+              this.addImages(o.target.files);
+              o.target.value = '';
+            }}
             style={{display: 'none'}}
           />
 
