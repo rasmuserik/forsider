@@ -53405,7 +53405,10 @@ class ImageUpload extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
           accept: 'image/*',
           multiple: true,
           id: this.inputId,
-          onChange: o => this.addImages(o.target.files),
+          onChange: o => {
+            this.addImages(o.target.files);
+            o.target.value = '';
+          },
           style: { display: 'none' }
         }),
         this.get('images', []).map(o => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
