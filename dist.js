@@ -53363,10 +53363,11 @@ class ImageUpload extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
     this.inputId = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_solsort_util__["randomId"])();
   }
 
-  addImages(imgs) {
+  addImages(elem) {
     var _this = this;
 
     return _asyncToGenerator(function* () {
+      let imgs = elem.files;
       let result = [];
       for (var i = 0; i < imgs.length; ++i) {
         let img = imgs[i];
@@ -53378,6 +53379,7 @@ class ImageUpload extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
         });
       }
       _this.set('images', _this.get('images', []).concat(result));
+      elem.value = '';
     })();
   }
 
@@ -53412,8 +53414,7 @@ class ImageUpload extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
           multiple: true,
           id: this.inputId,
           onChange: o => {
-            this.addImages(o.target.files);
-            o.target.value = '';
+            this.addImages(o.target);
           },
           style: { display: 'none' }
         }),

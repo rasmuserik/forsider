@@ -31,7 +31,8 @@ export default class ImageUpload extends ReCom {
     this.inputId = randomId();
   }
 
-  async addImages(imgs) {
+  async addImages(elem) {
+    let imgs = elem.files;
     let result = [];
     for (var i = 0; i < imgs.length; ++i) {
       let img = imgs[i];
@@ -43,6 +44,7 @@ export default class ImageUpload extends ReCom {
       });
     }
     this.set('images', this.get('images', []).concat(result));
+    elem.value = '';
   }
 
   render() {
@@ -73,8 +75,7 @@ export default class ImageUpload extends ReCom {
             multiple={true}
             id={this.inputId}
             onChange={o => {
-              this.addImages(o.target.files);
-              o.target.value = '';
+              this.addImages(o.target);
             }}
             style={{display: 'none'}}
           />
