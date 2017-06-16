@@ -75646,7 +75646,7 @@ exports.installedFonts = async () => {
   // Try to get the fonts via fc-list (should work on linux etc.)
 
   try {
-    execSync = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"child_process\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())).execSync;
+    execSync = ((typeof window === 'object' && window.require && window.require('child_process')) || __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"child_process\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))).execSync;
     let fontList = execSync('fc-list', {encoding: 'utf-8'})
       .split('\n')
       .map(s => s.split(':')[1])
