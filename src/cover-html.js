@@ -35,7 +35,7 @@ function sectionHtml(img, id, text, cfg) {
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
-        height: ${cfg.boxHeight || 20}%;
+        height: ${cfg.boxHeight || 10}%;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;

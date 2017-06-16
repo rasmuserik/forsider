@@ -27,6 +27,13 @@ class BoxOptions extends ReCom {
       name
     ];
 
+    if (this.get(optionPath('yPos')) === undefined) {
+      setTimeout(
+        () => this.set(optionPath('yPos'), this.props.yPos || 20),
+        0
+      );
+    }
+
     return (
       <div style={{width: 300, margin: 10, display: 'inline-block'}}>
         <h3 style={{}}>{this.props.title}</h3>
@@ -90,7 +97,7 @@ class BoxOptions extends ReCom {
             max={100}
             min={0}
             step={1}
-            value={this.get(optionPath('yPos'), 20)}
+            value={this.get(optionPath('yPos'), 0)}
             onChange={(_, val) => this.set(optionPath('yPos'), val)}
           />
 
@@ -116,7 +123,7 @@ class BoxOptions extends ReCom {
               max={100}
               min={0}
               step={1}
-              value={this.get(optionPath('boxHeight'), 20)}
+              value={this.get(optionPath('boxHeight'), 10)}
               onChange={(_, val) =>
                 this.set(optionPath('boxHeight'), val)}
             />
@@ -171,11 +178,13 @@ export default class CoverOptions extends ReCom {
           currentImage={this.props.currentImage}
           name="title"
           title="Titel"
+          yPos={20}
         />
         <BoxOptions
           currentImage={this.props.currentImage}
           name="creator"
           title="Forfatter"
+          yPos={30}
         />
       </div>
     );

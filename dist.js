@@ -53001,6 +53001,10 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
     let currentImage = this.props.currentImage || '';
     let optionPath = name => ['options', currentImage, this.props.name, name];
 
+    if (this.get(optionPath('yPos')) === undefined) {
+      setTimeout(() => this.set(optionPath('yPos'), this.props.yPos || 20), 0);
+    }
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { style: { width: 300, margin: 10, display: 'inline-block' } },
@@ -53080,7 +53084,7 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
           max: 100,
           min: 0,
           step: 1,
-          value: this.get(optionPath('yPos'), 20),
+          value: this.get(optionPath('yPos'), 0),
           onChange: (_, val) => this.set(optionPath('yPos'), val)
         }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -53109,7 +53113,7 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
             max: 100,
             min: 0,
             step: 1,
-            value: this.get(optionPath('boxHeight'), 20),
+            value: this.get(optionPath('boxHeight'), 10),
             onChange: (_, val) => this.set(optionPath('boxHeight'), val)
           })
         )
@@ -53161,12 +53165,14 @@ class CoverOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] 
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BoxOptions, {
         currentImage: this.props.currentImage,
         name: 'title',
-        title: 'Titel'
+        title: 'Titel',
+        yPos: 20
       }),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BoxOptions, {
         currentImage: this.props.currentImage,
         name: 'creator',
-        title: 'Forfatter'
+        title: 'Forfatter',
+        yPos: 30
       })
     );
   }
@@ -53580,7 +53586,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
               margin: 10,
               padding: 10
             } },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__CoverOptions__["a" /* default */], { name: 'title', currentImage: currentImage })
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__CoverOptions__["a" /* default */], { currentImage: currentImage })
         )
       )
     );
@@ -53896,7 +53902,7 @@ function sectionHtml(img, id, text, cfg) {
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
-        height: ${cfg.boxHeight || 20}%;
+        height: ${cfg.boxHeight || 10}%;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;
