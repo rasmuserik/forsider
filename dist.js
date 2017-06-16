@@ -75666,12 +75666,13 @@ exports.installedFonts = async () => {
   // Try to get the fonts via powershell (should work on windows)
 
   try {
-    let fontList = execSync('powershell \'' +
+    let cmd = 'powershell -Command "' +
       '[void] [System.Reflection.Assembly]::' +
-      'LoadWithPartialName(\"System.Drawing\");' +
+      'LoadWithPartialName(\'System.Drawing\');' +
       '(New-Object System.Drawing.Text.InstalledFontCollection)' +
-      '.Families\'', {encoding: 'utf-8'})
-      .split('\n')
+      '.Families"';
+    let fontList = execSync(cmd, {encoding: 'utf-8'});
+    fontList = fontList.split('\n')
       .slice(2)
       .map(s => s.trim())
       .filter(s => s.length > 0);
@@ -75735,7 +75736,7 @@ exports.main = async () => {
 }
 
 if("function" === 'function' && __webpack_require__.c[__webpack_require__.s] === module) {
-  module.exports().then(o=>o.map(s=>console.log(s)));
+  module.exports.installedFonts().then(o=>o.map(s=>console.log(s)));
 }
 
 function fontList() { // ##
