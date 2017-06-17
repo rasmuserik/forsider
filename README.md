@@ -8,6 +8,28 @@ Værktøj til generering af forsider til biblioteksmaterialer, samt upload af di
 - Kildekode ligger online på <https://github.com/solsort/forsider/>.
 - En meget ufærdige demo-udgave af applikationen under udvikling, kan ses online på <https://forsider.solsort.com/>. Kun lavet så den virker i allernyeste udgave af Chrome, - da den i praksis køres some en NW.js applikation. Upload og gem er ikke mulig i webbrowser, men kun i den releasede applikation (eller hvis den startes med [NW.js](https://nwjs.io)).
 
+# Udvikling
+
+- `yarn dev` starter udviklingsserver (åben `localhost:8080` i seneste Chrome for udvikling). Bemærk adgang til filsystem kører kun i applikationen. Brug af opensearch kræver at man er på en DBC-whitelisted IP-adresse, og at cors er slået fra (`chrome --disable-web-security`).
+- `yarn prettier` indenterer koden
+- `yarn build` oversætter 
+- `yarn release` bygger windows-binær, og prøver at uploade den til `public-html.solsort.com` (kræver credentials). Se build-nw.sh for detaljer om hvordan den binære bygges.
+
+Koden ligger i `src/`, og er skrevet med react. Da det er en simpel applikation/prototype bruges `ReCom` redux wrapper. Komponenter der nedarver fra ReCom, har en `get` og `set` (async) metode hvor man kan hente og sætte data i redux tilstands-objektet direkte, givet en sti ned i objektet. Den består af følgende:
+
+- React-komponenter
+    - `Color.js` 
+    - `CoverOptions.js`
+    - `ExportSettings.js`
+    - `ImageUpload.js`
+    - `Main.js`
+    - `Results.js`
+    - `SearchCQL.js`
+- `cover-html.js` Kode der generere forside-html der er grundlag for forside-billederne
+- `index.js` entry-point for initialisering og hot reloading
+- `render.js` genererer forside-billederen, og previews
+- `search.js` kode for søgning, kalder opensearch eller den åbne platform.
+
 # Changelog
 
 Status for sprint 3, og senere, kan ses i roadmap i issue-trackeren: http://platform.dandigbib.org/projects/generiske-forsider/roadmap
