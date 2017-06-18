@@ -36,7 +36,10 @@ export default class DownloadSettings extends ReCom {
               this.set('export.dirname', dirname);
             }
             elem.value = '';
-            setTimeout(() => {generateCovers(); updateCoverStatus(); }, 100);
+            setTimeout(() => {
+              generateCovers();
+              updateCoverStatus();
+            }, 100);
           }}
         />
         {/*
@@ -120,9 +123,9 @@ export default class DownloadSettings extends ReCom {
               label="Gem generiske forsider"
               fullWidth={true}
               primary={true}
-          onClick={() =>
-            document.getElementById('select-directory').click()}
-            /> }
+              onClick={() =>
+                document.getElementById('select-directory').click()}
+            />}
       </Paper>
     );
   }
