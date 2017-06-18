@@ -35,9 +35,11 @@ export default class DownloadSettings extends ReCom {
               localStorage.setItem('forsider.dirname', dirname);
               this.set('export.dirname', dirname);
             }
-            setTimeout(updateCoverStatus, 100);
+            elem.value = '';
+            setTimeout(() => {generateCovers(); updateCoverStatus(); }, 100);
           }}
         />
+        {/*
         <div
           style={{
             display: 'inline-block',
@@ -49,6 +51,7 @@ export default class DownloadSettings extends ReCom {
           <EditIcon />
           {this.get('export.dirname') || 'Sti til genererede forsider'}
         </div>
+          */}
 
         <Toggle
           style={Object.assign(
@@ -117,8 +120,9 @@ export default class DownloadSettings extends ReCom {
               label="Gem generiske forsider"
               fullWidth={true}
               primary={true}
-              onClick={generateCovers}
-            />}
+          onClick={() =>
+            document.getElementById('select-directory').click()}
+            /> }
       </Paper>
     );
   }

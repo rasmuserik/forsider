@@ -53236,7 +53236,9 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
             localStorage.setItem('forsider.dirname', dirname);
             this.set('export.dirname', dirname);
           }
-          setTimeout(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */], 100);
+          setTimeout(() => {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__render__["b" /* generateCovers */])();__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */])();
+          }, 100);
         }
       }),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -53307,7 +53309,7 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
         label: 'Gem generiske forsider',
         fullWidth: true,
         primary: true,
-        onClick: __WEBPACK_IMPORTED_MODULE_7__render__["b" /* generateCovers */]
+        onClick: () => document.getElementById('select-directory').click()
       })
     );
   }
