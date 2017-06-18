@@ -53236,23 +53236,13 @@ class DownloadSettings extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom 
             localStorage.setItem('forsider.dirname', dirname);
             this.set('export.dirname', dirname);
           }
+          elem.value = '';
           setTimeout(() => {
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__render__["b" /* generateCovers */])();__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */])();
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__render__["b" /* generateCovers */])();
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__search__["a" /* updateCoverStatus */])();
           }, 100);
         }
       }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        {
-          style: {
-            display: 'inline-block',
-            width: '314',
-            overflowX: 'auto'
-          },
-          onClick: () => document.getElementById('select-directory').click() },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_material_ui_svg_icons_image_edit___default.a, null),
-        this.get('export.dirname') || 'Sti til genererede forsider'
-      ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_material_ui_Toggle___default.a, {
         style: Object.assign({
           display: 'inline-block',
