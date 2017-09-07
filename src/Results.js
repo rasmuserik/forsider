@@ -35,7 +35,7 @@ class Result extends ReCom {
           <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
           <br />
           <img
-            src={o.coverUrlThumbnail && 'https:' + o.coverUrlThumbnail}
+            src={o.coverUrlThumbnail && o.coverUrlThumbnail}
             alt=""
             style={{
               height: 50,

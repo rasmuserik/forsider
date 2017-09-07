@@ -3,6 +3,36 @@ import {ReCom, set, get} from 'recom';
 import {str, sleep} from 'solsort-util';
 import _ from 'lodash';
 
+function nodePostOpenSearch(soapString) {
+  return new Promise((resolve, reject) => {
+    let result = '';
+    const https = require('ht' + 'tps');
+    const req = https.request({
+      hostname: 'opensearch.addi.dk',
+      port: 443,
+      path: '/b3.5_4.5/',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }, res => {
+      res.on('data', o => {
+        result += String(o);
+      });
+      res.on('end', o => {
+          try {
+             resolve(JSON.parse(result))
+          } catch(e) {
+            reject(e);
+          }
+      });
+    });
+    req.on('error', e => { reject(e) });
+    req.write(soapString);
+    req.end();
+  });
+}
+
 export function fileName(id) {
   let pathSep = window.require('path').sep;
   let dirName = get('export.dirname');
@@ -75,14 +105,20 @@ export async function search(query, page) {
 </SOAP-ENV:Envelope>
 `;
       console.log('opensearch request', soapString);
-      let result = await fetch('https://opensearch.addi.dk/b3.5_4.5/', {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        method: 'POST',
-        body: soapString
-      });
-      result = await result.json();
+      let result;
+      if(window.require) {
+        result = await nodePostOpenSearch(soapString);
+      } else {
+        result = await fetch('https://opensearch.addi.dk/b3.5_4.5/', {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          method: 'POST',
+          mode: 'no-cors',
+          body: soapString
+        });
+        result = await result.json();
+      }
       result = result.searchResponse.result;
       count = +result.hitCount.$;
       results = (result.searchResult || []).map(o => {
@@ -117,9 +153,9 @@ export async function search(query, page) {
 
     let thumbs = await window.dbcOpenPlatform.work({
       pids: results.map(o => o.pid[0]),
-      fields: ['coverUrlThumbnail']
+      fields: ['identifier', 'coverUrlThumbnail']
     });
-    for (let i = 0; i < thumbs.length; ++i) {
+    for (let i = 0; i < Math.min(thumbs.length, results.length); ++i) {
       results[i].coverUrlThumbnail = thumbs[i].coverUrlThumbnail;
     }
 
