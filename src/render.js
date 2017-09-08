@@ -98,22 +98,32 @@ export async function renderPreviews() {
   previewRerun = false;
   previewRunning = true;
 
-  let results = get('search.results', []);
-  let previews;
-  if (get('images', []).length > 0 && results.length > 0) {
-    previews = get('previews', []);
-    for (let i = 0; i < results.length; ++i) {
-      previews[i] = previews[i] || {};
-      previews[i].dataUrl = await renderSearchResult(i, 260, 420);
-      await sleep();
-    }
-  } else {
-    previews = [];
-  }
-  set('previews', previews);
+  try {
 
-  previewRunning = false;
-  if (previewRerun) {
-    setTimeout(renderPreviews, 0);
+    let results = get('search.results', []);
+    let previews;
+    if (get('images', []).length > 0 && results.length > 0) {
+      previews = get('previews', []);
+      for (let i = 0; i < results.length; ++i) {
+        previews[i] = previews[i] || {};
+        previews[i].dataUrl = await renderSearchResult(i, 260, 420);
+        await sleep();
+      }
+    } else {
+      previews = [];
+    }
+    set('previews', previews);
+
+    previewRunning = false;
+    if (previewRerun) {
+      setTimeout(renderPreviews, 0);
+    }
+
+  } catch(e) {
+    previewRunning = false;
+    if (previewRerun) {
+      setTimeout(renderPreviews, 0);
+    }
+    throw e;
   }
 }
