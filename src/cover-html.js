@@ -91,7 +91,7 @@ export default function coverHtml(img, meta, cfg) {
         (meta.TITLE || [])[0],
         cfg.title || {}
       )}
-      ${sectionHtml(img, 'creator', creator, cfg.creator || {})}
+      ${creator ? sectionHtml(img, 'creator', creator, cfg.creator || {}) : ''}
     </div>`;
   return html;
 }
