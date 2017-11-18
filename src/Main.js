@@ -43,6 +43,7 @@ export default class Main extends ReCom {
 
         <div style={{display: 'flex'}}>
           <div style={{flex: '0 0 260px'}}>
+            <ExportSettings />
             <Paper
               style={{
                 display: 'inline-block',
@@ -53,7 +54,6 @@ export default class Main extends ReCom {
                 src={this.get(['previews', currentResult, 'dataUrl'])}
               />
             </Paper>
-            <ExportSettings />
             <Paper style={{margin: 10, padding: 10}}>
               <TextField
                 floatingLabelText="Agency"

@@ -35,17 +35,8 @@ class BoxOptions extends ReCom {
     }
 
     return (
-      <div style={{width: 300, margin: 10, display: 'inline-block'}}>
+      <div style={{width: '45%', margin: 10, display: 'inline-block'}}>
         <h3 style={{}}>{this.props.title}</h3>
-        <div style={{display: 'inline-block', textAlign: 'center'}}>
-          Baggrundsfarve <br />
-          <Color path={optionPath('background')} />
-        </div>&nbsp;&nbsp;&nbsp;&nbsp;
-
-        <div style={{display: 'inline-block', textAlign: 'center'}}>
-          Tekstfarve<br />
-          <Color path={optionPath('textColor')} />
-        </div>
 
         <div>
           <label
@@ -110,7 +101,7 @@ class BoxOptions extends ReCom {
                 fontSize: 12,
                 color: 'rgba(0,0,0,0.3)'
               }}>
-              Boksens højde
+              Boksens minimums-højde
             </label>
             <Slider
               id="boxHeight"
@@ -128,6 +119,15 @@ class BoxOptions extends ReCom {
                 this.set(optionPath('boxHeight'), val)}
             />
           </div>
+        </div>
+        <div style={{display: 'inline-block', textAlign: 'center'}}>
+          Baggrundsfarve <br />
+          <Color path={optionPath('background')} />
+        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <div style={{display: 'inline-block', textAlign: 'center'}}>
+          Tekstfarve<br />
+          <Color path={optionPath('textColor')} />
         </div>
         <div>
           <TextField
@@ -173,7 +173,8 @@ export default class CoverOptions extends ReCom {
 
     return (
       <div>
-        <ImageUpload /><br />
+        <ImageUpload />
+        <br />
         <BoxOptions
           currentImage={this.props.currentImage}
           name="title"
@@ -190,3 +191,4 @@ export default class CoverOptions extends ReCom {
     );
   }
 }
+

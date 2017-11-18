@@ -13,6 +13,8 @@ function truncateWords(str, maxLen) {
 
 function sectionHtml(img, id, text, cfg) {
   img = img || {url: ''};
+  const width = 260;
+  const height = 420;
 
   let bg = cfg.background || {r: 50, g: 50, b: 100, a: 0.2};
   let fg = cfg.textColor || {r: 0, g: 0, b: 0, a: 1};
@@ -26,16 +28,19 @@ function sectionHtml(img, id, text, cfg) {
 
   let length = Math.max(text.length);
 
+  const fontSize = Math.min(50, 8 * fontScale / length);
+  const boxHeight = Math.max(fontSize, (cfg.boxHeight || 10) * 0.01 * height);
+
   let html = `
     <style>
       #${id} {
         position: absolute;
         font-weight: bold;
-        font-size: ${Math.min(50, 8 * fontScale / length)}px;
+        font-size: ${fontSize}px;
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
-        height: ${cfg.boxHeight || 10}%;
+        height: ${boxHeight}px;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;

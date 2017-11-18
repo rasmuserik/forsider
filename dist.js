@@ -13737,23 +13737,32 @@ let renderPreviews = (() => {
     previewRerun = false;
     previewRunning = true;
 
-    let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
-    let previews;
-    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length > 0 && results.length > 0) {
-      previews = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('previews', []);
-      for (let i = 0; i < results.length; ++i) {
-        previews[i] = previews[i] || {};
-        previews[i].dataUrl = yield renderSearchResult(i, 260, 420);
-        yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
-      }
-    } else {
-      previews = [];
-    }
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('previews', previews);
+    try {
 
-    previewRunning = false;
-    if (previewRerun) {
-      setTimeout(renderPreviews, 0);
+      let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
+      let previews;
+      if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length > 0 && results.length > 0) {
+        previews = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('previews', []);
+        for (let i = 0; i < results.length; ++i) {
+          previews[i] = previews[i] || {};
+          previews[i].dataUrl = yield renderSearchResult(i, 260, 420);
+          yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_solsort_util__["sleep"])();
+        }
+      } else {
+        previews = [];
+      }
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["a" /* set */])('previews', previews);
+
+      previewRunning = false;
+      if (previewRerun) {
+        setTimeout(renderPreviews, 0);
+      }
+    } catch (e) {
+      previewRunning = false;
+      if (previewRerun) {
+        setTimeout(renderPreviews, 0);
+      }
+      throw e;
     }
   });
 
@@ -55307,7 +55316,7 @@ function coverHtml(img, meta, cfg) {
     <div id="main"> 
       <img src="${img.url}" />
       ${sectionHtml(img, 'title', (meta.TITLE || [])[0], cfg.title || {})}
-      ${sectionHtml(img, 'creator', creator, cfg.creator || {})}
+      ${creator ? sectionHtml(img, 'creator', creator, cfg.creator || {}) : ''}
     </div>`;
   return html;
 }
