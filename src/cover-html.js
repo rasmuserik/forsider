@@ -95,10 +95,19 @@ export default function coverHtml(img, meta, cfg, width, height) {
         img,
         'title',
         (meta.TITLE || [])[0],
-        cfg.title || {}, width, height
+        cfg.title || {},
+        width,
+        height
       )}
       ${creator
-        ? sectionHtml(img, 'creator', creator, cfg.creator || {}, width, height)
+        ? sectionHtml(
+            img,
+            'creator',
+            creator,
+            cfg.creator || {},
+            width,
+            height
+          )
         : ''}
     </div>`;
   return html;
