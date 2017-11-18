@@ -13644,7 +13644,7 @@ let renderSearchResult = (() => {
     let currentImage = image.id;
     let cfg = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])(['options', currentImage], {});
     let meta = results[i];
-    let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg);
+    let html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__cover_html__["a" /* default */])(image, meta, cfg, width, height);
     return yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_html_to_canvas__["html2jpg"])(html, {
       deviceWidth: 260,
       width: width,
@@ -13738,7 +13738,6 @@ let renderPreviews = (() => {
     previewRunning = true;
 
     try {
-
       let results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('search.results', []);
       let previews;
       if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_recom__["e" /* get */])('images', []).length > 0 && results.length > 0) {
@@ -54377,26 +54376,11 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { style: { width: 300, margin: 10, display: 'inline-block' } },
+      { style: { width: '45%', margin: 10, display: 'inline-block' } },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'h3',
         { style: {} },
         this.props.title
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { style: { display: 'inline-block', textAlign: 'center' } },
-        'Baggrundsfarve ',
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Color__["a" /* default */], { path: optionPath('background') })
-      ),
-      '\xA0\xA0\xA0\xA0',
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { style: { display: 'inline-block', textAlign: 'center' } },
-        'Tekstfarve',
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Color__["a" /* default */], { path: optionPath('textColor') })
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -54470,7 +54454,7 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
                 fontSize: 12,
                 color: 'rgba(0,0,0,0.3)'
               } },
-            'Boksens h\xF8jde'
+            'Boksens minimums-h\xF8jde'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Slider___default.a, {
             id: 'boxHeight',
@@ -54487,6 +54471,21 @@ class BoxOptions extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
             onChange: (_, val) => this.set(optionPath('boxHeight'), val)
           })
         )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { style: { display: 'inline-block', textAlign: 'center' } },
+        'Baggrundsfarve ',
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Color__["a" /* default */], { path: optionPath('background') })
+      ),
+      '\xA0\xA0\xA0\xA0',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { style: { display: 'inline-block', textAlign: 'center' } },
+        'Tekstfarve',
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Color__["a" /* default */], { path: optionPath('textColor') })
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -54907,6 +54906,7 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { style: { flex: '0 0 260px' } },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__ExportSettings__["a" /* default */], null),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_material_ui_Paper___default.a,
             {
@@ -54919,7 +54919,6 @@ class Main extends __WEBPACK_IMPORTED_MODULE_1_recom__["b" /* ReCom */] {
               src: this.get(['previews', currentResult, 'dataUrl'])
             })
           ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__ExportSettings__["a" /* default */], null),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_material_ui_Paper___default.a,
             { style: { margin: 10, padding: 10 } },
@@ -55241,7 +55240,7 @@ function truncateWords(str, maxLen) {
   return result;
 }
 
-function sectionHtml(img, id, text, cfg) {
+function sectionHtml(img, id, text, cfg, width, height) {
   img = img || { url: '' };
 
   let bg = cfg.background || { r: 50, g: 50, b: 100, a: 0.2 };
@@ -55256,16 +55255,19 @@ function sectionHtml(img, id, text, cfg) {
 
   let length = Math.max(text.length);
 
+  const fontSize = Math.min(50, 8 * fontScale / length);
+  const boxHeight = Math.max(fontSize, (cfg.boxHeight || 10) * 0.01 * height);
+
   let html = `
     <style>
       #${id} {
         position: absolute;
         font-weight: bold;
-        font-size: ${Math.min(50, 8 * fontScale / length)}px;
+        font-size: ${fontSize}px;
         color: rgba(${fg.r},${fg.g},${fg.b},${fg.a});
         text-align: center;
         width: 100%;
-        height: ${cfg.boxHeight || 10}%;
+        height: ${boxHeight}px;
         white-space: nowrap;
         background: rgba(${bg.r},${bg.g},${bg.b},${bg.a});
         overflow: hidden;
@@ -55283,7 +55285,7 @@ function sectionHtml(img, id, text, cfg) {
   return html;
 }
 
-function coverHtml(img, meta, cfg) {
+function coverHtml(img, meta, cfg, width, height) {
   let maxAuthors = 2;
 
   let creator = meta.CREATOR || [];
@@ -55315,8 +55317,8 @@ function coverHtml(img, meta, cfg) {
     </style>
     <div id="main"> 
       <img src="${img.url}" />
-      ${sectionHtml(img, 'title', (meta.TITLE || [])[0], cfg.title || {})}
-      ${creator ? sectionHtml(img, 'creator', creator, cfg.creator || {}) : ''}
+      ${sectionHtml(img, 'title', (meta.TITLE || [])[0], cfg.title || {}, width, height)}
+      ${creator ? sectionHtml(img, 'creator', creator, cfg.creator || {}, width, height) : ''}
     </div>`;
   return html;
 }
