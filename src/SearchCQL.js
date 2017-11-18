@@ -29,7 +29,6 @@ export default class SearchCQL extends ReCom {
         style={{
           //padding: '0px 0px 10px 30px'
         }}>
-
         <TextField
           onKeyDown={e => e.key === 'Enter' && this.search()}
           style={{width: '80%'}}
@@ -42,16 +41,15 @@ export default class SearchCQL extends ReCom {
           }}
           floatingLabelText="CQL Søgestreng"
         />
-
         <IconButton onClick={() => this.search()}>
-          {this.get('search.searching')
-            ? <CircularProgress size={32} />
-            : <ActionSearch />}
+          {this.get('search.searching') ? (
+            <CircularProgress size={32} />
+          ) : (
+            <ActionSearch />
+          )}
         </IconButton>{' '}
         <br />
-
-        Side
-        {' '}
+        Side{' '}
         <TextField
           type="number"
           value={this.get('search.page', 0) + 1}
@@ -59,7 +57,6 @@ export default class SearchCQL extends ReCom {
           style={{width: 60}}
           onChange={(_, val) => setPage(Math.max(0, (val | 0) - 1))}
         />
-
         <IconButton
           onClick={() =>
             setPage(Math.max(0, this.get('search.page', 0) - 1))}>
@@ -69,7 +66,6 @@ export default class SearchCQL extends ReCom {
           onClick={() => setPage(this.get('search.page', 0) + 1)}>
           <ActionNext />
         </IconButton>
-
       </div>
     );
   }

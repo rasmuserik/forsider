@@ -37,7 +37,6 @@ class BoxOptions extends ReCom {
     return (
       <div style={{width: '45%', margin: 10, display: 'inline-block'}}>
         <h3 style={{}}>{this.props.title}</h3>
-
         <div>
           <label
             htmlFor="fontScale"
@@ -65,7 +64,6 @@ class BoxOptions extends ReCom {
               this.set(optionPath('fontScale'), val)}
           />
         </div>
-
         <div>
           <label
             htmlFor="yPos"
@@ -124,7 +122,6 @@ class BoxOptions extends ReCom {
           Baggrundsfarve <br />
           <Color path={optionPath('background')} />
         </div>&nbsp;&nbsp;&nbsp;&nbsp;
-
         <div style={{display: 'inline-block', textAlign: 'center'}}>
           Tekstfarve<br />
           <Color path={optionPath('textColor')} />
@@ -140,7 +137,6 @@ class BoxOptions extends ReCom {
             onChange={(_, val) => this.set(optionPath('maxLen'), val)}
           />
         </div>
-
         <div>
           <AutoComplete
             searchText={this.get(optionPath('font'))}
@@ -191,4 +187,3 @@ export default class CoverOptions extends ReCom {
     );
   }
 }
-

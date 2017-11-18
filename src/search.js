@@ -7,27 +7,32 @@ function nodePostOpenSearch(soapString) {
   return new Promise((resolve, reject) => {
     let result = '';
     const https = require('ht' + 'tps');
-    const req = https.request({
-      hostname: 'opensearch.addi.dk',
-      port: 443,
-      path: '/b3.5_4.5/',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }, res => {
-      res.on('data', o => {
-        result += String(o);
-      });
-      res.on('end', o => {
+    const req = https.request(
+      {
+        hostname: 'opensearch.addi.dk',
+        port: 443,
+        path: '/b3.5_4.5/',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      },
+      res => {
+        res.on('data', o => {
+          result += String(o);
+        });
+        res.on('end', o => {
           try {
-             resolve(JSON.parse(result))
-          } catch(e) {
+            resolve(JSON.parse(result));
+          } catch (e) {
             reject(e);
           }
-      });
+        });
+      }
+    );
+    req.on('error', e => {
+      reject(e);
     });
-    req.on('error', e => { reject(e) });
     req.write(soapString);
     req.end();
   });
@@ -106,7 +111,7 @@ export async function search(query, page) {
 `;
       console.log('opensearch request', soapString);
       let result;
-      if(window.require) {
+      if (window.require) {
         result = await nodePostOpenSearch(soapString);
       } else {
         result = await fetch('https://opensearch.addi.dk/b3.5_4.5/', {

@@ -29,7 +29,10 @@ function sectionHtml(img, id, text, cfg) {
   let length = Math.max(text.length);
 
   const fontSize = Math.min(50, 8 * fontScale / length);
-  const boxHeight = Math.max(fontSize, (cfg.boxHeight || 10) * 0.01 * height);
+  const boxHeight = Math.max(
+    fontSize,
+    (cfg.boxHeight || 10) * 0.01 * height
+  );
 
   let html = `
     <style>
@@ -96,7 +99,9 @@ export default function coverHtml(img, meta, cfg) {
         (meta.TITLE || [])[0],
         cfg.title || {}
       )}
-      ${creator ? sectionHtml(img, 'creator', creator, cfg.creator || {}) : ''}
+      ${creator
+        ? sectionHtml(img, 'creator', creator, cfg.creator || {})
+        : ''}
     </div>`;
   return html;
 }

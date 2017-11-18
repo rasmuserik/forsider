@@ -27,40 +27,47 @@ class Result extends ReCom {
       return <div style={resultStyle} />;
     } else {
       return (
-        o &&
-        <div
-          onMouseEnter={() => this.set('ui.currentResult', n)}
-          style={resultStyle}>
-          <div><strong>{o.TITLE[0]} &nbsp;</strong></div>
-          <div><em>{(o.CREATOR || []).join(' & ')} &nbsp;</em></div>
-          <br />
-          <img
-            src={o.coverUrlThumbnail && o.coverUrlThumbnail}
-            alt=""
-            style={{
-              height: 50,
-              width: 35,
-              border: '1px solid black',
-              float: 'left'
-            }}
-          />
-          <div style={{textAlign: 'right'}}>
+        o && (
+          <div
+            onMouseEnter={() => this.set('ui.currentResult', n)}
+            style={resultStyle}>
+            <div>
+              <strong>{o.TITLE[0]} &nbsp;</strong>
+            </div>
+            <div>
+              <em>{(o.CREATOR || []).join(' & ')} &nbsp;</em>
+            </div>
+            <br />
             <img
-              src={this.get(['previews', n, 'dataUrl'])}
+              src={o.coverUrlThumbnail && o.coverUrlThumbnail}
+              alt=""
               style={{
-                height: 100,
-                width: 70,
-                border: '1px solid black'
+                height: 50,
+                width: 35,
+                border: '1px solid black',
+                float: 'left'
               }}
             />
+            <div style={{textAlign: 'right'}}>
+              <img
+                src={this.get(['previews', n, 'dataUrl'])}
+                style={{
+                  height: 100,
+                  width: 70,
+                  border: '1px solid black'
+                }}
+              />
+            </div>
+            <br />
+            {o.HAS_OWN_COVER ? (
+              'Egen genereret forside'
+            ) : o.coverUrlThumbnail ? (
+              'MoreInfo forside'
+            ) : (
+              'Ingen forside'
+            )}
           </div>
-          <br />
-          {o.HAS_OWN_COVER
-            ? 'Egen genereret forside'
-            : o.coverUrlThumbnail
-              ? 'MoreInfo forside'
-              : 'Ingen forside'}
-        </div>
+        )
       );
     }
   }
@@ -82,12 +89,13 @@ export default class Results extends ReCom {
           overflow: 'auto',
           width: '100%'
         }}>
-        {this.get('search.resultCount') &&
+        {this.get('search.resultCount') && (
           <p>
             <small>{this.get('search.resultCount')} resultater</small>
-          </p>}
+          </p>
+        )}
 
-        {this.get('ui.searchError') &&
+        {this.get('ui.searchError') && (
           <div
             style={{
               display: 'inline-block',
@@ -98,7 +106,8 @@ export default class Results extends ReCom {
             }}>
             <h3>Error</h3>
             <pre>{String(this.get('ui.searchError'))}</pre>
-          </div>}
+          </div>
+        )}
         {_.range(10).map(i => <Result key={i} n={i} />)}
       </div>
     );

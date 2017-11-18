@@ -112,20 +112,22 @@ export default class DownloadSettings extends ReCom {
           trackSwitchedStyle={{backgroundColor: '#faa'}}
           labelStyle={{color: '#000'}}
         />
-        {this.get('export.exporting', false)
-          ? <RaisedButton
-              label="Stop forsidegenerering"
-              fullWidth={true}
-              secondary={true}
-              onClick={() => this.set('export.exporting', false)}
-            />
-          : <RaisedButton
-              label="Gem generiske forsider"
-              fullWidth={true}
-              primary={true}
-              onClick={() =>
-                document.getElementById('select-directory').click()}
-            />}
+        {this.get('export.exporting', false) ? (
+          <RaisedButton
+            label="Stop forsidegenerering"
+            fullWidth={true}
+            secondary={true}
+            onClick={() => this.set('export.exporting', false)}
+          />
+        ) : (
+          <RaisedButton
+            label="Gem generiske forsider"
+            fullWidth={true}
+            primary={true}
+            onClick={() =>
+              document.getElementById('select-directory').click()}
+          />
+        )}
       </Paper>
     );
   }

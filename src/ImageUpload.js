@@ -13,7 +13,10 @@ function hash(str) {
   return btoa(
     String.fromCharCode.apply(
       String,
-      sha.sha256.create().update(str).array()
+      sha.sha256
+        .create()
+        .update(str)
+        .array()
     )
   ).slice(0, 20);
 }
@@ -80,7 +83,7 @@ export default class ImageUpload extends ReCom {
             style={{display: 'none'}}
           />
 
-          {this.get('images', []).map(o =>
+          {this.get('images', []).map(o => (
             <Paper
               key={o.id}
               style={{
@@ -117,7 +120,7 @@ export default class ImageUpload extends ReCom {
               />
               {o.name}
             </Paper>
-          )}
+          ))}
 
           <FloatingActionButton
             style={{
@@ -129,7 +132,6 @@ export default class ImageUpload extends ReCom {
             }}>
             <ContentAdd />
           </FloatingActionButton>
-
         </div>
       </div>
     );

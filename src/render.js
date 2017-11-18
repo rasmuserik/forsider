@@ -99,7 +99,6 @@ export async function renderPreviews() {
   previewRunning = true;
 
   try {
-
     let results = get('search.results', []);
     let previews;
     if (get('images', []).length > 0 && results.length > 0) {
@@ -118,8 +117,7 @@ export async function renderPreviews() {
     if (previewRerun) {
       setTimeout(renderPreviews, 0);
     }
-
-  } catch(e) {
+  } catch (e) {
     previewRunning = false;
     if (previewRerun) {
       setTimeout(renderPreviews, 0);
