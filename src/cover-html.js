@@ -11,10 +11,8 @@ function truncateWords(str, maxLen) {
   return result;
 }
 
-function sectionHtml(img, id, text, cfg) {
+function sectionHtml(img, id, text, cfg, width, height) {
   img = img || {url: ''};
-  const width = 260;
-  const height = 420;
 
   let bg = cfg.background || {r: 50, g: 50, b: 100, a: 0.2};
   let fg = cfg.textColor || {r: 0, g: 0, b: 0, a: 1};
@@ -61,7 +59,7 @@ function sectionHtml(img, id, text, cfg) {
   return html;
 }
 
-export default function coverHtml(img, meta, cfg) {
+export default function coverHtml(img, meta, cfg, width, height) {
   let maxAuthors = 2;
 
   let creator = meta.CREATOR || [];
@@ -97,10 +95,10 @@ export default function coverHtml(img, meta, cfg) {
         img,
         'title',
         (meta.TITLE || [])[0],
-        cfg.title || {}
+        cfg.title || {}, width, height
       )}
       ${creator
-        ? sectionHtml(img, 'creator', creator, cfg.creator || {})
+        ? sectionHtml(img, 'creator', creator, cfg.creator || {}, width, height)
         : ''}
     </div>`;
   return html;

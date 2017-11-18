@@ -12,7 +12,7 @@ async function renderSearchResult(i, width, height) {
   let currentImage = image.id;
   let cfg = get(['options', currentImage], {});
   let meta = results[i];
-  let html = coverHtml(image, meta, cfg);
+  let html = coverHtml(image, meta, cfg, width, height);
   return await html2jpg(html, {
     deviceWidth: 260,
     width: width,
